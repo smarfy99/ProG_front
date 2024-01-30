@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 //페이지 import
 import RecruitPage from "./pages/recruit/RecruitPage";
 import RecruitWritePage from "./pages/recruit/RecruitWritePage";
+import MyProjectPage from "./pages/myproject/MyProject"
 import SignUpPage from "./pages/admin/SignUpPage";
 import LoginPage from "./pages/admin/LoginPage";
 import CommutePage from "./pages/project/commute/CommutePage";
@@ -14,6 +15,8 @@ import MyPage from "./pages/mypage/MyPage";
 import HomePage from "./pages/home/HomePage";
 import ProjectPage from "./pages/project/ProjectPage";
 import Layout from "./layout/Layout";
+
+import RecruitProjectPage from "./pages/recruit/RecruitProjectPage";
 
 function App() {
   //라우터 설정
@@ -46,6 +49,14 @@ function App() {
         {
           path: "recruit/write",
           element: <RecruitWritePage />,
+        },
+        {
+          path: "myproject",
+          element: <MyProjectPage />,
+        },
+        {
+          path: "recruit/project",
+          element: <RecruitProjectPage />,
         },
         {
           path: "project",
