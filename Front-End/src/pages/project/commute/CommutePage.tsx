@@ -1,6 +1,10 @@
 import CommuteCalendar from "../../../components/calendar/CommuteCalendar";
+// import { useRequireAuth } from "../../../hooks/useRequireAuth";
 
 const CommutePage = () => {
+  //로그인이 필요한 페이지에 useRequireAuth 호출
+  // useRequireAuth();
+
   return (
     <div className="flex flex-col justify-center">
       {/* action, ranking div */}
