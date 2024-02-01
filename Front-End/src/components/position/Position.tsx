@@ -18,6 +18,7 @@ export const position = {
 	totalList: [{ jobCode: '', total: 1, current: 0 }] as PositionItem[],
 };
 
+
 const Position: React.FC = () => {
 	const [state, setState] = useState<PositionState>({
 		positionName: [''],
