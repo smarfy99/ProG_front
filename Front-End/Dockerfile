@@ -10,7 +10,7 @@ RUN yarn
 
 # dependency 설치
 COPY . .
-#RUN yarn install
+RUN yarn install
 RUN yarn add vite
 RUN yarn add @types/node --dev
 RUN yarn build
