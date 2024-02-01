@@ -1,6 +1,11 @@
 import CommuteCalendar from "../../../components/calendar/CommuteCalendar";
 
+// import { useRequireAuth } from "../../../hooks/useRequireAuth";
+
 const CommutePage = () => {
+  //로그인이 필요한 페이지에 useRequireAuth 호출
+  // useRequireAuth();
+
   return (
     <div className="flex flex-col justify-center">
       {/* action, ranking div */}
@@ -12,13 +17,13 @@ const CommutePage = () => {
         </div>
         <div className="flex rounded-xl bg-sub-color h-40 w-80 px-4 py-2">
           <div className="flex text-main-color font-semibold text-2xl">
-            Action
+            Ranking
           </div>
         </div>
       </div>
 
       {/* calendar div */}
-      <div className="flex h-[420px]">
+      <div className="flex justify-center h-[430px]">
         <CommuteCalendar />
       </div>
     </div>
