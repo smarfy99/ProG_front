@@ -1,6 +1,8 @@
 # 노드 이미지를 최신 버전으로 가져옴
 FROM node:latest
 
+RUN mkdir /app
+
 WORKDIR /app
 
 COPY package*.json ./
