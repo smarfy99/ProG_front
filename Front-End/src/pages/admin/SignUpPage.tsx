@@ -2,13 +2,13 @@ import axios from "axios";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import ProgImage from "../../assets/logo.png";
 
-interface UserData {
-  email: string;
-  certificationNo: string;
-  password: string;
-  name: string;
-  nickname: string;
-}
+// interface UserData {
+//   email: string;
+//   certificationNo: string;
+//   password: string;
+//   name: string;
+//   nickname: string;
+// }
 
 export const SignUpForm: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>("");
