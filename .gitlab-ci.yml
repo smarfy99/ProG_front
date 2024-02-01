@@ -88,7 +88,7 @@ frontend_package:
   after_script:
     - docker logout
   only:
-    - CICD-TEST # 브랜치명
+    - FE # 브랜치명
 
 deploy: # JOB 이름
   image: docker:latest
@@ -134,4 +134,4 @@ frontend_deploy:
   after_script:
     - docker logout
   only:
-    - CICD-TEST
+    - FE
