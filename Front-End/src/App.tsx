@@ -1,5 +1,5 @@
-import './index.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import "./index.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 //페이지 import
 import RecruitPage from './pages/recruit/RecruitPage';
@@ -98,11 +98,11 @@ function App() {
 		},
 	]);
 
-	return (
-		<div>
-			<RouterProvider router={router} />
-		</div>
-	);
+  return (
+    <div>
+      <RouterProvider router={router} />
+    </div>
+  );
 }
 
 export default App;
