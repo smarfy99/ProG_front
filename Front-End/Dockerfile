@@ -5,8 +5,8 @@ RUN mkdir /app
 
 WORKDIR /app
 
-COPY package*.json ./
-copy yarn.lock ./
+COPY package.json ./
+COPY yarn.lock ./
 
 RUN yarn
 
