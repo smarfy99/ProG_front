@@ -64,12 +64,12 @@ const WriteProjectPage: React.FC = () => {
     } else if (projectContent === "") {
       alert("본문을 입력해주세요.");
       return;
-    } else if (position.posName.length === 0) {
+    } else if (position.totalList.length === 0) {
       alert("한 개 이상의 포지션을 입력해주세요.");
       return;
     } else {
-      for (let i = 0; i < position.posName.length; i++) {
-        if (position.posName[i] === "") {
+      for (let i = 0; i < position.totalList.length; i++) {
+        if (position.totalList[i].jobCode === "") {
           alert("모든 포지션을 입력해주세요.");
           return;
         }

@@ -1,9 +1,5 @@
-import React from 'react'
-
 const RetrospectPage = () => {
-  return (
-    <div>RetrospectPage</div>
-  )
-}
+  return <div>RetrospectPage</div>;
+};
 
-export default RetrospectPage
+export default RetrospectPage;
