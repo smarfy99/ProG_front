@@ -1,5 +1,7 @@
 package com.backend.prog.domain.project.dto;
 
+import com.backend.prog.domain.manager.dto.CodeDetailDto;
+import com.backend.prog.domain.member.dto.MemberDto;
 import lombok.Builder;
 
 public class ProjectMemberDto {
@@ -12,7 +14,7 @@ public class ProjectMemberDto {
     }
 
     @Builder
-    public record Response(){
+    public record Response(MemberDto.Response member, CodeDetailDto.SampleResponse jobCode){
 
     }
 
