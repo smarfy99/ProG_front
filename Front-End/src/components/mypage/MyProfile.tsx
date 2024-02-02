@@ -122,6 +122,7 @@ const MyProfile = () => {
         </div>
         {showModal && <ChangePw onClose={toggleModal} />}
       </div>
+
     </div>
   );
 };
