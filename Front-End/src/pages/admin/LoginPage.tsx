@@ -8,6 +8,7 @@ export const LoginForm: React.FC = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { setAccessToken } = useAuthStore();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,13 +18,11 @@ export const LoginForm: React.FC = () => {
         password: password,
       });
 
-      const accessToken = response.headers["Authorization"];
+      const accessToken = response.headers["accesstoken"];
+      // console.log(accessToken);
 
-      console.log(accessToken);
       if (accessToken) {
         // 추출한 토큰을 Zustand 스토어에 저장
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const { setAccessToken } = useAuthStore();
         setAccessToken(accessToken);
 
         navigate("/");
