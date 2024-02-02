@@ -2,9 +2,8 @@ version: "4"
 
 services:
   react:
-    image: subam/prog-react:latest
-    volumes:
-      - ".:/app"
+    image: tset:latest
+    container_name: rc
     ports:
       - "5173:5173"
     environment:
