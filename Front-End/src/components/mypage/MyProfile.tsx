@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaPencil } from "react-icons/fa6";
 import ChangePw from "./ChangePw";
 import TechStack from "../techstack/TechStack";
-import { axiosInstance } from "../../apis/lib/axios";
+// import { axiosInstance } from "../../apis/lib/axios";
 
 const MyProfile = () => {
   const [showModal, setShowModal] = useState(false); // 모달 표시 상태
   const [isEditMode, setIsEditMode] = useState(false);
-  const [profileData, setProfileData] = useState({
-    email: "",
-    name: "",
-    nickname: "",
-    introduction: "",
-    // 기타 필요한 프로필 데이터
-  });
+  // const [profileData, setProfileData] = useState({
+  //   email: "",
+  //   name: "",
+  //   nickname: "",
+  //   introduction: "",
+  //   // 기타 필요한 프로필 데이터
+  // });
 
   // 모달 표시/숨김 함수
   const toggleModal = () => {
@@ -24,19 +24,19 @@ const MyProfile = () => {
     setIsEditMode(!isEditMode);
   };
 
-  const profileGet = async () => {
-    try {
-      const response = await axiosInstance.get("여기 내일 확인");
-      setProfileData(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const profileGet = async () => {
+  //   try {
+  //     const response = await axiosInstance.get("여기 내일 확인");
+  //     setProfileData(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   // 컴포넌트 마운트 시 프로필 데이터 가져오기
-  useEffect(() => {
-    profileGet();
-  }, []);
+  // useEffect(() => {
+  //   profileGet();
+  // }, []);
 
   return (
     <div>
