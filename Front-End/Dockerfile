@@ -15,7 +15,7 @@ COPY . .
 RUN yarn install
 RUN yarn add vite
 RUN yarn add @types/node --dev
-RUN yarn run
+RUN yarn build
 # 실제 환경 배포시 yarn build를 사용한다. 오늘 작성중인 Dockerfile은 개발용으로 작성되었다. (로컬 파일을 컨테이너화 한것과 동일함)
 
 # 앱 실행
