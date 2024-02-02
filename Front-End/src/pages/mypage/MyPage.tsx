@@ -17,7 +17,7 @@ const MyPage = () => {
   };
 
   return (
-    <div className="p-4 pt-20">
+    <div className="p-4">
       {/* 프로필 사진 부분 */}
       <div className="flex justify-center mb-4 relative">
         <div

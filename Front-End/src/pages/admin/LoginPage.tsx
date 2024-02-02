@@ -1,37 +1,40 @@
 import React, { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import ProgImage from "../../assets/logo.png";
+import { useAuthStore } from "../../stores/useAuthStore";
+import { axiosInstance } from "../../apis/lib/axios";
 
 export const LoginForm: React.FC = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    // API 호출을 통한 로그인 처리
     try {
-      const response = await fetch("YOUR_API_ENDPOINT", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
+      const response = await axiosInstance.post("/members/login", {
+        email: username,
+        password: password,
       });
 
-      if (!response.ok) {
-        throw new Error("로그인 실패");
+      const accessToken = response.headers["Authorization"];
+
+      console.log(accessToken);
+      if (accessToken) {
+        // 추출한 토큰을 Zustand 스토어에 저장
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const { setAccessToken } = useAuthStore();
+        setAccessToken(accessToken);
+
+        navigate("/");
+      } else {
+        // 토큰이 없는 경우의 처리
+        console.log("로그인 응답에 토큰이 없습니다.");
       }
-
-      const data = await response.json();
-      // 토큰 처리나 로그인 후의 로직을 여기에 구현합니다.
-      console.log(data);
     } catch (error) {
-      console.error(error);
+      console.error("Login failed:", error);
     }
-
-    setUserName("");
-    setPassword("");
   };
 
   return (
