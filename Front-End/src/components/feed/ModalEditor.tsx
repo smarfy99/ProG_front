@@ -51,15 +51,15 @@ const ModalEditor: FC<ModalEditorProps> = ({
       <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
         <div className="mb-4">
           <p className="text-lg font-bold mb-2">제목</p>
-          <input 
-            className="w-full p-2 border border-gray-300 rounded" 
+          <input
+            className="w-full p-2 border border-gray-300 rounded"
             placeholder="제목을 입력하세요"
             value={title}
             onChange={handleTitleChange}
           />
         </div>
         <p className="mb-2">내용</p>
-        <div className="mb-20"> 
+        <div className="mb-20">
           <ReactQuill
             ref={quillRef}
             className="h-80"
@@ -68,7 +68,7 @@ const ModalEditor: FC<ModalEditorProps> = ({
             onChange={onChange}
           />
         </div>
-        <div className="flex justify-end space-x-4 mt-4"> 
+        <div className="flex justify-end space-x-4 mt-4">
           <button
             className="bg-main-color text-white p-2 rounded hover:bg-blue-700 transition duration-300"
             onClick={handleSubmit}
