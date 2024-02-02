@@ -21,83 +21,82 @@ import MemberSettingPage from './pages/project/setting/MemberSettingPage';
 import ProjectSettingPage from './pages/project/setting/ProjectSettingPage';
 
 function App() {
-	//라우터 설정
-	const router = createBrowserRouter([
-		{
-			path: '/',
-			element: <Layout />, // Layout 컴포넌트를 사용
-			children: [
-				// 자식 라우트를 설정
-				{
-					index: true, // '/' 경로에 대응
-					element: <HomePage />,
-				},
-				{
-					path: 'login',
-					element: <LoginPage />,
-				},
-				{
-					path: 'signup',
-					element: <SignUpPage />,
-				},
-				{
-					path: 'mypage',
-					element: <MyPage />,
-				},
-				{
-					path: 'recruit',
-					element: <RecruitPage />,
-				},
-				{
-					path: 'recruit/write',
-					element: <RecruitWritePage />,
-				},
-				{
-					path: 'myproject',
-					element: <MyProjectPage />,
-				},
-				{
-					path: 'recruit/project',
-					element: <RecruitProjectPage />,
-				},
-				{
-					path: 'project',
-					element: <ProjectPage />,
-					children: [
-						{
-							path: '',
-							element: <IndexPage />,
-						},
-						{
-							path: 'commute',
-							element: <CommutePage />,
-						},
-						{
-							path: 'task',
-							element: <TaskPage />,
-						},
-						{
-							path: 'feed',
-							element: <FeedPage />,
-						},
-						{
-							path: 'retrospect',
-							element: <RetrospectPage />,
-						},
-						{
-							path: 'membersetting',
-							element: <MemberSettingPage />,
-						},
-						{
-							path: 'setting',
-							element: <ProjectSettingPage />,
-						},
-					],
-				},
-			],
-		},
-	]);
->>>>>>> e3796a8914ef5ddb56ddbc25140348bf1ef8a6b8
+  //라우터 설정
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Layout />, // Layout 컴포넌트를 사용
+      children: [
+        // 자식 라우트를 설정
+        {
+          index: true, // '/' 경로에 대응
+          element: <HomePage />,
+        },
+        {
+          path: "login",
+          element: <LoginPage />,
+        },
+        {
+          path: "signup",
+          element: <SignUpPage />,
+        },
+        {
+          path: "mypage",
+          element: <MyPage />,
+        },
+        {
+          path: "recruit",
+          element: <RecruitPage />,
+        },
+        {
+          path: "recruit/write",
+          element: <RecruitWritePage />,
+        },
+        {
+          path: "myproject",
+          element: <MyProjectPage />,
+        },
+        {
+          path: "recruit/project",
+          element: <RecruitProjectPage />,
+        },
+        {
+          path: "project",
+          element: <ProjectPage />,
+          children: [
+            {
+              path: "",
+              element: <IndexPage />,
+            },
+            {
+              path: "commute",
+              element: <CommutePage />,
+            },
+            {
+              path: "task",
+              element: <TaskPage />,
+            },
+            {
+              path: "feed",
+              element: <FeedPage />,
+            },
+            {
+              path: "retrospect",
+              element: <RetrospectPage />,
+            },
+            {
+              path: "membersetting",
+              element: <MemberSettingPage />,
+            },
+            {
+              path: "setting",
+              element: <ProjectSettingPage />,
+            },
+          ],
+        },
+      ],
+    },
+  ]);
 
   return (
     <div>
