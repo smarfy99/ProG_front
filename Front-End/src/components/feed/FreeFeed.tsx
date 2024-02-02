@@ -3,76 +3,9 @@ import { FaPlus, FaMapPin, FaEllipsisVertical } from "react-icons/fa6";
 import ModalEditor from "./ModalEditor";
 import FeedDetail from "./FeedDetail";
 import ModiDetail from "./ModiDetail";
-import axios from "axios";
 import { axiosInstance } from "../../apis/lib/axios";
 
 const FreeFeed = () => {
-  const [showDetail, setShowDetail] = useState(false);
-  const [rotateIcon, setRotateIcon] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editorContent, setEditorContent] = useState("");
-  const [showModiDelete, setShowModiDelete] = useState(false);
-  const [showModiDetail, setShowModiDetail] = useState(false);
-
-  const handleEllipsisClick = (event: React.MouseEvent) => {
-    event.stopPropagation(); // 상위 버전으로 이벤트 전파 중단
-    setShowModiDelete((prev) => !prev);
-  };
-
-  const handleIconClick = () => {
-    setRotateIcon(!rotateIcon);
-    setIsModalOpen(true);
-  };
-
-  const handleDetailClick = () => {
-    setShowDetail(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setRotateIcon(false); // rotateIcon 상태를 직접 false로 설정
-  };
-
-  const editorChange = (content: string) => {
-    setEditorContent(content);
-  };
-
-  const handleModifyClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    setShowModiDetail(true);
-  };
-
-  // ModiDetail 저장 버튼 핸들러
-  const handleSaveModiDetail = (newContent: string) => {
-    console.log("새로운 내용:", newContent);
-    // 여기에 API 요청 로직 또는 다른 상태 업데이트 로직을 추가할 수 있습니다.
-    setShowModiDetail(false); // 모달 닫기
-  };
-
-  const handleCloseModiDetail = () => {
-    setShowModiDetail(false);
-  };
-
-  const handleDelete = (event: React.MouseEvent) => {
-    // 삭제하기 버튼 눌렀을 때 요청.
-    event.stopPropagation();
-  };
-
-
-  const handleModalSubmit = (title: string, content: string) => {
-    // POST 요청 로직
-    axiosInstance.post('여기 내일 확인', {
-      title,
-      content
-    })
-    .then(() => {
-      // 성공 처리
-    })
-    .catch(() => {
-      // 에러 처리
-    });
-  };
-
   return (
     <div className="flex flex-col h-screen">
       <div className="p-4 w-auto mt-10 m-60 border-2 border-gray-200 shadow-lg rounded-lg flex-grow">

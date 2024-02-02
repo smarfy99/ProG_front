@@ -2,7 +2,7 @@ version: "4"
 
 services:
   react:
-    image: tset:latest
+    image: subam/prog-react:latest
     container_name: rc
     ports:
       - "5173:5173"
