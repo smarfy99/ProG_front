@@ -5,6 +5,6 @@ services:
     image: subam/prog-react:latest
     container_name: rc
     ports:
-      - "5173:5173"
+      - "3000:3000"
     environment:
       - NODE_ENV=development
