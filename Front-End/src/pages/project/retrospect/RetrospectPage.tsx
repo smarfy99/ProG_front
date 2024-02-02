@@ -8,7 +8,7 @@ export const RetrospectPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-center items-center">
       <div className="mt-10">
         <KeepBoard />
         <ProblemBoard />

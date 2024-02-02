@@ -15,7 +15,7 @@ const KeepBoard: React.FC = () => {
   ];
 
   return (
-    <div className="p-4 max-w-4xl mx-auto border-2 border-gray-200 shadow-lg rounded-lg">
+    <div className="p-4 m-10 max-w-4xl mx-auto border-2 border-gray-200 shadow-lg rounded-lg">
       <h2 className="text-lg font-bold ml-4 mb-4">Keep</h2>
       <div className="grid grid-cols-3 gap-4">
         {memos.map((memo) => (
