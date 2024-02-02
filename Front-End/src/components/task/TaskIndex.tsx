@@ -2,14 +2,14 @@ import { useState } from "react";
 import { FaCaretDown, FaCaretRight } from "react-icons/fa6";
 import DetailTask from "./DetailTask";
 
-interface List {
-  id: number;
-  task: string;
-  state: string;
-  asignee: string;
-  startDate: Date;
-  endDate: Date;
-}
+// interface List {
+//   id: number;
+//   task: string;
+//   state: string;
+//   asignee: string;
+//   startDate: Date;
+//   endDate: Date;
+// }
 
 type TodoListProps = {
   title: string;

@@ -3,7 +3,6 @@ import { FaPlus, FaMapPin, FaEllipsisVertical } from "react-icons/fa6";
 import ModalEditor from "./ModalEditor";
 import FeedDetail from "./FeedDetail";
 import ModiDetail from "./ModiDetail";
-import axios from "axios";
 import { axiosInstance } from "../../apis/lib/axios";
 
 const FreeFeed = () => {
@@ -58,19 +57,19 @@ const FreeFeed = () => {
     event.stopPropagation();
   };
 
-
   const handleModalSubmit = (title: string, content: string) => {
     // POST 요청 로직
-    axiosInstance.post('여기 내일 확인', {
-      title,
-      content
-    })
-    .then(() => {
-      // 성공 처리
-    })
-    .catch(() => {
-      // 에러 처리
-    });
+    axiosInstance
+      .post("여기 내일 확인", {
+        title,
+        content,
+      })
+      .then(() => {
+        // 성공 처리
+      })
+      .catch(() => {
+        // 에러 처리
+      });
   };
 
   return (
