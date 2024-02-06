@@ -19,6 +19,7 @@ import RecruitProjectPage from "./pages/recruit/RecruitProjectPage";
 import IndexPage from "./pages/project/index/indexPage";
 import MemberSettingPage from "./pages/project/setting/MemberSettingPage";
 import ProjectSettingPage from "./pages/project/setting/ProjectSettingPage";
+import PrevRetrospect from "./components/retrospectMemo/PrevRetrospect";
 
 function App() {
   //라우터 설정
@@ -65,7 +66,7 @@ function App() {
           element: <ProjectPage />,
           children: [
             {
-              path: "",
+              index: true,
               element: <IndexPage />,
             },
             {
@@ -83,6 +84,10 @@ function App() {
             {
               path: "retrospect",
               element: <RetrospectPage />,
+            },
+            {
+              path: "prevretrospect",
+              element: <PrevRetrospect />,
             },
             {
               path: "membersetting",

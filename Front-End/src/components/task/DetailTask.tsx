@@ -25,10 +25,8 @@ const DetailTask = () => {
 
   const handleChecklistChange = (id: number) => {
     setChecklist(
-      checklist.map(
-        (
-          item // 현재 배열의 상태를 순회함.
-        ) => (item.id === id ? { ...item, isChecked: !item.isChecked } : item) // 만약 배열에 일치하는 id가 있으면, 상태를 반대로 바꿈
+      checklist.map((item) =>
+        item.id === id ? { ...item, isChecked: !item.isChecked } : item
       )
     );
   };
@@ -36,16 +34,14 @@ const DetailTask = () => {
   const addChecklistItem = () => {
     setChecklist([
       ...checklist,
-      { id: Date.now(), text: newItemText, isChecked: false }, // 새 체크리스트가 만들어지면, 이전의 체크리스트 배열에 추가.
+      { id: Date.now(), text: newItemText, isChecked: false },
     ]);
-    setNewItemText(""); // 새 chklist를 입력할 수 있도록 아이템을 비워놓음.
+    setNewItemText("");
   };
 
   const handleClose = () => {
-    setIsOpen((prev) => !prev);
+    setIsOpen(!isOpen);
   };
-
-  if (!isOpen) return null;
 
   const calculateProgress = () => {
     const totalItems = checklist.length;
@@ -59,104 +55,116 @@ const DetailTask = () => {
     setChecklist(checklist.filter((item) => item.id !== id));
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="bg-slate-50 p-4 rounded-md shadow-lg">
-      <div className="flex items-center mb-4">
-        <FaAnglesRight
-          onClick={handleClose}
-          className="text-lg text-gray-600 mr-2"
-        />
-        <h1 className="text-xl font-bold">상세 업무 등록</h1>
-        <button className="absolute top-4 right-4 bg-blue-500 text-white p-2 rounded">
-          업무 등록
-        </button>
-      </div>
-
-      <div className="flex items-center mb-4">
-        <FaRegCircleUser className="text-gray-600 mr-2" />
-        <p className="text-md">사용자: [이름]</p>
-        <p className="text-md ml-4">업무 등록 시작일: [날짜]</p>
-      </div>
-      <p className="font-semibold mb-2">업무 제목</p>
-      <input
-        type="text"
-        className="border border-gray-300 rounded p-2 mr-2 w-96"
-      />
-      <hr />
-
-      <div className="my-4 flex items-center">
-        <FaClockRotateLeft className="text-gray-600 mr-2" />
-        {/* 상태코드 변경 로직 */}
-      </div>
-
-      <div className="mb-4">
-        <FaRegCircleUser className="text-gray-600 mr-2" />
-        {/* 담당자 변경 로직 */}
-      </div>
-
-      <div className="flex flex-col">
-        <div className="mb-4">
-          <ReactQuill
-            className="h-40"
-            theme="snow"
-            value={editorContent}
-            onChange={editorChange}
+    <>
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-50 z-40 ${
+          !isOpen && "hidden"
+        }`}
+        onClick={handleClose}
+      ></div>
+      <div
+        className={`fixed right-0 top-0 h-full bg-slate-50 p-4 rounded-md shadow-lg z-50 w-full max-w-2xl transition-transform transform ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        } ease-in-out duration-300`}
+      >
+        <div className="flex items-center mt-10 mb-4">
+          <FaAnglesRight
+            onClick={handleClose}
+            className="text-lg text-gray-600 mr-2 cursor-pointer"
           />
+          <h1 className="text-xl font-bold">상세 업무 등록</h1>
         </div>
-        <p className="mt-20">Progressive Bar</p>
+
         <div className="flex items-center mb-4">
-          {/* 프로그레시브 바 */}
-          <div className="w-full bg-gray-200 rounded h-4">
-            <div
-              className="bg-main-color h-4 rounded"
-              style={{ width: `${progressPercentage}%` }}
-            ></div>
-          </div>
-
-          {/* 진행률 표시 */}
-          <span className="ml-2">{progressPercentage.toFixed(0)}%</span>
+          <FaRegCircleUser className="text-gray-600 mr-2" />
+          <p className="text-md">사용자: [이름]</p>
+          <p className="text-md ml-4">업무 등록 시작일: [날짜]</p>
         </div>
-      </div>
-      <div className="mb-4">
-        <h2 className="font-semibold mb-2">하위업무</h2>
-        <ul className="list-disc pl-6">
-          {checklist.map((item) => (
-            <li key={item.id} className="flex items-center mb-2">
-              <input
-                type="checkbox"
-                checked={item.isChecked}
-                onChange={() => handleChecklistChange(item.id)}
-              />
-              <span className={item.isChecked ? "line-through" : ""}>
-                {item.text}
-              </span>
 
-              <button
-                className="ml-2 text-red-500"
-                onClick={() => removeChecklistItem(item.id)}
-              >
-                X
-              </button>
-            </li>
-          ))}
-        </ul>
+        <p className="font-semibold mb-2">업무 제목</p>
+        <input
+          type="text"
+          className="border border-gray-300 rounded p-2 mr-2 w-full"
+        />
 
-        <div className="flex mt-2">
-          <input
-            type="text"
-            className="border border-gray-300 rounded p-2 mr-2 w-96"
-            value={newItemText}
-            onChange={(e) => setNewItemText(e.target.value)}
-          />
-          <button
-            className="bg-blue-500 text-white p-2 rounded"
-            onClick={addChecklistItem}
-          >
-            추가
+        <hr />
+
+        <div className="my-4">
+          <FaClockRotateLeft className="text-gray-600 mr-2" />
+          {/* 상태코드 변경 로직 */}
+        </div>
+
+        <div className="mb-4">
+          <FaRegCircleUser className="text-gray-600 mr-2" />
+          {/* 담당자 변경 로직 */}
+        </div>
+
+        <div className="flex flex-col">
+          <div className="mb-4">
+            <ReactQuill
+              className="h-40"
+              theme="snow"
+              value={editorContent}
+              onChange={editorChange}
+            />
+          </div>
+          <div className="flex items-center mt-10 mb-4">
+            <div className="w-full bg-gray-200 rounded h-4">
+              <div
+                className="bg-main-color h-4 rounded"
+                style={{ width: `${progressPercentage}%` }}
+              ></div>
+            </div>
+            <span className="ml-2">{progressPercentage.toFixed(0)}%</span>
+          </div>
+        </div>
+        <div className="mb-4">
+          <h2 className="font-semibold mb-2">하위업무</h2>
+          <ul className="list-disc pl-6">
+            {checklist.map((item) => (
+              <li key={item.id} className="flex items-center mb-2">
+                <input
+                  type="checkbox"
+                  checked={item.isChecked}
+                  onChange={() => handleChecklistChange(item.id)}
+                />
+                <span className={item.isChecked ? "line-through" : ""}>
+                  {item.text}
+                </span>
+
+                <button
+                  className="ml-2 text-red-500"
+                  onClick={() => removeChecklistItem(item.id)}
+                >
+                  X
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex mt-2">
+            <input
+              type="text"
+              className="border border-gray-300 rounded p-2 mr-2 w-96"
+              value={newItemText}
+              onChange={(e) => setNewItemText(e.target.value)}
+            />
+            <button
+              className="bg-blue-500 text-white p-2 rounded"
+              onClick={addChecklistItem}
+            >
+              추가
+            </button>
+          </div>
+          <button className="mt-2 bg-blue-500 text-white p-2 rounded">
+            업무 등록
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

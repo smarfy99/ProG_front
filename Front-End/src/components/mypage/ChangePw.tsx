@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import ChangePwInfo from "../alarm/ChangePwInfo";
+import { axiosInstance } from "../../apis/lib/axios";
 
 interface ChangePwModalProps {
   onClose: () => void;
+}
+
+interface ChangePasswordProps {
+  message: string;
 }
 
 const ChangePasswordModal: React.FC<ChangePwModalProps> = ({ onClose }) => {
@@ -23,6 +29,24 @@ const ChangePasswordModal: React.FC<ChangePwModalProps> = ({ onClose }) => {
   const isNewPasswordValid = validatePassword(newPassword);
   const doNewPasswordsMatch = newPassword === confirmNewPassword;
 
+  const changePw = async () => {
+    const pwData = {
+      originPassword: currentPassword,
+      updatePassword: newPassword,
+      updatePasswordCheck: confirmNewPassword,
+    };
+    try {
+      await axiosInstance.patch<ChangePasswordProps>(
+        "/members/change-password",
+        pwData
+      );
+
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div
       id="modalBackdrop"
@@ -33,10 +57,15 @@ const ChangePasswordModal: React.FC<ChangePwModalProps> = ({ onClose }) => {
         className="bg-white p-6 rounded-lg shadow-xl w-1/3"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-bold mb-4">비밀번호 변경</h2>
-
+        <div className="flex">
+          <h2 className="text-xl font-bold mb-4">비밀번호 변경</h2>
+          <ChangePwInfo />
+        </div>
         <div className="mb-4">
-          <label htmlFor="currentPassword" className="block mb-2 text-sm font-bold text-gray-700">
+          <label
+            htmlFor="currentPassword"
+            className="block mb-2 text-sm font-bold text-gray-700"
+          >
             현재 비밀번호
           </label>
           <input
@@ -49,26 +78,38 @@ const ChangePasswordModal: React.FC<ChangePwModalProps> = ({ onClose }) => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="newPassword" className="block mb-2 text-sm font-bold text-gray-700">
+          <label
+            htmlFor="newPassword"
+            className="block mb-2 text-sm font-bold text-gray-700"
+          >
             변경할 비밀번호
           </label>
           <input
             type="password"
             id="newPassword"
-            className={`w-full p-2 border ${isNewPasswordValid ? 'border-green-500' : 'border-red-500'} rounded`}
+            className={`w-full p-2 border ${
+              isNewPasswordValid ? "border-green-500" : "border-red-500"
+            } rounded`}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="confirmNewPassword" className="block mb-2 text-sm font-bold text-gray-700">
+          <label
+            htmlFor="confirmNewPassword"
+            className="block mb-2 text-sm font-bold text-gray-700"
+          >
             변경 비밀번호 확인
           </label>
           <input
             type="password"
             id="confirmNewPassword"
-            className={`w-full p-2 border ${doNewPasswordsMatch && isNewPasswordValid ? 'border-green-500' : 'border-red-500'} rounded`}
+            className={`w-full p-2 border ${
+              doNewPasswordsMatch && isNewPasswordValid
+                ? "border-green-500"
+                : "border-red-500"
+            } rounded`}
             value={confirmNewPassword}
             onChange={(e) => setConfirmNewPassword(e.target.value)}
           />
@@ -81,7 +122,9 @@ const ChangePasswordModal: React.FC<ChangePwModalProps> = ({ onClose }) => {
           >
             닫기
           </button>
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <button 
+          onClick={changePw}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             변경하기
           </button>
         </div>
