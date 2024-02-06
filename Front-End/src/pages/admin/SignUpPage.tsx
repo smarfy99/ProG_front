@@ -1,6 +1,8 @@
-import axios from "axios";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import ProgImage from "../../assets/logo.png";
+import { axiosInstance } from "../../apis/lib/axios";
+import Timer from "../../components/alarm/Timer";
+import SignUpInfo from "../../components/alarm/SignUpInfo";
 
 // interface UserData {
 //   email: string;
@@ -11,39 +13,36 @@ import ProgImage from "../../assets/logo.png";
 // }
 
 export const SignUpForm: React.FC = () => {
-  const [userId, setUserId] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [emailValid, setEmailValid] = useState(true);
-  const [certificationNo, setCertificationNo] = useState("");
+  const [certificationNo, setCertificationNo] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordChk, setPasswordChk] = useState<string>("");
-  const [name, setName] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [name, setName] = useState<string>("");
+  const [nickname, setNickname] = useState<string>("");
+  const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
 
   const signUpSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // API 통신 로직 (현재는 예시로만 존재)
 
     const userData = {
-      id: userId,
       email: userEmail,
       password: password,
+      passwordCheck: passwordChk,
+      authCode: certificationNo,
       name: name,
       nickname: nickname,
     };
 
     try {
-      const response = await axios.post("백엔드 URL", userData);
+      const response = await axiosInstance.post("/members/sign-up", userData);
       console.log(response.data);
-      // 성공적인 응답 처리
     } catch (error) {
       console.error("회원가입 오류", error);
-      // 에러 처리
     }
 
     // 폼 제출 후 입력 필드 초기화
     setUserEmail("");
-    setUserId("");
     setCertificationNo("");
     setPassword("");
     setPasswordChk("");
@@ -51,9 +50,59 @@ export const SignUpForm: React.FC = () => {
     setNickname("");
   };
 
-  // TailWind는 따로 클래스로 빼서 사용할 수 있음..
-  const inputClass = "border-solid border-2 border-gray-300 p-2 rounded";
-  const buttonClass =
+  const emailVerification = async () => {
+    console.log(userEmail);
+    const veriEmail = {
+      email: userEmail,
+    }
+    try {
+      startTimer();
+      await axiosInstance.post(
+        "/members/email-verification",
+        veriEmail
+        );
+      console.log("이메일 사용 가능");
+    } catch (error) {
+      console.log("이메일 오류");
+    }
+  };
+  
+  const emailVerificationConfirm = async () => {
+    const veridata = {
+      email: userEmail,
+      authCode: certificationNo,
+    }
+    console.log(veridata)
+    try {
+      await axiosInstance.post(
+        "/members/email-verification-confirm",
+        veridata
+        );
+        
+// 인증 콘솔 지우고, Modal창으로 OK 해주기
+
+        console.log("인증 완료");
+      } catch (error) {
+        console.log("인증 안됨 ㅠ");
+      }
+    };
+    
+    const chkNickNameDuplication = async () => {
+      try {
+        await axiosInstance.post(
+          "/members/nickname-validation-check",
+          nickname
+        );
+  
+        console.log("닉네임 사용 가능");
+      } catch (error) {
+        console.log("닉네임 중복 오류");
+      }
+    };
+
+    // TailWind는 따로 클래스로 빼서 사용할 수 있음..
+    const inputClass = "border-solid border-2 border-gray-300 p-2 rounded";
+    const buttonClass =
     "bg-main-color hover:bg-purple-400 text-white font-bold p-2 rounded";
 
   const validateEmail = (email: string) => {
@@ -66,6 +115,15 @@ export const SignUpForm: React.FC = () => {
     const email = e.target.value;
     setUserEmail(email);
     setEmailValid(validateEmail(email) || email === "");
+  };
+
+  const startTimer = () => {
+    setIsTimerActive(true);
+  };
+
+  const handleTimerComplete = () => {
+    console.log("Timer Completed!");
+    setIsTimerActive(false);
   };
 
   const getEmailValidationMessage = () => {
@@ -86,14 +144,20 @@ export const SignUpForm: React.FC = () => {
     }
   };
 
-  const validateId = (id: string): boolean => {
-    const re = /^[A-Za-z0-9]{4,16}$/;
-    return re.test(id);
+  const validatePassword = (password: string): boolean => {
+    const re =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/;
+    return re.test(password);
   };
 
-  const validatePassword = (password: string): boolean => {
-    const re = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
-    return re.test(password);
+  const validateName = (name: string): boolean => {
+    const re = /^[A-Za-z가-힣]+$/;
+    return re.test(name);
+  };
+
+  const validateNickName = (nickname: string): boolean => {
+    const re = /^[A-Za-z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$/;
+    return re.test(nickname);
   };
 
   const isPasswordMatching = (): boolean => {
@@ -109,7 +173,9 @@ export const SignUpForm: React.FC = () => {
       validatePassword(password) &&
       password === passwordChk &&
       name !== "" &&
-      nickname !== ""
+      validateName(name) &&
+      nickname !== "" &&
+      validateNickName(nickname)
     );
   };
 
@@ -122,7 +188,7 @@ export const SignUpForm: React.FC = () => {
   };
 
   return (
-    <div className="mt-40 mb-20">
+    <div className="mt-20 mb-20">
       <div className="flex items-center justify-center h-screen">
         <div className="w-1/2 border-solid border-2 p-10 rounded-lg bg-white shadow-md">
           <div className="flex flex-col items-center justify-center">
@@ -130,7 +196,10 @@ export const SignUpForm: React.FC = () => {
               <img src={ProgImage} alt="로고 이미지" className="h-16" />
               <p className="text-2xl font-bold">ProG</p>
             </div>
+            <div className="flex">
             <p className="m-2 mb-10 text-center text-3xl font-bold">회원가입</p>
+            <SignUpInfo/>
+            </div>
             <form
               onSubmit={signUpSubmit}
               className="w-full flex flex-col items-center"
@@ -148,41 +217,25 @@ export const SignUpForm: React.FC = () => {
                 <button
                   id="certi-button"
                   type="button"
-                  className={`w-20 ml-5 ${buttonClass}`}
+                  onClick={emailVerification}
+                  disabled={!emailValid || userEmail === ""}
+                  className={`w-20 ml-5 ${
+                    emailValid && userEmail !== ""
+                      ? buttonClass
+                      : "bg-gray-400 text-white font-bold p-2 rounded"
+                  }`}
                 >
                   인증
                 </button>
               </div>
               {getEmailValidationMessage()}
-              <p className="font-bold mr-80 pr-8 mb-3">이름</p>
-              <div className="w-full flex justify-center ml-7 mr-32 space-y-3">
-                <input
-                  id="name-input"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="박개굴"
-                  className={`${inputClass} w-72`}
+              {isTimerActive && (
+                <Timer
+                  initialSeconds={300}
+                  isActive={isTimerActive}
+                  onComplete={handleTimerComplete}
                 />
-              </div>
-              <p className="font-bold mr-80 pr-5 mt-3 mb-3">닉네임</p>
-              <div className="w-full flex justify-center">
-                <input
-                  id="nickname-input"
-                  type="text"
-                  value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  placeholder="프로그박"
-                  className={`w-72 ${inputClass}`}
-                />
-                <button
-                  id="certi-button"
-                  type="button"
-                  className={`w-20 ml-5 ${buttonClass}`}
-                >
-                  검사
-                </button>
-              </div>
+              )}
               <p className="font-bold mr-80 pr-1 mt-3 mb-3">인증번호</p>
               <div className="w-full flex justify-center">
                 <input
@@ -196,35 +249,12 @@ export const SignUpForm: React.FC = () => {
                 <button
                   id="chk-button"
                   type="button"
+                  onClick={emailVerificationConfirm}
                   className={`w-20 ml-5 ${buttonClass}`}
                 >
                   확인
                 </button>
               </div>
-              <p className="font-bold mr-80 pr-12 mt-3 mb-3">ID</p>
-              <div className="w-full flex justify-center ml-7 mr-32 space-y-3">
-                <input
-                  id="name-input"
-                  type="text"
-                  value={userId}
-                  onChange={(e) => setUserId(e.target.value)}
-                  placeholder="영어와 숫자로 4~16자 입력하세요"
-                  className={`${inputClass} w-72`}
-                />
-              </div>
-              {userId !== "" && (
-                <p
-                  className={`text-${
-                    validateId(userId) ? "black" : "red"
-                  }-500 text-xs ${
-                    !validateId(userId) ? "mr-40 ml-5" : "mr-60 ml-10"
-                  }`}
-                >
-                  {!validateId(userId)
-                    ? "ID는 4~12자리의 영어와 숫자를 포함합니다."
-                    : "프로젝트를 시작할 준비가 됐군요!!"}
-                </p>
-              )}
               <p className="font-bold mr-80 pr-1 mt-3 mb-3">비밀번호</p>
               <div className="w-full flex justify-center ml-7 mr-32 space-y-3">
                 <input
@@ -271,6 +301,37 @@ export const SignUpForm: React.FC = () => {
                     : "비밀번호가 일치하지 않습니다!"}
                 </p>
               )}
+              <p className="font-bold mr-80 pr-8 mb-3">이름</p>
+              <div className="w-full flex justify-center ml-7 mr-32 space-y-3">
+                <input
+                  id="name-input"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="박개굴"
+                  className={`${inputClass} w-72`}
+                />
+              </div>
+              <p className="font-bold mr-80 pr-5 mt-3 mb-3">닉네임</p>
+              <div className="w-full flex justify-center">
+                <input
+                  id="nickname-input"
+                  type="text"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                  placeholder="프로그박"
+                  className={`w-72 ${inputClass}`}
+                />
+                <button
+                  id="nickname-check-button" // id 값을 구체적으로 수정하여 유니크하게 만듭니다.
+                  type="button"
+                  onClick={chkNickNameDuplication} // 닉네임 중복 검사 함수를 onClick 이벤트에 연결합니다.
+                  className={`w-20 ml-5 ${buttonClass}`}
+                >
+                  검사
+                </button>
+              </div>
+
               <div className="flex justify-center">
                 <button
                   id="sign-up-button"

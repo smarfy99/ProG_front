@@ -1,7 +1,6 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { axiosInstance } from "../../apis/lib/axios";
 
-
 interface PositionState {
   positionId: number[]; // Changed from positionName to positionId
   positionDetailDescription: string[]; // New addition to handle display names
@@ -20,16 +19,27 @@ export const position = {
 };
 
 const Position: React.FC = () => {
-  const [positionList, setPositionList] = useState<{ id: number; detailDescription: string }[]>([]);
-  
+  const [positionList, setPositionList] = useState<
+    { id: number; detailDescription: string }[]
+  >([]);
+
   useEffect(() => {
     const getPositionList = async () => {
       try {
-        const response = await axiosInstance.get('/codes/details/Job');
-        if (response.data.status === 'OK') {
-          setPositionList(response.data.data.map(({ id, detailDescription }: { id: number; detailDescription: string }) => ({ id, detailDescription })));
+        const response = await axiosInstance.get("/codes/details/Job");
+        if (response.data.status === "OK") {
+          setPositionList(
+            response.data.data.map(
+              ({
+                id,
+                detailDescription,
+              }: {
+                id: number;
+                detailDescription: string;
+              }) => ({ id, detailDescription })
+            )
+          );
         }
-        
       } catch (error) {
         console.error("Failed to fetch positions:", error);
       }
@@ -37,7 +47,7 @@ const Position: React.FC = () => {
     getPositionList();
     position.totalList.push({ jobCode: 0, total: 1, current: 0 });
   }, []);
-  
+
   const [state, setState] = useState<PositionState>({
     positionId: [0], // Initialized with 0 indicating no selection
     positionDetailDescription: [""], // New state for display descriptions
@@ -46,16 +56,20 @@ const Position: React.FC = () => {
   });
 
   const handlePositionChange = (index: number, id: number) => {
-    const selectedOption = positionList.find(option => option.id === id);
+    const selectedOption = positionList.find((option) => option.id === id);
     if (!selectedOption) return; // Early exit if no matching option found
-  
-    setState(prevState => {
-      const updatedPositions = prevState.positionId.map((pid, idx) => idx === index ? id : pid);
-      const updatedDescriptions = prevState.positionDetailDescription.map((desc, idx) => idx === index ? selectedOption.detailDescription : desc);
-  
+
+    setState((prevState) => {
+      const updatedPositions = prevState.positionId.map((pid, idx) =>
+        idx === index ? id : pid
+      );
+      const updatedDescriptions = prevState.positionDetailDescription.map(
+        (desc, idx) => (idx === index ? selectedOption.detailDescription : desc)
+      );
+
       // Update position.totalList here
       position.totalList[index].jobCode = id;
-  
+
       return {
         ...prevState,
         positionId: updatedPositions,
@@ -63,8 +77,6 @@ const Position: React.FC = () => {
       };
     });
   };
-  
-  
 
   const handleParticipateButtonClick = (index: number) => {
     const updatedPositionCurrent = Array(state.positionCurrent.length).fill(0);
@@ -74,7 +86,9 @@ const Position: React.FC = () => {
       ...prev,
       positionCurrent: updatedPositionCurrent,
     }));
-    position.totalList.forEach((item, i) => item.current = i === index ? 1 : 0);
+    position.totalList.forEach(
+      (item, i) => (item.current = i === index ? 1 : 0)
+    );
   };
 
   const handleAddPosition = () => {
@@ -92,7 +106,9 @@ const Position: React.FC = () => {
   const handleRemovePosition = (index: number) => {
     setState((prev) => ({
       positionId: prev.positionId.filter((_, i) => i !== index),
-      positionDetailDescription: prev.positionDetailDescription.filter((_, i) => i !== index),
+      positionDetailDescription: prev.positionDetailDescription.filter(
+        (_, i) => i !== index
+      ),
       positionNumber: prev.positionNumber.filter((_, i) => i !== index),
       positionCurrent: prev.positionCurrent.filter((_, i) => i !== index),
     }));
@@ -102,7 +118,7 @@ const Position: React.FC = () => {
   const handlePositionNumberChange = (index: number, value: number) => {
     const updatedPositionNumber = [...state.positionNumber];
     updatedPositionNumber[index] = Math.max(1, value);
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       positionNumber: updatedPositionNumber,
     }));
@@ -156,10 +172,11 @@ const Position: React.FC = () => {
               <div className="flex items-center">
                 <button
                   onClick={() => handleDecrementPositionNumber(index)}
-                  className={`p-2 bg-blue-500 text-white ${state.positionNumber[index] <= 1
+                  className={`p-2 bg-blue-500 text-white ${
+                    state.positionNumber[index] <= 1
                       ? "bg-gray-300 cursor-not-allowed"
                       : ""
-                    }`}
+                  }`}
                   disabled={state.positionNumber[index] <= 1}
                 >
                   -
@@ -177,19 +194,21 @@ const Position: React.FC = () => {
                 />
                 <button
                   onClick={() => handleIncrementPositionNumber(index)}
-                  className={`p-2 bg-blue-500 text-white ${state.positionNumber[index] >= 10
+                  className={`p-2 bg-blue-500 text-white ${
+                    state.positionNumber[index] >= 10
                       ? "bg-gray-300 cursor-not-allowed"
                       : ""
-                    }`}
+                  }`}
                   disabled={state.positionNumber[index] >= 10}
                 >
                   +
                 </button>
                 <button
-                  className={`flex items-center ml-2 border-main-color border-2 p-2 ${state.positionCurrent[index] === 1
+                  className={`flex items-center ml-2 border-main-color border-2 p-2 ${
+                    state.positionCurrent[index] === 1
                       ? "bg-main-color text-white"
                       : ""
-                    }`}
+                  }`}
                   onClick={() => handleParticipateButtonClick(index)}
                 >
                   참여

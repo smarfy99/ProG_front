@@ -1,24 +1,26 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaCaretDown, FaCaretRight } from "react-icons/fa6";
-import DetailTask from "./DetailTask";
-
-// interface List {
-//   id: number;
-//   task: string;
-//   state: string;
-//   asignee: string;
-//   startDate: Date;
-//   endDate: Date;
-// }
+import DetailTask from "./DetailTask"; // 업무 추가 모달 컴포넌트, 경로 확인 필요
+import TaskOneDetail from "./TaskOneDetail"; // 업무 상세 정보 모달 컴포넌트, 경로 확인 필요
 
 type TodoListProps = {
   title: string;
 };
 
+interface Task {
+  id: number;
+  task: string;
+  state: string;
+  asignee: string;
+  startDate: string; // Date 타입이 아닌 string으로 수정, 실제 사용 시 Date 타입으로 조정 가능
+  endDate: string; // 마찬가지로 string 타입 사용
+}
+
 const TaskIndex: React.FC<TodoListProps> = ({ title }) => {
-  const [indexListOn, setIndexListOn] = useState<boolean>(false);
   const [showButton, setShowButton] = useState<boolean>(false);
-  const [showDetailTask, setShowDetailTask] = useState<boolean>(false);
+  const [indexListOn, setIndexListOn] = useState<boolean>(false);
+  const [showDetailTaskModal, setShowDetailTaskModal] = useState<boolean>(false);
+  const [selectedTaskDetail, setSelectedTaskDetail] = useState<any | null>(null);
 
   const list = [
     {
@@ -48,52 +50,40 @@ const TaskIndex: React.FC<TodoListProps> = ({ title }) => {
   ];
 
   const handleIndexListOn = () => {
-    setIndexListOn((prev) => !prev);
+    setIndexListOn(!indexListOn);
   };
 
-  const handleShowDetailTask = () => {
-    setShowDetailTask((prev) => !prev);
+  const handleShowDetailTaskModal = () => {
+    setShowDetailTaskModal((prev) => !prev);
   };
 
-  const handleMouseEnter = () => {
-    setShowButton(true);
-  };
-
-  const handleMouseLeave = () => {
-    setShowButton(false);
+  const handleTaskClick = (taskDetail: Task) => {
+    setSelectedTaskDetail(taskDetail);
   };
 
   return (
     <div>
       <div
-        className="flex border border-main-color p-2"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        className="flex border border-main-color p-2 items-center"
+        onMouseEnter={() => setShowButton(true)}
+        onMouseLeave={() => setShowButton(false)}
       >
-        <div></div>
-        {indexListOn ? (
-          <FaCaretRight className="text-xl mr-1" onClick={handleIndexListOn} />
-        ) : (
-          <FaCaretDown className="text-xl mr-1" onClick={handleIndexListOn} />
-        )}
-        <span className="text-xl font-bold">
-          {title} ({list.length})
-        </span>{" "}
-        {/*나중에 이 부분 바꿔야함, 실제 넘어오는 데이터는 다른 유형을 가짐*/}
-        {showButton && (
-          <button
-            className="ml-4 border-2 border-black"
-            onClick={handleShowDetailTask}
-          >
-            업무 추가
-          </button>
-        )}
+        <div onClick={handleIndexListOn}>
+          {indexListOn ? <FaCaretRight className="text-xl" /> : <FaCaretDown className="text-xl" />}
+        </div>
+        <span className="text-xl font-bold">{title} ({list.length})</span>
+        <button
+          className={`ml-2 border-2 px-2 ${showButton ? 'block' : 'hidden'} transition-all duration-300`}
+          onClick={handleShowDetailTaskModal}
+        >
+          업무 추가
+        </button>
       </div>
       {!indexListOn && (
         <ul>
           {list.map((item) => (
-            <li key={item.id} className="flex border">
-              <div className="w-1/2 flex-grow p-2 ml-6">{item.task}</div>
+            <li key={item.id} className="flex border p-2 cursor-pointer hover:bg-gray-100" onClick={() => handleTaskClick(item)}>
+              <div className="w-1/2 flex-grow p-2">{item.task}</div>
               <div className="w-1/6 p-2 text-center">{item.state}</div>
               <div className="w-1/6 p-2 text-center">{item.asignee}</div>
               <div className="w-1/12 p-2 text-center">{item.startDate}</div>
@@ -102,11 +92,12 @@ const TaskIndex: React.FC<TodoListProps> = ({ title }) => {
           ))}
         </ul>
       )}
-      {showDetailTask && (
-        <div className="absolute top-0 right-0 w-1/2 h-full">
-          <DetailTask />
-        </div>
-      )}
+        {selectedTaskDetail && (
+          <TaskOneDetail taskDetail={selectedTaskDetail} onClose={() => setSelectedTaskDetail(null)} />
+        )}
+      {showDetailTaskModal && (
+        <DetailTask onClose={() => setShowDetailTaskModal((prev) => !prev)} />
+        )}
     </div>
   );
 };

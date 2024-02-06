@@ -15,11 +15,11 @@ const SideBar = () => {
   const memberId = Number(params.memberId);
 
   const sideTabs: SideTab[] = [
-    { label: "홈", path: "/project/:projectId" },
-    { label: "근태", path: "/project/:projectId/commute" },
-    { label: "업무", path: "/project/:projectId/task" },
-    { label: "피드", path: "/project/:projectId/feed" },
-    { label: "회고", path: "/project/:projectId/retrospect" },
+    { label: "홈", path: `/project/${projectId}` },
+    { label: "근태", path: `/project/${projectId}/commute` },
+    { label: "업무", path: `/project/${projectId}/task` },
+    { label: "피드", path: `/project/${projectId}/feed` },
+    { label: "회고", path: `/project/${projectId}/retrospect` },
   ];
 
   return (

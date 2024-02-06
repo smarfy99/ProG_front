@@ -1,17 +1,50 @@
 import React, { useRef, useState } from "react";
+import { axiosInstance } from "../../apis/lib/axios";
+import { useUserStore } from "../../stores/useUserStore";
 
 interface KPTMemoProps {
   modalOpen: boolean;
   setModalOpen: (value: boolean) => void;
 }
 
-const KPTMemo: React.FC<KPTMemoProps> = ({ modalOpen, setModalOpen }) => {
+const WriteKPTMemo: React.FC<KPTMemoProps> = ({ modalOpen, setModalOpen }) => {
   const modalBackground = useRef<HTMLDivElement>(null);
   const [selectedSection, setSelectedSection] = useState<string | null>("Keep");
   const [textareaValue, setTextareaValue] = useState<string>("");
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
   const [nextSection, setNextSection] = useState<string | null>(null);
+  const { profile } = useUserStore();
+
+  const getKptCode = () => {
+    switch (selectedSection) {
+      case "Keep":
+        return "25";
+      case "Problem":
+        return "26";
+      case "Try":
+        return "27";
+    }
+  };
+
+  const writeKPT = async() => { // 나중에 플젝 ID, 멤버 ID, week 계산까지 해서 넣어야함,,,,
+    if(profile){
+      const KPTdata = {
+        projectId: "11",
+        memberId: profile.id.toString(),
+        kptCode: getKptCode(),
+        week: "1",
+        content: textareaValue,
+      }
+      
+      try {
+        await axiosInstance.post("/retrospects", KPTdata);
+        setModalOpen(false)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
   const handleSectionClick = (section: string) => {
     if (textareaValue) {
@@ -56,7 +89,7 @@ const KPTMemo: React.FC<KPTMemoProps> = ({ modalOpen, setModalOpen }) => {
           <div className="bg-white p-5 rounded-lg shadow-lg w-11/12 max-w-2xl">
             <div className="flex">
               <div
-                className="flex-1 p-4"
+                className="flex-1 p-4 cursor-pointer"
                 onClick={() => handleSectionClick("Keep")}
               >
                 <h2 className="text-center">Keep</h2>
@@ -64,14 +97,14 @@ const KPTMemo: React.FC<KPTMemoProps> = ({ modalOpen, setModalOpen }) => {
               <div className="border-main-color border-r
               "></div>
               <div
-                className="flex-1 p-4"
+                className="flex-1 p-4 cursor-pointer"
                 onClick={() => handleSectionClick("Problem")}
               >
                 <h2 className="text-center">Problem</h2>
               </div>
               <div className="border-main-color border-r"></div>
               <div
-                className="flex-1 p-4"
+                className="flex-1 p-4 cursor-pointer"
                 onClick={() => handleSectionClick("Try")}
               >
                 <h2 className="text-center">Try</h2>
@@ -89,7 +122,7 @@ const KPTMemo: React.FC<KPTMemoProps> = ({ modalOpen, setModalOpen }) => {
             <div className="flex justify-center mt-4">
               <button
                 className="modal-close-btn border-2 mr-2 border-main-color"
-                onClick={() => setModalOpen(false)}
+                onClick={writeKPT}
               >
                 회고 등록
               </button>
@@ -128,4 +161,4 @@ const KPTMemo: React.FC<KPTMemoProps> = ({ modalOpen, setModalOpen }) => {
   );
 };
 
-export default KPTMemo;
+export default WriteKPTMemo;
