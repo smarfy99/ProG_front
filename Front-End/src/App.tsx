@@ -2,23 +2,23 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 //페이지 import
-import RecruitPage from './pages/recruit/RecruitPage';
-import RecruitWritePage from './pages/recruit/RecruitWritePage';
-import MyProjectPage from './pages/myproject/MyProject';
-import SignUpPage from './pages/admin/SignUpPage';
-import LoginPage from './pages/admin/LoginPage';
-import CommutePage from './pages/project/commute/CommutePage';
-import TaskPage from './pages/project/task/TaskPage';
-import FeedPage from './pages/project/feed/FeedPage';
-import RetrospectPage from './pages/project/retrospect/RetrospectPage';
-import MyPage from './pages/mypage/MyPage';
-import HomePage from './pages/home/HomePage';
-import ProjectPage from './pages/project/ProjectPage';
-import Layout from './layout/Layout';
-import RecruitProjectPage from './pages/recruit/RecruitProjectPage';
-import IndexPage from './pages/project/index/indexPage';
-import MemberSettingPage from './pages/project/setting/MemberSettingPage';
-import ProjectSettingPage from './pages/project/setting/ProjectSettingPage';
+import RecruitPage from "./pages/recruit/RecruitPage";
+import RecruitWritePage from "./pages/recruit/RecruitWritePage";
+import MyProjectPage from "./pages/myproject/MyProject";
+import SignUpPage from "./pages/admin/SignUpPage";
+import LoginPage from "./pages/admin/LoginPage";
+import CommutePage from "./pages/project/commute/CommutePage";
+import TaskPage from "./pages/project/task/TaskPage";
+import FeedPage from "./pages/project/feed/FeedPage";
+import RetrospectPage from "./pages/project/retrospect/RetrospectPage";
+import MyPage from "./pages/mypage/MyPage";
+import HomePage from "./pages/home/HomePage";
+import ProjectPage from "./pages/project/ProjectPage";
+import Layout from "./layout/Layout";
+import RecruitProjectPage from "./pages/recruit/RecruitProjectPage";
+import IndexPage from "./pages/project/index/indexPage";
+import MemberSettingPage from "./pages/project/setting/MemberSettingPage";
+import ProjectSettingPage from "./pages/project/setting/ProjectSettingPage";
 
 function App() {
   //라우터 설정

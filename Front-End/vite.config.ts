@@ -8,6 +8,21 @@ export default defineConfig({
   server: {
     port: 3000,
     host: "0.0.0.0",
+    // proxy: {
+    //   "/api/members/reissue-token": {
+    //     target: "http://i10a210.p.ssafy.io:8080",
+    //     changeOrigin: true,
+    //     // rewrite: (path) => path.replace(/^\/api/, ""),
+    //   },
+    //   "/api/members/logout": {
+    //     target: "http://i10a210.p.ssafy.io:8080",
+    //     changeOrigin: true,
+    //   },
+    //   "/api/members/login": {
+    //     target: "http://i10a210.p.ssafy.io:8080",
+    //     changeOrigin: true,
+    //   },
+    // },
   },
   plugins: [react()],
   resolve: {
