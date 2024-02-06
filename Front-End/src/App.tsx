@@ -57,11 +57,11 @@ function App() {
           element: <MyProjectPage />,
         },
         {
-          path: "recruit/project",
+          path: "recruit/project/:projectId",
           element: <RecruitProjectPage />,
         },
         {
-          path: "project",
+          path: "project/:projectId",
           element: <ProjectPage />,
           children: [
             {

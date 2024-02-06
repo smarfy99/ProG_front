@@ -1,23 +1,16 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { FaGear } from "react-icons/fa6";
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../../../apis/lib/axios';
 
-
-const title = "프로젝트 Prog "
-const description = "개굴개굴 개구리 노래를한다  \n 개굴개굴 \n 객개굴 객개굴 깨굴깨굴 \n 꺠꾸리"
-// const img = "http://localhost:5173/3a17d8ae-3701-4d91-99f1-e4f3187aec78"
-const img2 = "/src/assets/GitHubIcon.png"
-const mystack = ["JAVA", "C", "C++", "C#", "Python"]
-const period = "3주"
 const nowperiod = "12일"
-const positions = {
-  posName: ['프론트엔드', '백엔드', '기획', '백엔드', '기획', '백엔드', '기획', '백엔드', '기획'],
-  posNumber: [3, 2, 1]
-};
+
+const memberId=1;
 
 const IndexPage = () => {
+  //인덱스 페이지에서 세팅 페이지로 이동
   const navigate = useNavigate();
-
   const MemberSetting = () => {
     navigate('./membersetting');
     window.scrollTo({ top: 0 });
@@ -27,6 +20,60 @@ const IndexPage = () => {
     window.scrollTo({ top: 0 });
   };
 
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [img, setImg] = useState('');
+  const [mystack, setMyStack] = useState<string[]>([]);
+  const [period, setPeriod] = useState('');
+  const [positions, setPositions] = useState({
+    posName: [],
+    posCode: [],
+    posNowNumber: [],
+    posNumber: [],
+  });
+
+  const { projectId } = useParams();
+
+  const getData = async () => {
+    try {
+      const response = await axiosInstance.get(`/projects/${projectId}/${memberId}`, {
+      });
+      const data = response.data.data;
+
+      console.log(data.projectTotals)
+      setTitle(data.title);
+      setDescription(data.content);
+      setImg(data.projectImgUrl);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mystack = data.techCodes.map((tech: { detailName: any; }) => tech.detailName);
+      setMyStack(mystack);
+      setPeriod(data.period);
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const currentArray = data.projectTotals.map((item: { current: any; }) => item.current);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const totalArray = data.projectTotals.map((item: { total: any; }) => item.total);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const jobIdArray = data.projectTotals.map((item: { jobCode: { id: any; }; }) => item.jobCode.id);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const jobDescriptionArray = data.projectTotals.map((item: { jobCode: { detailDescription: any; }; }) => item.jobCode.detailDescription);
+      setPositions({
+        posName: jobDescriptionArray,
+        posCode: jobIdArray,
+        posNowNumber: currentArray,
+        posNumber: totalArray,
+      })
+
+
+    } catch (error) {
+      console.error("Loading failed:", error);
+    }
+  };
+  useEffect(() => {
+    getData();
+    console.log(projectId)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div>
       <div className='flex justify-between'>
@@ -87,14 +134,14 @@ const IndexPage = () => {
                   <div className='text-2xl'>
                     사진
                   </div>
-                  <img src={img2} className='w-full h-36' />
+                  <img src={img} className='w-full h-36' />
                 </div>
                 <div className='border-black border-2 h-24 p-2'>
                   <div className='text-2xl'>
                     예상 진행기간
                   </div>
                   <div className='text-center text-3xl'>
-                    {period}
+                    {period} 주
                   </div>
                 </div>
                 <div className='border-black border-2 h-24 p-2'>

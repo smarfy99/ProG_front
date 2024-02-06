@@ -17,7 +17,13 @@ const Nav = () => {
 	// const [activeTab, setActiveTab] = useState("");
 	const location = useLocation();
 
-	const profile = useUserStore((state) => state.profile); // 프로필 정보 가져오기
+  const tabs: Tab[] = [
+    { label: "홈", path: "/", logo: FaBell },
+    { label: "프로젝트 모집", path: "/recruit" },
+    { label: "내 프로젝트", path: "/myproject" },
+    { label: "마이페이지", path: "/mypage", logo: FaBell },
+    { label: "로그인", path: "/login" },
+  ];
 
 	useEffect(() => {
 		if (profile) {
