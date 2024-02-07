@@ -3,13 +3,12 @@ import { useAuthStore } from '../../stores/useAuthStore';
 import { ERROR_CODES } from '../../constants/errorCodes';
 import { reissueToken } from '../../utils/authUtils';
 
-export const axiosInstance = axios.create({
-	baseURL: 'http://i10a210.p.ssafy.io:8080',
+export const proxyAxiosInstance = axios.create({
 	withCredentials: true, //쿠키 포함
 });
 
 //accessToken 자동으로 헤더에 추가
-axiosInstance.interceptors.request.use((config) => {
+proxyAxiosInstance.interceptors.request.use((config) => {
 	const accessToken = useAuthStore.getState().accessToken;
 	if (accessToken && config.headers) {
 		config.headers['Authorization'] = `Bearer ${accessToken}`;
@@ -19,7 +18,7 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 //axios response에 따른 에러처리
-axiosInstance.interceptors.response.use(
+proxyAxiosInstance.interceptors.response.use(
 	(response) => response,
 	async (error) => {
 		if (!error.response) {
@@ -40,7 +39,7 @@ axiosInstance.interceptors.response.use(
 				const newAccessToken = await reissueToken();
 				if (newAccessToken) {
 					originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-					return axiosInstance(originalRequest);
+					return proxyAxiosInstance(originalRequest);
 				}
 			} catch (refreshError) {
 				return Promise.reject(refreshError);
