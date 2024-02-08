@@ -84,6 +84,9 @@ function App() {
             {
               path: "retrospect",
               element: <RetrospectPage />,
+            },{
+              path: "prevretrospect",
+              element: <PrevRetrospect />,
             },
             {
               path: "prevretrospect",

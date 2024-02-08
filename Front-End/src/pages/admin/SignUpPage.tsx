@@ -215,7 +215,6 @@ export const SignUpForm: React.FC = () => {
                   className={`w-72 ${inputClass}`}
                 />
                 <button
-                  id="certi-button"
                   type="button"
                   onClick={emailVerification}
                   disabled={!emailValid || userEmail === ""}
@@ -304,7 +303,6 @@ export const SignUpForm: React.FC = () => {
               <p className="font-bold mr-80 pr-8 mb-3">이름</p>
               <div className="w-full flex justify-center ml-7 mr-32 space-y-3">
                 <input
-                  id="name-input"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -315,7 +313,6 @@ export const SignUpForm: React.FC = () => {
               <p className="font-bold mr-80 pr-5 mt-3 mb-3">닉네임</p>
               <div className="w-full flex justify-center">
                 <input
-                  id="nickname-input"
                   type="text"
                   value={nickname}
                   onChange={(e) => setNickname(e.target.value)}
@@ -323,7 +320,7 @@ export const SignUpForm: React.FC = () => {
                   className={`w-72 ${inputClass}`}
                 />
                 <button
-                  id="nickname-check-button" // id 값을 구체적으로 수정하여 유니크하게 만듭니다.
+                  id="nickname-check-button"
                   type="button"
                   onClick={chkNickNameDuplication} // 닉네임 중복 검사 함수를 onClick 이벤트에 연결합니다.
                   className={`w-20 ml-5 ${buttonClass}`}

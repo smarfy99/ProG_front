@@ -25,21 +25,22 @@ const MyProfile = () => {
     description: "",
   });
   const [loadProfile, setLoadProfile] = useState<boolean>(true); // 프로필 데이터를 불러올지 여부를 결정하는 상태
+  const [id, setId] = useState<string>("");
 
-  // 모달 표시/숨김 함수
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
+	// 모달 표시/숨김 함수
+	const toggleModal = () => {
+		setShowModal(!showModal);
+	};
 
-  const toggleEditMode = () => {
-    setIsEditMode(!isEditMode);
-  };
+	const toggleEditMode = () => {
+		setIsEditMode(!isEditMode);
+	};
 
   const profileGet = async () => {
     try {
       const response = await axiosInstance.get(
-        "members/detail-profile/str-pes@naver.com"
-      ); //후에 쿼리 스트링으로 변경
+        `members/detail-profile/${id}`
+      ); // 지금 여기 id로 바뀜
       const data = response.data.data;
       console.log(data);
       setProfileData({
@@ -97,6 +98,12 @@ const MyProfile = () => {
 
   // 컴포넌트 마운트 시 프로필 데이터 가져오기
   useEffect(() => {
+    const userProfileString = localStorage.getItem("userProfile");
+    if (userProfileString) {
+      const userProfile = JSON.parse(userProfileString);
+      setId(userProfile.id); // 닉네임 상태 업데이트
+    }
+
     profileGet();
   }, [loadProfile]);
 

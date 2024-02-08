@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { axiosInstance } from "../../apis/lib/axios";
 import { FiLogOut } from "react-icons/fi"; // react-icons 라이브러리에서 아이콘 사용
 
