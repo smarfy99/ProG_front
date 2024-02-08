@@ -1,8 +1,7 @@
 // 필요한 아이콘 또는 컴포넌트를 import 합니다.
 import { FC, useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
-import { axiosInstance } from "../../apis/lib/axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface SectionColors {
   [key: string]: string;
@@ -16,7 +15,7 @@ const PrevRetrospect: FC<PrevRetrospectProps> = ( ) => {
   const navigate = useNavigate();
   const [selectedWeek, setSelectedWeek] = useState('1'); // 초기 선택 주차
   const [weeks, setWeeks] = useState<string[]>([]); // 주차 목록
-
+  const { projectId } = useParams();
   // const getThisWeekKPT = async() => {
   //   try {
   //     await axiosInstance.get(`/retrospects/${}`)
@@ -59,7 +58,7 @@ const PrevRetrospect: FC<PrevRetrospectProps> = ( ) => {
     <div className="p-4 m-10 max-w-2xl mx-auto border-2 border-gray-200 shadow-lg rounded-lg">
       <div className="flex items-center mb-4">
         <FaArrowLeft
-          onClick={() => navigate("/project/11/retrospect")} // 후에 projectid params 받아서 유효한 링크로 나중에 라우팅 추가
+          onClick={() => navigate(`/project/${ projectId }/retrospect`)} // 후에 projectid params 받아서 유효한 링크로 나중에 라우팅 추가
           className="cursor-pointer text-main-color mr-4"
         />
         <h1 className="text-xl font-bold">이전 회고 보기</h1>

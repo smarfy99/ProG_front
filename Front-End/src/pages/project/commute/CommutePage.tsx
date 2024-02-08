@@ -5,8 +5,8 @@ import ActionBoard from "../../../components/commute/ActionBoard";
 import RankingBoard from "../../../components/commute/RankingBoard";
 
 const CommutePage = () => {
-  //로그인이 필요한 페이지에 useRequireAuth 호출
-  useRequireAuth();
+	//로그인이 필요한 페이지에 useRequireAuth 호출
+	useRequireAuth();
 
   const { projectId } = useParams();
 
@@ -20,12 +20,12 @@ const CommutePage = () => {
         <RankingBoard />
       </div>
 
-      {/* calendar div */}
-      <div className="flex justify-center h-[430px]">
-        <CommuteCalendar />
-      </div>
-    </div>
-  );
+			{/* calendar div */}
+			<div className='flex justify-center h-[430px]'>
+				<CommuteCalendar />
+			</div>
+		</div>
+	);
 };
 
 export default CommutePage;

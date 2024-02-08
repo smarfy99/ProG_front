@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaAnglesRight,
   FaRegCircleUser,
@@ -6,6 +6,10 @@ import {
 } from "react-icons/fa6";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // ReactQuill 스타일시트 임포트
+import { axiosInstance } from "../../apis/lib/axios";
+import { useParams } from "react-router-dom";
+import moment from "moment";
+import TaskDatePicker from "../calendar/TaskDatePicker";
 
 interface ChecklistItem {
   id: number;
@@ -14,10 +18,34 @@ interface ChecklistItem {
 }
 
 const DetailTask = () => {
+  const { projectId } = useParams();
+
   const [editorContent, setEditorContent] = useState("");
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
   const [newItemText, setNewItemText] = useState("");
   const [isOpen, setIsOpen] = useState(true);
+  const [nickname, setNickname] = useState("");
+
+  // const postTask = async () => {
+  //   const taskInfo = {
+  //     projectId: projectId, 
+  //     producerId: nickname,
+  //     statusCode: ,
+  //     typeCode: ,
+  //     priorityCode: ,
+  //     consumerId: ,
+  //     title: ,
+  //     content: editorContent,
+  //     startDay: now(),
+  //     endDay: ,
+  //   }
+
+  //   try {
+  //     await axiosInstance.post("/works")
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   const editorChange = (content: string) => {
     setEditorContent(content);
@@ -55,6 +83,15 @@ const DetailTask = () => {
     setChecklist(checklist.filter((item) => item.id !== id));
   };
 
+  useEffect(() => {
+    // 로컬 스토리지에서 userProfile을 가져옴
+    const userProfileString = localStorage.getItem("userProfile");
+    if (userProfileString) {
+      const userProfile = JSON.parse(userProfileString);
+      setNickname(userProfile.nickname); // 닉네임 상태 업데이트
+    }
+  }, []);
+
   if (!isOpen) return null;
 
   return (
@@ -80,8 +117,8 @@ const DetailTask = () => {
 
         <div className="flex items-center mb-4">
           <FaRegCircleUser className="text-gray-600 mr-2" />
-          <p className="text-md">사용자: [이름]</p>
-          <p className="text-md ml-4">업무 등록 시작일: [날짜]</p>
+          <p className="text-md">업무 요청자: {nickname}</p>
+          <p className="text-md ml-4">업무 등록 시작일: {moment().format('YYYY-MM-DD')}</p>
         </div>
 
         <p className="font-semibold mb-2">업무 제목</p>
@@ -101,7 +138,7 @@ const DetailTask = () => {
           <FaRegCircleUser className="text-gray-600 mr-2" />
           {/* 담당자 변경 로직 */}
         </div>
-
+        <TaskDatePicker/>
         <div className="flex flex-col">
           <div className="mb-4">
             <ReactQuill
