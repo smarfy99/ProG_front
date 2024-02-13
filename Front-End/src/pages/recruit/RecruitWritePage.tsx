@@ -1,7 +1,10 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import TechStack, { techStack } from '../../components/techstack/TechStack';
 import Position, { position } from '../../components/position/Position';
 import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../../apis/lib/axios';
+import { useRequireAuth } from '../../hooks/useRequireAuth';
+import { useUserStore } from '../../stores/useUserStore';
 
 interface State {
 	projectTitle: string;
@@ -12,6 +15,9 @@ interface State {
 }
 
 const RecruitWritePage: React.FC = () => {
+	useRequireAuth();
+	const { profile } = useUserStore();
+	const memberId = profile?.id;
 	const navigate = useNavigate();
 	const [state, setState] = useState<State>({
 		projectTitle: '',
@@ -21,6 +27,12 @@ const RecruitWritePage: React.FC = () => {
 		projectPeriodUnit: '주',
 	});
 	const [isModalVisible, setModalVisible] = useState(false);
+	useEffect(() => {
+		return () => {
+			techStack.mystack = [];
+			position.totalList = [];
+		};
+	}, []);
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = e.target;
 		if (name === 'projectPeriodNum') {
@@ -78,24 +90,35 @@ const RecruitWritePage: React.FC = () => {
 			const projectData = {
 				title: projectTitle,
 				content: projectContent,
-				totechList: [...techStack.mystack], // 객체 복사
 				period: periodCal,
+				totechList: [...techStack.mystack], // 객체 복사
 				totalList: position.totalList,
 			};
-			console.log(projectData.totalList.length);
+			console.log(projectData);
 
 			const projectDataString = JSON.stringify(projectData);
 			const form = new FormData();
-			form.set('post', projectDataString);
+			form.append('post', new Blob([projectDataString], { type: 'application/json' }));
 			if (state.projectImage !== null) {
-				form.set('image', state.projectImage);
+				form.append('file', state.projectImage);
 			}
-
+			console.log(projectDataString);
 			console.log('FormData entries:');
 			for (const pair of form.entries()) {
 				console.log(pair[0] + ': ' + pair[1]);
 			}
-			setModalVisible(true);
+			console.log(memberId);
+			try {
+				const response = await axiosInstance.post(`/projects/${memberId}`, form, {
+					headers: {
+						'Content-Type': undefined,
+					},
+				});
+				console.log('Response:', response);
+				setModalVisible(true);
+			} catch (error) {
+				console.error('Post failed:', error);
+			}
 		}
 	};
 	const closeModal = () => {
@@ -212,4 +235,3 @@ const RecruitWritePage: React.FC = () => {
 };
 
 export default RecruitWritePage;
-

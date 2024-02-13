@@ -1,33 +1,39 @@
-import CommuteCalendar from "../../../components/calendar/CommuteCalendar";
-
-// import { useRequireAuth } from "../../../hooks/useRequireAuth";
+import CommuteCalendar from '../../../components/calendar/CommuteCalendar';
+import { useParams } from 'react-router-dom';
+import { useRequireAuth } from '../../../hooks/useRequireAuth';
+import ActionBoard from '../../../components/commute/ActionBoard';
 
 const CommutePage = () => {
-  //로그인이 필요한 페이지에 useRequireAuth 호출
-  // useRequireAuth();
+	//로그인이 필요한 페이지에 useRequireAuth 호출
+	useRequireAuth();
 
-  return (
-    <div className="flex flex-col justify-center">
-      {/* action, ranking div */}
-      <div className="flex justify-center mt-5">
-        <div className="flex rounded-xl bg-sub-color h-40 w-96 mr-8 px-4 py-2">
-          <div className="flex text-main-color font-semibold text-2xl">
-            Action
-          </div>
-        </div>
-        <div className="flex rounded-xl bg-sub-color h-40 w-80 px-4 py-2">
-          <div className="flex text-main-color font-semibold text-2xl">
-            Ranking
-          </div>
-        </div>
-      </div>
+	const params = useParams<{ projectId: string }>();
+	const projectId = Number(params.projectId);
+	let memberId = 0;
 
-      {/* calendar div */}
-      <div className="flex justify-center h-[430px]">
-        <CommuteCalendar />
-      </div>
-    </div>
-  );
+	// 로컬 스토리지에서 userProfile을 가져옴
+	const userProfileKey = 'userProfile';
+	const userProfileString = localStorage.getItem(userProfileKey);
+	if (userProfileString) {
+		const userProfile = JSON.parse(userProfileString);
+		memberId = userProfile.id;
+	}
+
+	// console.log(projectId);
+
+	return (
+		<div className='flex flex-col justify-center'>
+			{/* action, ranking div */}
+			<div className='flex justify-center mt-5'>
+				<ActionBoard />
+			</div>
+
+			{/* calendar div */}
+			<div className='flex justify-center'>
+				<CommuteCalendar projectId={projectId} memberId={memberId} w-auto />
+			</div>
+		</div>
+	);
 };
 
 export default CommutePage;

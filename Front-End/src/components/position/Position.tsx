@@ -1,150 +1,123 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
+import { axiosInstance } from "../../apis/lib/axios";
+import { useRequireAuth } from '../../hooks/useRequireAuth';
 
 interface PositionState {
-  positionName: string[];
+  positionId: number[]; // Changed from positionName to positionId
+  positionDetailDescription: string[]; // New addition to handle display names
   positionNumber: number[];
   positionCurrent: number[];
 }
 
 interface PositionItem {
-  jobCode: string;
+  jobCode: number; // Using id to track the selected position
   total: number;
   current: number;
 }
 
-const positionList = [
-  "포지션을 선택해 주세요",
-  "프론트엔드",
-  "백엔드",
-  "기획",
-  "디자인",
-  "UI/UX",
-];
-
 export const position = {
-  totalList: [{ jobCode: "", total: 1, current: 0 }] as PositionItem[],
+  totalList: [{ jobCode: 0, total: 1, current: 0 }] as PositionItem[],
 };
 
-
 const Position: React.FC = () => {
+  useRequireAuth();
+  const [positionList, setPositionList] = useState<{ id: number; detailDescription: string }[]>([]);
+  
+  useEffect(() => {
+    const getPositionList = async () => {
+      try {
+        const response = await axiosInstance.get('/codes/details/Job');
+        if (response.data.status === 'OK') {
+          setPositionList(response.data.data.map(({ id, detailDescription }: { id: number; detailDescription: string }) => ({ id, detailDescription })));
+        }
+        
+      } catch (error) {
+        console.error("Failed to fetch positions:", error);
+      }
+    };
+    getPositionList();
+    position.totalList.push({ jobCode: 0, total: 1, current: 0 });
+  }, []);
+  
   const [state, setState] = useState<PositionState>({
-    positionName: [""],
+    positionId: [0], // Initialized with 0 indicating no selection
+    positionDetailDescription: [""], // New state for display descriptions
     positionNumber: [1],
     positionCurrent: [0],
   });
 
-  const handlePositionNameChange = (index: number, value: string) => {
-    const updatedPositionName = [...state.positionName];
-    updatedPositionName[index] = value;
-
-    const updatedPositionCurrent = Array(state.positionCurrent.length).fill(0);
-    updatedPositionCurrent[index] = state.positionCurrent[index];
-
-    setState((prev) => ({
-      ...prev,
-      positionName: updatedPositionName,
-      positionCurrent: updatedPositionCurrent,
-    }));
-
-    if (position.totalList[index]) {
-      position.totalList[index].jobCode = value;
-    }
+  const handlePositionChange = (index: number, id: number) => {
+    const selectedOption = positionList.find(option => option.id === id);
+    if (!selectedOption) return; // Early exit if no matching option found
+  
+    setState(prevState => {
+      const updatedPositions = prevState.positionId.map((pid, idx) => idx === index ? id : pid);
+      const updatedDescriptions = prevState.positionDetailDescription.map((desc, idx) => idx === index ? selectedOption.detailDescription : desc);
+  
+      // Update position.totalList here
+      position.totalList[index].jobCode = id;
+  
+      return {
+        ...prevState,
+        positionId: updatedPositions,
+        positionDetailDescription: updatedDescriptions,
+      };
+    });
   };
+  
+  
 
   const handleParticipateButtonClick = (index: number) => {
     const updatedPositionCurrent = Array(state.positionCurrent.length).fill(0);
     updatedPositionCurrent[index] = 1;
-    console.log(updatedPositionCurrent);
-    console.log(state.positionCurrent);
 
     setState((prev) => ({
       ...prev,
       positionCurrent: updatedPositionCurrent,
     }));
-    for (let i = 0; i < state.positionCurrent.length; i++) {
-      position.totalList[i].current = 0;
-      console.log(i);
-      if (i > 100) {
-        break;
-      }
-    }
-    position.totalList[index].current = 1;
-  };
-  const handleAddPositionName = () => {
-    setState((prev) => {
-      const newPositionName = [...prev.positionName, ""];
-      const newPositionNumber = [...prev.positionNumber, 1];
-      const newPositionCurrent = [...prev.positionCurrent, 0];
-      return {
-        positionName: newPositionName,
-        positionNumber: newPositionNumber,
-        positionCurrent: newPositionCurrent,
-      };
-    });
-    position.totalList.push({ jobCode: "", total: 1, current: 0 });
+    position.totalList.forEach((item, i) => item.current = i === index ? 1 : 0);
   };
 
-  const handleRemovePositionName = (index: number) => {
-    const updatedPositionName = [...state.positionName];
-    const updatedPositionNumber = [...state.positionNumber];
-    const updatedPositionCurrent = [...state.positionCurrent];
-    updatedPositionName.splice(index, 1);
-    updatedPositionNumber.splice(index, 1);
-    updatedPositionCurrent.splice(index, 1);
-    setState({
-      positionName: updatedPositionName,
-      positionNumber: updatedPositionNumber,
-      positionCurrent: updatedPositionCurrent,
+  const handleAddPosition = () => {
+    setState((prev) => {
+      return {
+        positionId: [...prev.positionId, 0], // Adding default value for new position
+        positionDetailDescription: [...prev.positionDetailDescription, ""], // Adding empty string for new description
+        positionNumber: [...prev.positionNumber, 1],
+        positionCurrent: [...prev.positionCurrent, 0],
+      };
     });
+    position.totalList.push({ jobCode: 0, total: 1, current: 0 });
+  };
+
+  const handleRemovePosition = (index: number) => {
+    setState((prev) => ({
+      positionId: prev.positionId.filter((_, i) => i !== index),
+      positionDetailDescription: prev.positionDetailDescription.filter((_, i) => i !== index),
+      positionNumber: prev.positionNumber.filter((_, i) => i !== index),
+      positionCurrent: prev.positionCurrent.filter((_, i) => i !== index),
+    }));
     position.totalList.splice(index, 1);
   };
 
   const handlePositionNumberChange = (index: number, value: number) => {
-    // Ensure the index is valid
-    if (index < 0 || index >= state.positionNumber.length) {
-      return;
+    const updatedPositionNumber = [...state.positionNumber];
+    updatedPositionNumber[index] = Math.max(1, value);
+    setState(prev => ({
+      ...prev,
+      positionNumber: updatedPositionNumber,
+    }));
+    if (position.totalList[index]) {
+      position.totalList[index].total = value;
     }
-
-    // Update the state with the new position number
-    setState((prev) => {
-      const updatedPositionNumber = [...prev.positionNumber];
-      updatedPositionNumber[index] = Math.max(1, value);
-
-      // Update the totalList array
-      const updatedTotalList = [...position.totalList];
-      updatedTotalList[index] = {
-        ...updatedTotalList[index],
-        total: updatedPositionNumber[index],
-      };
-
-      return {
-        ...prev,
-        positionNumber: updatedPositionNumber,
-      };
-    });
   };
 
   const handleIncrementPositionNumber = (index: number) => {
-    const updatedPositionNumber = [...state.positionNumber];
-    updatedPositionNumber[index] += 1;
-    setState((prev) => ({
-      ...prev,
-      positionNumber: updatedPositionNumber,
-    }));
-    position.totalList[index].total = updatedPositionNumber[index];
+    handlePositionNumberChange(index, state.positionNumber[index] + 1);
   };
 
   const handleDecrementPositionNumber = (index: number) => {
-    const updatedPositionNumber = [...state.positionNumber];
-    updatedPositionNumber[index] = Math.max(
-      1,
-      updatedPositionNumber[index] - 1
-    );
-    setState((prev) => ({
-      ...prev,
-      positionNumber: updatedPositionNumber,
-    }));
-    position.totalList[index].total = updatedPositionNumber[index];
+    handlePositionNumberChange(index, state.positionNumber[index] - 1);
   };
 
   return (
@@ -154,10 +127,10 @@ const Position: React.FC = () => {
           포지션
         </label>
         <div>
-          {state.positionName.map((positionName, index) => (
+          {state.positionDetailDescription.map((description, index) => (
             <div key={index} className="flex items-center mb-2">
               <button
-                onClick={() => handleRemovePositionName(index)}
+                onClick={() => handleRemovePosition(index)}
                 className="mr-2 p-2 pr-3 bg-red-500 text-white"
               >
                 -
@@ -166,26 +139,28 @@ const Position: React.FC = () => {
                 id={`PositionName-${index}`}
                 name={`PositionName-${index}`}
                 className="w-1/3 h-10"
-                value={positionName}
+                value={state.positionId[index]}
                 onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                  handlePositionNameChange(index, e.target.value);
+                  const id = parseInt(e.target.value, 10); // Convert string to number
+                  if (!isNaN(id)) {
+                    handlePositionChange(index, id);
+                  }
                 }}
               >
-                {positionList.map((option, optionIndex) => (
-                  <option key={optionIndex} value={option}>
-                    {option}
+                <option value={0}>포지션 선택</option>
+                {positionList.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.detailDescription}
                   </option>
                 ))}
               </select>
-
               <div className="flex items-center">
                 <button
                   onClick={() => handleDecrementPositionNumber(index)}
-                  className={`p-2 bg-blue-500 text-white ${
-                    state.positionNumber[index] <= 1
+                  className={`p-2 bg-blue-500 text-white ${state.positionNumber[index] <= 1
                       ? "bg-gray-300 cursor-not-allowed"
                       : ""
-                  }`}
+                    }`}
                   disabled={state.positionNumber[index] <= 1}
                 >
                   -
@@ -203,21 +178,19 @@ const Position: React.FC = () => {
                 />
                 <button
                   onClick={() => handleIncrementPositionNumber(index)}
-                  className={`p-2 bg-blue-500 text-white ${
-                    state.positionNumber[index] >= 10
+                  className={`p-2 bg-blue-500 text-white ${state.positionNumber[index] >= 10
                       ? "bg-gray-300 cursor-not-allowed"
                       : ""
-                  }`}
+                    }`}
                   disabled={state.positionNumber[index] >= 10}
                 >
                   +
                 </button>
                 <button
-                  className={`flex items-center ml-2 border-main-color border-2 p-2 ${
-                    state.positionCurrent[index] === 1
+                  className={`flex items-center ml-2 border-main-color border-2 p-2 ${state.positionCurrent[index] === 1
                       ? "bg-main-color text-white"
                       : ""
-                  }`}
+                    }`}
                   onClick={() => handleParticipateButtonClick(index)}
                 >
                   참여
@@ -226,7 +199,7 @@ const Position: React.FC = () => {
             </div>
           ))}
           <button
-            onClick={handleAddPositionName}
+            onClick={handleAddPosition}
             className="p-2 bg-green-500 text-white"
           >
             +
