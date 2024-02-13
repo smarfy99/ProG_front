@@ -1,0 +1,32 @@
+main {
+  padding: 1.5rem 0.25rem
+}
+.my-project-container {
+  width: 70%;
+  margin: 0 auto;
+  max-width: 1440px;
+}
+
+#condition-menu{
+  display: flex;
+  border-bottom: 1px solid #dee2e6;
+  list-style: none;
+
+  > li  {
+
+  }
+
+  > li button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    height: 45px;
+    //margin-right: 16px;
+    padding: 8px;
+  }
+
+  > li.active button{
+    border-bottom: 2px solid black;
+    font-weight: bold;
+  }
+}
