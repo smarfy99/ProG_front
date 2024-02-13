@@ -269,7 +269,7 @@ const RecruitProjectPage = () => {
 						</div>
 						<hr className='m-3 border-main-color border-1' />
 						<div className='border-2 border-black m-5'>
-							<Comment />
+							<Comment contentCode='프로젝트' contentId={projectId} />
 						</div>
 					</div>
 				</div>

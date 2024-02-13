@@ -1772,10 +1772,13 @@ __metadata:
   linkType: hard
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
 "@mui/material@npm:^5.15.9":
   version: 5.15.9
   resolution: "@mui/material@npm:5.15.9"
 =======
+>>>>>>> fa825b3c4c74dd4b7385facd58c8949f19b2ec9b
 "@mui/material@npm:5.15.7":
   version: 5.15.7
   resolution: "@mui/material@npm:5.15.7"
@@ -2830,6 +2833,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/sizzle@npm:*":
+  version: 2.3.8
+  resolution: "@types/sizzle@npm:2.3.8"
+  checksum: ab5460147ae6680cc20c2223a8f17d9f7c97144b70f00a222a1c32d68b5207696d48177ab9784dda88c74d93ed5a78dd31f74d271b15382520b423c81b4aac89
+  languageName: node
+  linkType: hard
+
+"@types/slick-carousel@npm:^1":
+  version: 1.6.40
+  resolution: "@types/slick-carousel@npm:1.6.40"
+  dependencies:
+    "@types/jquery": "npm:*"
+  checksum: 3e7e9ad518ec19e5afd3b34b8546fe5f190262d8a29640c7aad19ddd1aad1d6a71dcc11a9528bafb9034e9d4031e2b3cc186c1baf5ed95d13a541e4231463d51
+  languageName: node
+  linkType: hard
+
 "@types/stack-utils@npm:^2.0.0":
   version: 2.0.3
   resolution: "@types/stack-utils@npm:2.0.3"
@@ -3724,8 +3743,12 @@ __metadata:
 <<<<<<< HEAD
 "classnames@npm:^2.2.5":
 =======
+<<<<<<< HEAD
+"classnames@npm:^2.2.5":
+=======
 "classnames@npm:^2.2.5, classnames@npm:^2.2.6":
 >>>>>>> 13e9ce074698b4ea35b140da448348a18d2fcb88
+>>>>>>> fa825b3c4c74dd4b7385facd58c8949f19b2ec9b
   version: 2.5.1
   resolution: "classnames@npm:2.5.1"
   checksum: afff4f77e62cea2d79c39962980bf316bacb0d7c49e13a21adaadb9221e1c6b9d3cdb829d8bb1b23c406f4e740507f37e1dcf506f7e3b7113d17c5bab787aa69
@@ -5158,10 +5181,14 @@ __metadata:
     "@emotion/styled": "npm:^11.11.0"
     "@material-tailwind/react": "npm:^2.1.8"
 <<<<<<< HEAD
+    "@mui/material": "npm:5.15.7"
+=======
+<<<<<<< HEAD
     "@mui/material": "npm:^5.15.9"
 =======
     "@mui/material": "npm:5.15.7"
 >>>>>>> 13e9ce074698b4ea35b140da448348a18d2fcb88
+>>>>>>> fa825b3c4c74dd4b7385facd58c8949f19b2ec9b
     "@tanstack/react-query": "npm:^5.17.19"
     "@testing-library/jest-dom": "npm:^6.2.1"
     "@types/jest": "npm:^29.5.12"
@@ -5186,8 +5213,11 @@ __metadata:
     moment: "npm:^2.30.1"
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
     moment-timezone: "npm:^0.5.45"
 >>>>>>> 13e9ce074698b4ea35b140da448348a18d2fcb88
+>>>>>>> fa825b3c4c74dd4b7385facd58c8949f19b2ec9b
     postcss: "npm:^8.4.34"
     react: "npm:^18.2.0"
     react-big-calendar: "npm:^1.8.6"
@@ -5200,9 +5230,12 @@ __metadata:
     sass: "npm:^1.70.0"
     slick-carousel: "npm:^1.8.1"
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
     tailwind-scrollbar-hide: "npm:^1.1.7"
 =======
 >>>>>>> 13e9ce074698b4ea35b140da448348a18d2fcb88
+>>>>>>> fa825b3c4c74dd4b7385facd58c8949f19b2ec9b
     tailwindcss: "npm:^3.4.1"
     ts-jest: "npm:^29.1.2"
     typescript: "npm:^5.3.3"
@@ -8812,8 +8845,12 @@ __metadata:
 <<<<<<< HEAD
 "postcss@npm:^8.4.23, postcss@npm:^8.4.32, postcss@npm:^8.4.34":
 =======
+<<<<<<< HEAD
+"postcss@npm:^8.4.23, postcss@npm:^8.4.32, postcss@npm:^8.4.34":
+=======
 "postcss@npm:^8.4.23, postcss@npm:^8.4.34, postcss@npm:^8.4.35":
 >>>>>>> 13e9ce074698b4ea35b140da448348a18d2fcb88
+>>>>>>> fa825b3c4c74dd4b7385facd58c8949f19b2ec9b
   version: 8.4.35
   resolution: "postcss@npm:8.4.35"
   dependencies:
@@ -9985,6 +10022,13 @@ __metadata:
     bare-events:
       optional: true
   checksum: 710177654303c4553339ccd8d7590eeb20ffc6e537bcddccee57c8aa3a81d4e684bf93d51f057a179920ce90c21c910931da87f1d704d3bd7e2eb74aba193c4c
+  languageName: node
+  linkType: hard
+
+"string-convert@npm:^0.2.0":
+  version: 0.2.1
+  resolution: "string-convert@npm:0.2.1"
+  checksum: 00673ed8a3106137395436537ace7d3672c91a3290da73466055daa0134331dc84bc58c54ba2d2ea40711adc5744426d3c8239dbfc30290438fa3e9ff65db528
   languageName: node
   linkType: hard
 
