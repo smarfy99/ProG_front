@@ -17,13 +17,3 @@ export const reissueToken = async () => {
 	}
 	return null;
 };
-
-export const initializeApp = async () => {
-	//zustand에서 accessToken 가져오기
-	const accessToken = useAuthStore.getState().accessToken;
-
-	//accessToken이 없거나 만료되었다고 판단되면 reissueToken 요청 보냄
-	if (!accessToken) {
-		await reissueToken();
-	}
-};

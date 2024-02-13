@@ -20,6 +20,18 @@ export default defineConfig({
 				target: 'http://i10a210.p.ssafy.io:8080/',
 				changeOrigin: true,
 			},
+			'/members/login/oauth2/github': {
+				target: 'http://i10a210.p.ssafy.io:8080/',
+				changeOrigin: true,
+			},
+			'/attendance_logs': {
+				target: 'http://i10a210.p.ssafy.io:8080/',
+				changeOrigin: true,
+			},
+			'/attendances/logs': {
+				target: 'http://i10a210.p.ssafy.io:8080/',
+				changeOrigin: true,
+			},
 		},
 	},
 	plugins: [react()],
