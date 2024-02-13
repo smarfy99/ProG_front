@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import {
-  FaAnglesRight,
   FaRegCircleUser,
   FaBoltLightning,
   FaBookBookmark,
   FaCalendarCheck,
+  FaCheck,
 } from "react-icons/fa6";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // ReactQuill 스타일시트 임포트
@@ -14,6 +14,15 @@ import moment from "moment";
 import TaskDatePicker from "../calendar/TaskDatePicker";
 import { useMultipleDetailCodes } from "../../hooks/useMultipleDataCodes";
 import Chip from "@mui/material/Chip";
+
+interface TaskDetail {
+  workId?: number;
+}
+
+interface ModifyTaskProps {
+  taskDetail: TaskDetail;
+  onClose: () => void;
+}
 
 interface ProjectMember {
   member: {
@@ -37,36 +46,34 @@ interface DetailCode {
   imgUrl?: string | null;
 }
 
-interface DetailTaskProps {
-  onClose: () => void; // onClose의 타입 명시
-}
-
-const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
+const ModifyTask: React.FC<ModifyTaskProps> = ({ taskDetail }) => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const { projectId } = useParams<{ projectId: string }>();
+  const { projectId } = useParams<{ projectId: string; workId: string }>();
+  const [selectedStatusId, setSelectedStatusId] = useState<number | null>(null);
   const [selectedTypeId, setSelectedTypeId] = useState<number | null>(null);
   const [selectedPriorityId, setSelectedPriorityId] = useState<number | null>(
     null
   );
+  const [showModal, setShowModal] = useState(false);
   const [projectMembers, setProjectMembers] = useState<ProjectMember[]>([]);
   const [title, setTitle] = useState<string>("");
-  const [showModal, setShowModal] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<number | null>(null);
   const [editorContent, setEditorContent] = useState<string>("");
-  const [isOpen] = useState<boolean>(true);
-  const [id, setId] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [, setId] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
   const [endDay, setEndDay] = useState(tomorrow);
 
   const { data: multipleDetailCodesData } = useMultipleDetailCodes([
-    "WorkType",
-    "WorkPriority",
+    "workType",
+    "workPriority",
     "WorkStatus",
   ]);
   const workTypes = multipleDetailCodesData?.[0] ?? [];
   const workPriorities = multipleDetailCodesData?.[1] ?? [];
+  const WorkStatus = multipleDetailCodesData?.[2] ?? [];
 
   const getPrjMember = async () => {
     try {
@@ -80,11 +87,9 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
     }
   };
 
-  const postTask = async () => {
-    const taskInfo = {
-      projectId: projectId,
-      producerId: id,
-      statusCode: 1,
+  const modifyTask = async () => {
+    const modifyTaskInfo = {
+      statusCode: selectedStatusId,
       typeCode: selectedTypeId,
       priorityCode: selectedPriorityId,
       consumerId: selectedMemberId,
@@ -96,6 +101,7 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
 
     if (
       !title ||
+      !selectedStatusId ||
       !selectedMemberId ||
       !selectedTypeId ||
       !selectedPriorityId ||
@@ -106,13 +112,13 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
     }
 
     try {
-      await axiosInstance.post("/works", taskInfo, {
+      await axiosInstance.patch(`/works/${taskDetail.workId}`, modifyTaskInfo, {
         headers: {
           "Content-Type": "application/json", // 명시적으로 Content-Type 설정
         },
       });
+      handleClose();
     } catch (error) {
-      console.log(taskInfo);
       console.log(error);
     }
   };
@@ -121,6 +127,11 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
     // 선택된 멤버 ID를 문자열로 상태 업데이트, 빈 문자열이면 null 처리
     setSelectedMemberId(event.target.value ? Number(event.target.value) : null);
   };
+
+  const handleWorkStatusClick = (id: number) => {
+    setSelectedStatusId(id);
+  };
+
   const handleWorkTypeClick = (id: number) => {
     setSelectedTypeId(id);
   };
@@ -133,12 +144,12 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
     setEditorContent(content);
   };
 
-  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
+  const handleClose = () => {
+    setIsOpen(!isOpen);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
+  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
   };
 
   useEffect(() => {
@@ -153,32 +164,38 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
     getPrjMember();
   }, []);
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   if (!isOpen) return null;
 
   return (
     <>
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 z-30 ${
+        className={`fixed inset-0 bg-black bg-opacity-50 z-40 ${
           !isOpen && "hidden"
         }`}
-        onClick={onClose}
+        onClick={handleClose}
       ></div>
       <div
-        className={`fixed right-0 mt-16 top-0 h-full overflow-y-auto bg-slate-50 p-8 rounded-md shadow-lg z-40 w-full max-w-2xl transition-transform transform ${
+        className={`fixed right-0 top-0 p-6 h-full overflow-y-auto bg-slate-50 p-4 rounded-md shadow-lg z-50 w-full max-w-2xl max-h-full transition-transform transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } ease-in-out duration-300`}
       >
-        <div className="flex items-center mb-4">
-          <FaAnglesRight
-            onClick={onClose}
-            className="text-lg text-gray-600 mr-2 cursor-pointer"
-          />
-          <h1 className="text-xl font-bold">상세 업무 등록</h1>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-xl font-bold">상세 업무 수정</h1>
+          <button
+            onClick={handleClose}
+            className="text-white bg-gray-500 hover:bg-gray-600 font-bold py-2 px-4 rounded"
+          >
+            닫기
+          </button>
         </div>
         <div className="flex items-center mb-4">
           <FaRegCircleUser className="text-gray-600 mr-2" />
           <p className="text-md">업무 요청자: {nickname}</p>
-          <FaCalendarCheck className="text-md ml-4 mr-2" />
+          <FaCalendarCheck className="text-md ml-4" />
           <p>업무 시작일: {moment().format("YYYY-MM-DD")}</p>
         </div>
         <p className="font-semibold mb-2">업무 제목</p>
@@ -211,8 +228,32 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
             ))}
           </select>
         </div>
-        <div className="flex my-4">
-          <FaBookBookmark className="mt-4" />
+        <div className="flex">
+          <FaCheck className="mt-3" />
+          {WorkStatus.map((workType: DetailCode, index: number) => (
+            <Chip
+              key={workType.id}
+              label={workType.detailDescription}
+              onClick={() => handleWorkStatusClick(workType.id)}
+              variant={selectedStatusId === workType.id ? "filled" : "outlined"}
+              sx={{
+                margin: 0.5,
+                color: selectedStatusId === workType.id ? "#fff" : "#000",
+                backgroundColor:
+                  selectedStatusId === workType.id
+                    ? ["#FF5733", "#33FF57", "#3357FF", "#F833FF", "#FF8333"][
+                        index % 5
+                      ]
+                    : "#e0e0e0",
+                "&:hover": {
+                  opacity: 0.75,
+                },
+              }}
+            />
+          ))}
+          </div>
+          <div className="flex">
+          <FaBookBookmark className="mt-3" />
           {workTypes.map((workType: DetailCode, index: number) => (
             <Chip
               key={workType.id}
@@ -235,8 +276,8 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
             />
           ))}
         </div>
-        <div className="flex my-4">
-          <FaBoltLightning className="mt-4" />
+        <div className="flex">
+          <FaBoltLightning className="mt-3" />
           {workPriorities.map((workPriority: DetailCode, index: number) => (
             <Chip
               key={workPriority.id}
@@ -272,11 +313,12 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
             />
           </div>
         </div>
+        {/* <TaskChkList /> */}
         <button
-          onClick={postTask}
+          onClick={modifyTask}
           className="mt-10 bg-blue-500 text-white p-2 rounded"
         >
-          업무 등록
+          업무 수정
         </button>
       </div>
       {showModal && (
@@ -299,4 +341,5 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
   );
 };
 
-export default DetailTask;
+export default ModifyTask;
+

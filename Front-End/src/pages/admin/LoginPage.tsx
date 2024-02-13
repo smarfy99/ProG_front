@@ -8,6 +8,7 @@ import { ERROR_CODES } from '../../constants/errorCodes';
 // import { axiosInstance } from "../../apis/lib/axios";
 import { proxyAxiosInstance } from '../../apis/lib/proxyAxios';
 import axios from 'axios';
+import { FaGithubAlt } from 'react-icons/fa6';
 
 export const LoginPage: React.FC = () => {
 	const [username, setUserName] = useState('');
@@ -15,23 +16,6 @@ export const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
 	const { setAccessToken } = useAuthStore();
 	const { setProfile } = useUserStore();
-
-	// const githubSubmit = async () => {
-	// 	try {
-	// 		const response = await proxyAxiosInstance.post('https://www.ssafy-prog.com/oauth2/authorization/github');
-
-	// 		const accessToken = response.headers['accesstoken'];
-
-	// 		if (accessToken) {
-	// 			setAccessToken(accessToken); // 추출한 토큰을 Zustand 스토어에 저장
-
-	// 			await fetchUserProfile(accessToken, setProfile, navigate); // 사용자 프로필 정보 가져오기
-	// 			navigate('/');
-	// 		}
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -112,15 +96,15 @@ export const LoginPage: React.FC = () => {
 					회원가입
 				</Link>
 				<hr className='my-4' />
-				<a
-					href={import.meta.env.VITE_REDIRECT_URI}
-					className='inline-block w-full bg-white text-gray-800 py-2 px-4 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 mb-2'
-				>
-					GitHub으로 로그인하기
-				</a>
-				<a className='inline-block w-full bg-white text-gray-800 py-2 px-4 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800'>
-					Google로 로그인하기
-				</a>
+				<div className='flex'>
+					<FaGithubAlt className='mt-3 w-5 h-4' />
+					<a
+						href={import.meta.env.VITE_REDIRECT_URI}
+						className='inline-block w-full bg-white text-gray-800 py-2 ml-2 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 mb-2'
+					>
+						GitHub으로 로그인
+					</a>
+				</div>
 			</div>
 		</div>
 	);

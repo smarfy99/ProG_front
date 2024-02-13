@@ -50,11 +50,11 @@ export const RetrospectPage = () => {
 					<div className='flex justify-center my-4'>
 						<FaAnglesLeft
 							onClick={() => navigate(`/project/${projectId}/prevretrospect`)} // 후에 url project params 받아서 다시 수정
-							className='cursor-pointer bg-sub-color border-black border-1 text-main-color font-bold rounded-full shadow-lg flex items-center justify-center w-12 h-12 m-2'
+							className='cursor-pointer bg-sub-color border-black border-1 text-white font-bold rounded-full shadow-lg flex items-center justify-center w-12 h-12 m-2'
 						/>
 						<FaPlus
 							onClick={() => setModalOpen(true)}
-							className='cursor-pointer m-2 bg-main-color text-white font-bold rounded-full shadow-lg flex items-center justify-center w-12 h-12'
+							className='cursor-pointer m-2 bg-sub-color text-white font-bold rounded-full shadow-lg flex items-center justify-center w-12 h-12'
 						/>
 					</div>
 					<KPTMemo modalOpen={modalOpen} setModalOpen={setModalOpen} />
