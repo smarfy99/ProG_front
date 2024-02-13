@@ -2,9 +2,22 @@ import { useState, useRef, useEffect, CSSProperties } from 'react';
 import CommuteCalendar from '../../../components/calendar/CommuteCalendar';
 import TaskList from '../../../components/task/TaskList';
 import { useRequireAuth } from '../../../hooks/useRequireAuth';
+import { useParams } from 'react-router-dom';
 
 const TaskPage = () => {
 	useRequireAuth();
+
+	const params = useParams<{ projectId: string }>();
+	const projectId = Number(params.projectId);
+	let memberId = 0;
+
+	// 로컬 스토리지에서 userProfile을 가져옴
+	const userProfileKey = 'userProfile';
+	const userProfileString = localStorage.getItem(userProfileKey);
+	if (userProfileString) {
+		const userProfile = JSON.parse(userProfileString);
+		memberId = userProfile.id;
+	}
 
 	const [page, setPage] = useState<string>('캘린더');
 	const calendarButtonRef = useRef<HTMLButtonElement>(null);
@@ -53,7 +66,7 @@ const TaskPage = () => {
 				></div>
 			</div>
 			<hr className='mt-5' />
-			{page === '캘린더' && <CommuteCalendar />}
+			{page === '캘린더' && <CommuteCalendar projectId={projectId} memberId={memberId} w-auto />}
 			{page === '상세' && <TaskList />}
 		</div>
 	);

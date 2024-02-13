@@ -1,5 +1,5 @@
 // MyProject.tsx
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import MyRecruitCard from '../../components/recruit/MyRecruitCard';
 import { axiosInstance } from '../../apis/lib/axios';
 import useMyRecruitStore from '../../stores/useMyRecruitStore'; // Corrected import
@@ -30,14 +30,14 @@ const MyProject = () => {
 	}, []);
 
 	return (
-		<React.StrictMode>
+		<>
 			<div className='grid text-center'>
 				<div className='font-bold text-6xl'>내가 참여중인 프로젝트</div>
 			</div>
 			<div className='grid grid-rows-4 gap-4 p-1 m-1'>
 				<MyRecruitCard />
 			</div>
-		</React.StrictMode>
+		</>
 	);
 };
 

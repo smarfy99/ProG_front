@@ -3,6 +3,7 @@ import ProgImage from "../../assets/logo.png";
 import { axiosInstance } from "../../apis/lib/axios";
 import Timer from "../../components/alarm/Timer";
 import SignUpInfo from "../../components/alarm/SignUpInfo";
+import { useNavigate } from "react-router-dom";
 
 // interface UserData {
 //   email: string;
@@ -21,6 +22,7 @@ export const SignUpForm: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const signUpSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,6 +39,7 @@ export const SignUpForm: React.FC = () => {
     try {
       const response = await axiosInstance.post("/members/sign-up", userData);
       console.log(response.data);
+      navigate('/');
     } catch (error) {
       console.error("회원가입 오류", error);
     }
@@ -91,7 +94,12 @@ export const SignUpForm: React.FC = () => {
       try {
         await axiosInstance.post(
           "/members/nickname-validation-check",
-          nickname
+          { nickname: nickname }, // 요청 본문을 객체 형태로 수정
+          {
+            headers: {
+              'Content-Type': 'application/json' // 필요한 경우 Content-Type 설정
+            }
+          }
         );
   
         console.log("닉네임 사용 가능");

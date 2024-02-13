@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { axiosInstance } from "../../apis/lib/axios";
 import { useRequireAuth } from "../../hooks/useRequireAuth";
+import TechStackInfo from "./TechStackInfo";
 
 export const techStack = {
   mystack: [] as { techCode: number }[],
@@ -48,7 +49,10 @@ const TechStack = () => {
 
   return (
     <div>
-      <div className="text-lg font-bold">기술 스택</div>
+      <div className="flex">
+        <div className="text-lg font-bold mr-2">기술 스택</div>
+        <TechStackInfo/>
+      </div>
       <div className="h-10 w-full bg-gray-100">
         {selectedTags.map((item, index) => (
           <span
