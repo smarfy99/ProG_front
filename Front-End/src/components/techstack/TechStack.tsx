@@ -7,7 +7,7 @@ export const techStack = {
 };
 
 const TechStack = () => {
-
+  useRequireAuth()
   const [tags, setTags] = useState<{ id: number; detailName: string }[]>([]);
   // Updated to include both id and techCode (detailName)
   const [selectedTags, setSelectedTags] = useState<{ id: number; techCode: string }[]>([]);
