@@ -1,6 +1,8 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { axiosInstance } from "../../apis/lib/axios";
 import { useRequireAuth } from '../../hooks/useRequireAuth';
+import {useUserStore} from '../../stores/useUserStore';
+import { useParams } from 'react-router-dom';
 
 interface PositionState {
   positionId: number[]; // Changed from positionName to positionId
@@ -15,14 +17,27 @@ interface PositionItem {
   current: number;
 }
 
+interface PositionList{
+  id : number;
+  name: string;
+  total: number;
+  current:number;
+}
+
 export const position = {
-  totalList: [{ jobCode: 0, total: 1, current: 0 }] as PositionItem[],
+  totalList: [] as PositionItem[],
 };
 
-const Position: React.FC = () => {
+interface PositionProps {
+  initialTags?: PositionList[];
+}
+
+const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionProps) => {
   useRequireAuth();
+  const { profile } = useUserStore();
+  const memberId = profile?.id;
+  const { projectId } = useParams();
   const [positionList, setPositionList] = useState<{ id: number; detailDescription: string }[]>([]);
-  
   useEffect(() => {
     const getPositionList = async () => {
       try {
@@ -30,21 +45,40 @@ const Position: React.FC = () => {
         if (response.data.status === 'OK') {
           setPositionList(response.data.data.map(({ id, detailDescription }: { id: number; detailDescription: string }) => ({ id, detailDescription })));
         }
-        
       } catch (error) {
         console.error("Failed to fetch positions:", error);
       }
     };
+  
     getPositionList();
-    position.totalList.push({ jobCode: 0, total: 1, current: 0 });
-  }, []);
+  
+    // initialTags를 기반으로 position.totalList와 state를 업데이트
+    position.totalList = initialTags.map(tag => ({
+      jobCode: tag.id,
+      total: tag.total,
+      current: tag.current,
+    }));
+  
+    setState({
+      positionId: initialTags.map(tag => tag.id),
+      positionDetailDescription: initialTags.map(tag => tag.name),
+      positionNumber: initialTags.map(tag => tag.total),
+      positionCurrent: initialTags.map(tag => tag.current),
+    });
+  
+    // 추가된 로그로 확인 (실제 코드에서는 제거 가능)
+    console.log(position.totalList);
+    console.log(state);
+  
+  }, [initialTags]); // initialTags가 변경될 때마다 useEffect 실행
+  
   
   const [state, setState] = useState<PositionState>({
     positionId: [0], // Initialized with 0 indicating no selection
     positionDetailDescription: [""], // New state for display descriptions
     positionNumber: [1],
     positionCurrent: [0],
-  });
+  },);
 
   const handlePositionChange = (index: number, id: number) => {
     const selectedOption = positionList.find(option => option.id === id);
@@ -67,50 +101,49 @@ const Position: React.FC = () => {
   
   
 
-  const handleParticipateButtonClick = (index: number) => {
-    const updatedPositionCurrent = Array(state.positionCurrent.length).fill(0);
-    updatedPositionCurrent[index] = 1;
-
-    setState((prev) => ({
-      ...prev,
-      positionCurrent: updatedPositionCurrent,
-    }));
-    position.totalList.forEach((item, i) => item.current = i === index ? 1 : 0);
-  };
 
   const handleAddPosition = () => {
-    setState((prev) => {
-      return {
-        positionId: [...prev.positionId, 0], // Adding default value for new position
-        positionDetailDescription: [...prev.positionDetailDescription, ""], // Adding empty string for new description
-        positionNumber: [...prev.positionNumber, 1],
-        positionCurrent: [...prev.positionCurrent, 0],
-      };
-    });
-    position.totalList.push({ jobCode: 0, total: 1, current: 0 });
-  };
-
-  const handleRemovePosition = (index: number) => {
-    setState((prev) => ({
-      positionId: prev.positionId.filter((_, i) => i !== index),
-      positionDetailDescription: prev.positionDetailDescription.filter((_, i) => i !== index),
-      positionNumber: prev.positionNumber.filter((_, i) => i !== index),
-      positionCurrent: prev.positionCurrent.filter((_, i) => i !== index),
+    setState(prevState => ({
+      positionId: [...prevState.positionId, 0], // 새 포지션 기본값 추가
+      positionDetailDescription: [...prevState.positionDetailDescription, ""], // 새 설명 기본값 추가
+      positionNumber: [...prevState.positionNumber, 1], // 새 수량 기본값 추가
+      positionCurrent: [...prevState.positionCurrent, 0], // 새 현재값 기본값 추가
     }));
-    position.totalList.splice(index, 1);
+  
+    // 불변성을 유지하며 position.totalList 업데이트
+    position.totalList = [...position.totalList, { jobCode: 0, total: 1, current: 0 }];
+    console.log(position.totalList);
+    console.log(state);
   };
-
-  const handlePositionNumberChange = (index: number, value: number) => {
-    const updatedPositionNumber = [...state.positionNumber];
-    updatedPositionNumber[index] = Math.max(1, value);
-    setState(prev => ({
-      ...prev,
-      positionNumber: updatedPositionNumber,
-    }));
-    if (position.totalList[index]) {
-      position.totalList[index].total = value;
+  
+  const handleRemovePosition = async (index: number) => {
+    try {
+      // 서버에서 포지션 제거 요청
+      await axiosInstance.delete(`/projects/${projectId}/${memberId}/projectTotal/${position.totalList[index].jobCode}`);
+      setState(prevState => ({
+        positionId: prevState.positionId.filter((_, i) => i !== index),
+        positionDetailDescription: prevState.positionDetailDescription.filter((_, i) => i !== index),
+        positionNumber: prevState.positionNumber.filter((_, i) => i !== index),
+        positionCurrent: prevState.positionCurrent.filter((_, i) => i !== index),
+      }));
+  
+      // 불변성을 유지하며 position.totalList 업데이트
+      position.totalList = position.totalList.filter((_, i) => i !== index);
+    } catch (error) {
+      console.error("Failed to remove position:", error);
     }
   };
+  
+  const handlePositionNumberChange = (index: number, value: number) => {
+    setState(prevState => ({
+      ...prevState,
+      positionNumber: prevState.positionNumber.map((num, i) => i === index ? Math.max(1, value) : num),
+    }));
+  
+    // 불변성을 유지하며 position.totalList 업데이트
+    position.totalList = position.totalList.map((item, i) => i === index ? { ...item, total: Math.max(1, value) } : item);
+  };
+  
 
   const handleIncrementPositionNumber = (index: number) => {
     handlePositionNumberChange(index, state.positionNumber[index] + 1);
@@ -186,15 +219,6 @@ const Position: React.FC = () => {
                 >
                   +
                 </button>
-                <button
-                  className={`flex items-center ml-2 border-main-color border-2 p-2 ${state.positionCurrent[index] === 1
-                      ? "bg-main-color text-white"
-                      : ""
-                    }`}
-                  onClick={() => handleParticipateButtonClick(index)}
-                >
-                  참여
-                </button>
               </div>
             </div>
           ))}
@@ -210,4 +234,4 @@ const Position: React.FC = () => {
   );
 };
 
-export default Position;
+export default PositionChange;

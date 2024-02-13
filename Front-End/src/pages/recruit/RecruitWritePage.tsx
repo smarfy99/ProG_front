@@ -3,8 +3,9 @@ import TechStack, { techStack } from '../../components/techstack/TechStack';
 import Position, { position } from '../../components/position/Position';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from "../../apis/lib/axios";
+import { useRequireAuth } from '../../hooks/useRequireAuth';
+import {useUserStore} from '../../stores/useUserStore';
 
-const memberId = 1;
 
 interface State {
   projectTitle: string;
@@ -15,6 +16,9 @@ interface State {
 }
 
 const RecruitWritePage: React.FC = () => {
+  useRequireAuth();
+  const { profile } = useUserStore();
+  const memberId=profile?.id;
   const navigate = useNavigate();
   const [state, setState] = useState<State>({
     projectTitle: '',

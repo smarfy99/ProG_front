@@ -3,9 +3,15 @@ import { FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { axiosInstance } from "../../apis/lib/axios";
 import useRecruitStore from '../../stores/useRecruitStore';
+import { useRequireAuth } from '../../hooks/useRequireAuth';
 
-const RecruitSearchBar = () => {
-  const searchResults = useRecruitStore(state => state.searchResults); // Subscribe to searchResults
+interface RecruitSearchBarProps {
+  currentPage: number;
+}
+
+const RecruitSearchBar: React.FC<RecruitSearchBarProps> = ({ currentPage }) => {
+  useRequireAuth();
+  // const searchResults = useRecruitStore(state => state.searchResults); // Subscribe to searchResults
   const updateSearchResults = useRecruitStore(state => state.updateSearchResults);
   let test = [];
 
@@ -34,21 +40,19 @@ const RecruitSearchBar = () => {
         params: {
           keyword: searchInput,
           techCodes: selectedTechId,
-          statusesCode: selectedStatusesId,
-          page: 0,
+          statusCode: selectedStatusesId,
+          page: currentPage - 1,
           size: 10,
         },
       });
-      console.log(response.data);
-      console.log(response.data.data.content);
       test = response.data.data.content;
       console.log(test);
-
-      // searchResults에 데이터가 담겼는지 확인
+      const totalPages = response.data.data.totalPages;
+      updateSearchResults(response.data.data.content);
+      useRecruitStore.getState().setTotalPages(totalPages);
       if (test.length > 0) {
         updateSearchResults(test);
       } else {
-        // test가 비어 있다면, 검색 결과가 없다는 메시지를 표시하거나 다른 처리를 수행할 수 있음
         console.log('검색 결과가 없습니다.');
       }
     } catch (error) {
@@ -83,11 +87,12 @@ const RecruitSearchBar = () => {
     search();
     getTags();
     getStatuses();
+    console.log(currentPage);
   }, []);
   useEffect(() => {
-    // This will run when `searchResults` changes.
-    console.log("Updated Search Results in Store:", searchResults);
-  }, [searchResults]);
+    search();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, selectedTechId, selectedStatusesId, searchInput]);
 
 
   return (
