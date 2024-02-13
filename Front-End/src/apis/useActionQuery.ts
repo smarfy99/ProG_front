@@ -22,7 +22,7 @@ const getAction = async (projectId: number): Promise<ActionData> => {
 
 export const useActionQuery = (projectId: number) => {
 	return useQuery<ActionData>({
-		queryKey: [queryKeys.getAction],
+		queryKey: [queryKeys.getAction, projectId],
 		queryFn: () => getAction(projectId),
 	});
 };

@@ -20,6 +20,7 @@ import IndexPage from './pages/project/index/indexPage';
 import MemberSettingPage from './pages/project/setting/MemberSettingPage';
 import ProjectSettingPage from './pages/project/setting/ProjectSettingPage';
 import PrevRetrospect from './components/retrospectMemo/PrevRetrospect';
+import GithubLoginPage from './pages/admin/GithubLoginPage';
 import ErrorPage from './pages/error/ErrorPage';
 
 function App() {
@@ -59,6 +60,10 @@ function App() {
 					element: <MyProjectPage />,
 				},
 				{
+					path: 'login/oauth2/code/github',
+					element: <GithubLoginPage />,
+				},
+				{
 					path: 'recruit/project/:projectId',
 					element: <RecruitProjectPage />,
 				},
@@ -85,10 +90,6 @@ function App() {
 						{
 							path: 'retrospect',
 							element: <RetrospectPage />,
-						},
-						{
-							path: 'prevretrospect',
-							element: <PrevRetrospect />,
 						},
 						{
 							path: 'prevretrospect',
