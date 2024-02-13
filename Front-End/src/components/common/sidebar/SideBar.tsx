@@ -1,5 +1,5 @@
-import { Link, useLocation, useParams } from "react-router-dom";
-import CommuteCheckBtn from "../../commute/CommuteCheckBtn";
+import { Link, useLocation, useParams } from 'react-router-dom';
+import CommuteCheckBtn from '../../commute/CommuteCheckBtn';
 
 interface SideTab {
 	label: string;
@@ -8,19 +8,27 @@ interface SideTab {
 }
 
 const SideBar = () => {
-  const location = useLocation();
-  const params = useParams<{ projectId: string; memberId: string }>();
+	const location = useLocation();
+	const params = useParams<{ projectId: string; memberId: string }>();
 
-  const projectId = Number(params.projectId);
-  const memberId = Number(params.memberId);
+	const projectId = Number(params.projectId);
+	let memberId = 0;
 
-  const sideTabs: SideTab[] = [
-    { label: "홈", path: `/project/${projectId}` },
-    { label: "근태", path: `/project/${projectId}/commute` },
-    { label: "업무", path: `/project/${projectId}/task` },
-    { label: "피드", path: `/project/${projectId}/feed` },
-    { label: "회고", path: `/project/${projectId}/retrospect` },
-  ];
+	// 로컬 스토리지에서 userProfile을 가져옴
+	const userProfileKey = 'userProfile';
+	const userProfileString = localStorage.getItem(userProfileKey);
+	if (userProfileString) {
+		const userProfile = JSON.parse(userProfileString);
+		memberId = userProfile.id;
+	}
+
+	const sideTabs: SideTab[] = [
+		{ label: '홈', path: `/project/${projectId}` },
+		{ label: '근태', path: `/project/${projectId}/commute` },
+		{ label: '업무', path: `/project/${projectId}/task` },
+		{ label: '피드', path: `/project/${projectId}/feed` },
+		{ label: '회고', path: `/project/${projectId}/retrospect` },
+	];
 
 	return (
 		<div className='flex flex-col'>
@@ -30,6 +38,7 @@ const SideBar = () => {
 			>
 				{/* 출퇴근 */}
 				<CommuteCheckBtn projectId={projectId} memberId={memberId} />
+				{/* <CommuteCheckBtn projectId={1} memberId={1} /> */}
 
 				{/* 메뉴 */}
 				<div className='flex flex-col justify-center items-center'>
