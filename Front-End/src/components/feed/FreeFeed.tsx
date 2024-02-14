@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { FaPlus} from "react-icons/fa6";
+import {FaPlus} from "react-icons/fa6";
 import ModalEditor from "./ModalEditor";
 import {useUserStore} from "../../stores/useUserStore";
 import {useParams} from "react-router-dom";
@@ -46,18 +46,19 @@ const FreeFeed = () => {
 
         form.set('board', new Blob([jsonData], {type: 'application/json'}));
         // POST 요청 로직
-        await axiosInstance
-            .post("/boards", form, {
-                headers: {
-                    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjozODUzOTA4NDgwLCJpYXQiOjE3MDY0MjQ4MzMsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdfQ.vXlMCRdnAL60yLcAtV70jgpKfYvKBlwSu-NFrCI9LSI'
-                },
-            })
-            .then(() => {
-                // 성공 처리
-            })
-            .catch(() => {
-                // 에러 처리
+
+        try {
+            const respons = await axiosInstance.post("/boards", form, {
             });
+
+            console.log(respons);
+
+            getFreeFeeds();
+
+            setEditorContent("");
+        } catch (e) {
+            console.error(e);
+        }
     };
     const updateGetFeeds = useFeedStore(state => state.updateGetFeeds);
 
@@ -66,9 +67,6 @@ const FreeFeed = () => {
             console.log(projectId);
 
             const response = await axiosInstance.get(`/boards/${projectId}`, {
-                headers: {
-                    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjozODUzOTA4NDgwLCJpYXQiOjE3MDY0MjQ4MzMsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdfQ.vXlMCRdnAL60yLcAtV70jgpKfYvKBlwSu-NFrCI9LSI'
-                },
             });
 
             const data = response.data.data.boards;
@@ -93,7 +91,7 @@ const FreeFeed = () => {
             console.log("deleted " + response)
 
             popFeeds(index);
-        }catch (e){
+        } catch (e) {
             console.error(e);
         }
     }
@@ -105,7 +103,7 @@ const FreeFeed = () => {
     }, [getFeeds]);
 
 
-    const popFeeds = (index:number) => {
+    const popFeeds = (index: number) => {
         const newFeeds = [...feeds];
         newFeeds.splice(index, 1);
         setFeeds(newFeeds);
@@ -114,8 +112,8 @@ const FreeFeed = () => {
     }
 
     return (
-        <div className="flex flex-col h-screen">
-            <div className="p-4 w-auto mt-10 m-60 border-2 border-gray-200 shadow-lg rounded-lg flex-grow">
+        <div className="flex flex-col h-full ">
+            <div className="p-8 w-full mt-10flex-grow overflow-y-scroll">
                 {feeds.map((freeFeed, index) => (
                     <div key={freeFeed.boardId}>
                         <FreeFeedSimple
@@ -130,13 +128,14 @@ const FreeFeed = () => {
                             isNotice={freeFeed.isNotice}
                             popFeeds={() => deleteBoard(freeFeed.boardId, index)}
                             index={index}
+                            getFreeFeeds={() => getFreeFeeds()}
                         />
                     </div>
                 ))}
             </div>
             <button
                 onClick={handleIconClick}
-                className={`fixed bottom-20 right-96 transform transition-transform duration-500 ${
+                className={`fixed bottom-20 right-1/4 transform transition-transform duration-500 ${
                     rotateIcon ? "rotate-45" : "rotate-0"
                 }`}
             >
