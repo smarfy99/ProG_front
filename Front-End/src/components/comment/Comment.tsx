@@ -129,7 +129,7 @@ const Comment: React.FC<CommentProps> = ({contentCode, contentId}) => {
     };
 
   return (
-      <div>
+      <div className="">
           <div className="text-xl">
               댓글 {comments.length}개
           </div>
