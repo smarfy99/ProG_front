@@ -4,6 +4,7 @@ interface Feed {
     memberId: number;
     nickname: string;
     imgUrl: string;
+    position: string;
     boardId: number;
     createdAt: string;
     isDeleted: boolean;

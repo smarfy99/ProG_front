@@ -106,46 +106,47 @@ const FreeFeed = () => {
 		console.log(newFeeds);
 	};
 
-	return (
-		<div className='flex flex-col h-full '>
-			<div className='p-8 w-full mt-10flex-grow overflow-y-scroll'>
-				{feeds.map((freeFeed, index) => (
-					<div key={freeFeed.boardId}>
-						<FreeFeedSimple
-							memberId={freeFeed.memberId}
-							nickname={freeFeed.nickname}
-							imgUrl={freeFeed.imgUrl}
-							position={freeFeed.position}
-							boardId={freeFeed.boardId}
-							createdAt={freeFeed.createdAt}
-							isDeleted={freeFeed.isDeleted}
-							title={freeFeed.title}
-							viewCnt={freeFeed.viewCnt}
-							isNotice={freeFeed.isNotice}
-							popFeeds={() => deleteBoard(freeFeed.boardId, index)}
-							index={index}
-							getFreeFeeds={() => getFreeFeeds()}
-						/>
-					</div>
-				))}
-			</div>
-			<button
-				onClick={handleIconClick}
-				className={`fixed bottom-20 right-1/4 transform transition-transform duration-500 ${
-					rotateIcon ? 'rotate-45' : 'rotate-0'
-				}`}
-			>
-				<FaPlus className='size-10' />
-			</button>
-			<ModalEditor
-				isOpen={isModalOpen}
-				onClose={closeModal}
-				value={editorContent}
-				onChange={editorChange}
-				onSubmit={handleModalSubmit}
-			/>
-		</div>
-	);
+    return (
+        <div className="flex flex-col h-full ">
+            <div className="p-8 w-full mt-10flex-grow overflow-y-scroll">
+                {feeds.map((freeFeed, index) => (
+                    <div key={freeFeed.boardId}>
+                        <FreeFeedSimple
+                            memberId={freeFeed.memberId}
+                            nickname={freeFeed.nickname}
+                            imgUrl={freeFeed.imgUrl}
+                            position={freeFeed.position}
+                            boardId={freeFeed.boardId}
+                            createdAt={freeFeed.createdAt}
+                            isDeleted={freeFeed.isDeleted}
+                            title={freeFeed.title}
+                            viewCnt={freeFeed.viewCnt}
+                            isNotice={freeFeed.isNotice}
+                            popFeeds={() => deleteBoard(freeFeed.boardId, index)}
+                            index={index}
+                            getFreeFeeds={() => getFreeFeeds()}
+                        />
+                    </div>
+                ))}
+            </div>
+            <button
+                onClick={handleIconClick}
+                className={`fixed bottom-20 right-1/4 transform transition-transform duration-500 ${
+                    rotateIcon ? "rotate-45" : "rotate-0"
+                }`}
+            >
+                <FaPlus className="size-10"/>
+            </button>
+            <ModalEditor
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                value={editorContent}
+                onChange={editorChange}
+                onSubmit={handleModalSubmit}
+            />
+        </div>
+    )
+        ;
 };
 
 export default FreeFeed;
