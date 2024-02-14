@@ -2423,21 +2423,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.20.2":
-  version: 5.20.2
-  resolution: "@tanstack/query-core@npm:5.20.2"
-  checksum: 6cd16e718a816188a9c5609d1865ad48d27d1371e2c6f1b95eb23ee9159bc37a264078d3f0c091dc0d577b05dd62baff98a68f3321a3446cffdc0ac0ccf9fdc7
+"@tanstack/query-core@npm:5.20.5":
+  version: 5.20.5
+  resolution: "@tanstack/query-core@npm:5.20.5"
+  checksum: e41b4961a3a2518536c72c1522d8512561645af2c2fe8ae49583820b3da6c4fe87112480d617202873ade9f6aa43aa78f986b5b7bbb3f0c5714fe536183de56e
   languageName: node
   linkType: hard
 
 "@tanstack/react-query@npm:^5.17.19":
-  version: 5.20.2
-  resolution: "@tanstack/react-query@npm:5.20.2"
+  version: 5.20.5
+  resolution: "@tanstack/react-query@npm:5.20.5"
   dependencies:
-    "@tanstack/query-core": "npm:5.20.2"
+    "@tanstack/query-core": "npm:5.20.5"
   peerDependencies:
     react: ^18.0.0
-  checksum: 0a31acc6b913b0b7454669f72f9408195d185a73ce5b000d9bcabe3c21f1052226e13ed379358efee4b540caa55c5addddc372281deac294d97315b11ca9f299
+  checksum: ca6cf3ee9702c15ed69246b5be04390910bfe8f04c1ebbab19a84102f610cdc7be6b8cc5ad8bc76ac59bc321c8d6d65cf96329c4e600e5e5938d6859162371d0
   languageName: node
   linkType: hard
 
@@ -4186,14 +4186,13 @@ __metadata:
   linkType: hard
 
 "define-data-property@npm:^1.0.1, define-data-property@npm:^1.1.2":
-  version: 1.1.3
-  resolution: "define-data-property@npm:1.1.3"
+  version: 1.1.4
+  resolution: "define-data-property@npm:1.1.4"
   dependencies:
+    es-define-property: "npm:^1.0.0"
     es-errors: "npm:^1.3.0"
-    get-intrinsic: "npm:^1.2.4"
     gopd: "npm:^1.0.1"
-    has-property-descriptors: "npm:^1.0.1"
-  checksum: 918836b0ddcbefe9f351d35529bcbba5b00e4d867d1698b676eacfe50c0e479fb830dd4dd17988d3a0d2328707ef47a24d570cfcae9085b3e331f6236034256a
+  checksum: dea0606d1483eb9db8d930d4eac62ca0fa16738b0b3e07046cddfacf7d8c868bbe13fa0cb263eb91c7d0d527960dc3f2f2471a69ed7816210307f6744fe62e37
   languageName: node
   linkType: hard
 
@@ -4330,9 +4329,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.648":
-  version: 1.4.667
-  resolution: "electron-to-chromium@npm:1.4.667"
-  checksum: 52150413c692470c0fcc9da9eaf020e7c8999f188dcf057d2cde032535d59f4a5201d1cffdffe3d5c86f44dd8feead67e42a509af9fe9055d74dedc491eb62e6
+  version: 1.4.668
+  resolution: "electron-to-chromium@npm:1.4.668"
+  checksum: 7b67ecb7a2e5f2c129714f3efe1fcc61fe5233c0b5edd43cfdd70189364aef22d7fccdb2e6c6521ad223d3c02c175246c7d0af63486cd7595915a1817cbd8f74
   languageName: node
   linkType: hard
 
@@ -5181,8 +5180,8 @@ __metadata:
   linkType: hard
 
 "framer-motion@npm:^11.0.3":
-  version: 11.0.3
-  resolution: "framer-motion@npm:11.0.3"
+  version: 11.0.5
+  resolution: "framer-motion@npm:11.0.5"
   dependencies:
     "@emotion/is-prop-valid": "npm:^0.8.2"
     tslib: "npm:^2.4.0"
@@ -5197,7 +5196,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: a9a70196ea5d264f749a7dea1ccb7c33decf969680a907c595eb48d84510b60fb51e3e0d16d5bcac0997eea041f796f2cba4a5505e0a00f373ffbadfb5f36564
+  checksum: a7ed2c56f2d25b610a11a7056304c2ed92cb37ca448c820432db162ae05c920fb3853b703130fbaded534099d4bced8af34168bd2b464d93f5bb8897951ce057
   languageName: node
   linkType: hard
 

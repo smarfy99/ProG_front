@@ -42,7 +42,7 @@ const GithubLoginPage = () => {
 		}
 	};
 
-	return <div>GithubLoginPage</div>;
+	return <div></div>;
 };
 
 export default GithubLoginPage;

@@ -126,7 +126,7 @@ const IndexPage = () => {
 	return (
 		<div>
 			<div className='flex justify-between'>
-				<div className='w-full h-screen flex p-10 flex-col'>
+				<div className='w-full h-full flex p-10 flex-col'>
 					<div>
 						<div className='flex justify-between'>
 							{isProjectStarted ? (
