@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { FaCaretDown, FaCaretRight } from "react-icons/fa6";
-import DetailTask from "./DetailTask"; // 업무 추가 모달 컴포넌트, 경로 확인 필요
-import TaskOneDetail from "./TaskOneDetail"; // 업무 상세 정보 모달 컴포넌트, 경로 확인 필요
+import DetailTask from "./DetailTask"; 
+import TaskOneDetail from "./TaskOneDetail";
 import moment from "moment";
+import Chip from "./TaskChip";
 
 type TodoListProps = {
   title: string;
@@ -37,7 +38,7 @@ interface Task {
   endDay: string;
 }
 
-const TaskIndex: React.FC<TodoListProps> = ({ title, tasks,  onTaskUpdate }) => {
+const TaskIndex: React.FC<TodoListProps> = ({ title, tasks, onTaskUpdate }) => {
   const [showButton, setShowButton] = useState<boolean>(false);
   const [indexListOn, setIndexListOn] = useState<boolean>(false);
   const [showDetailTaskModal, setShowDetailTaskModal] =
@@ -61,7 +62,7 @@ const TaskIndex: React.FC<TodoListProps> = ({ title, tasks,  onTaskUpdate }) => 
   return (
     <div>
       <div
-        className="flex border border-main-color p-2 items-center"
+        className="flex border bg-gray-100 border-b-main-color p-2 items-center" // 여기
         onMouseEnter={() => setShowButton(true)}
         onMouseLeave={() => setShowButton(false)}
       >
@@ -89,21 +90,49 @@ const TaskIndex: React.FC<TodoListProps> = ({ title, tasks,  onTaskUpdate }) => 
           {tasks.map((item) => (
             <li
               key={item.id}
-              className="flex border p-2 cursor-pointer hover:bg-gray-100"
+              className="flex border border-gray-200 cursor-pointer hover:bg-sub-color"
               onClick={() => handleTaskClick(item)}
             >
-              <div className="w-1/2 flex-grow p-2">{item.title}</div>
-              <div className="w-1/6 p-2 text-center">
-                {item.statusCode.detailDescription} |{" "}
-                {item.priorityCode.detailDescription}
+              <div
+                className={`flex-grow w-32 p-4 ${
+                  item.statusCode.detailDescription === "완료"
+                    ? "line-through text-gray-400"
+                    : ""
+                }`}
+              >
+                {item.title}
               </div>
-              <div className="w-1/6 p-2 text-center">
+              <div className="w-32 p-4 border-gray border-x-2 text-center">
+                <Chip
+                  label={item.statusCode.detailDescription}
+                  color={
+                    item.statusCode.detailDescription === "시작 전"
+                      ? "bg-yellow-500"
+                      : item.statusCode.detailDescription === "진행 중"
+                      ? "bg-blue-500"
+                      : "bg-green-500"
+                  }
+                />
+              </div>
+              <div className="w-32 p-4 border-gray border-x-2 text-center">
+                <Chip
+                  label={item.priorityCode.detailDescription}
+                  color={
+                    item.priorityCode.detailDescription === "상"
+                      ? "bg-red-500"
+                      : item.priorityCode.detailDescription === "중"
+                      ? "bg-orange-500"
+                      : "bg-gray-500"
+                  }
+                />
+              </div>
+              <div className="w-1/6 p-4 text-center">
                 {item.producerMemberName}
               </div>
-              <div className="w-1/12 p-2 text-center">
+              <div className="w-1/12 p-4 border-gray border-x-2 text-center">
                 {moment(item.startDay).format("MM-DD")}
               </div>
-              <div className="w-1/12 p-2 text-center">
+              <div className="w-1/12 p-4 text-center">
                 {moment(item.endDay).format("MM-DD")}
               </div>
             </li>
@@ -118,7 +147,10 @@ const TaskIndex: React.FC<TodoListProps> = ({ title, tasks,  onTaskUpdate }) => 
         />
       )}
       {showDetailTaskModal && (
-        <DetailTask onClose={() => setShowDetailTaskModal((prev) => !prev)} onTaskUpdate={onTaskUpdate} />
+        <DetailTask
+          onClose={() => setShowDetailTaskModal((prev) => !prev)}
+          onTaskUpdate={onTaskUpdate}
+        />
       )}
     </div>
   );

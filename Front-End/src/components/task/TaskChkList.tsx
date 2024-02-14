@@ -112,7 +112,7 @@ const TaskChkList: React.FC<TaskChkListProps>  = ({ taskDetail }) => {
             style={{ width: `${progressPercentage}%` }}
           ></div>
         </div>
-        <span className="text-sm font-medium">{progressPercentage}%</span>
+        <span className="pl-6 pr-2 text-sm font-medium">{progressPercentage}%</span>
       </div>
       <ul className="list-disc pl-6">
         {checklist.map((item) => (
