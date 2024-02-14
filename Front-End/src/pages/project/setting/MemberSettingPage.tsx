@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -169,25 +170,27 @@ const MemberSettingPage = () => {
   }, [projectId, memberId]); // Add memberId as a dependency to useEffect
 
   return (
-    <div className='bg-gray-300 w-auto h-auto p-16 m-5 border-black border-2'>
-      <div className='font-bold text-lg'>
+    <div className='w-auto h-auto p-16 m-5 rounded-lg shadow-xl'>
+      <div className='font-bold text-3xl'>
         신청 현황
       </div>
+      <hr className='my-3 border-main-color border-1' />
       {applyList.map((list, index) => (
         <div key={index} className="grid grid-cols-4 gap-4 items-center">
           <div>{list.jobCode.detailDescription}</div>
           <div>{list.member.nickname}</div>
-          <div className="flex justify-start gap-2">
-            <button className='px-3 bg-green-400 text-white' onClick={() => accept(list.member.id)}>수락</button>
-            <button className='px-3 bg-red-400 text-white' onClick={() => refuse(list.member.id)}>거절</button>
+          <div className="flex justify-start gap-2 p-1">
+            <button className='px-3 p-1 rounded-lg bg-green-400 text-white' onClick={() => accept(list.member.id)}>수락</button>
+            <button className='px-3 p-1 rounded-lg bg-red-400 text-white' onClick={() => refuse(list.member.id)}>거절</button>
           </div>
         </div>
       ))}
+      <div className='mb-10 text-white'>공백</div>
 
-
-      <div className='font-bold text-lg'>
+      <div className='font-bold text-3xl'>
         멤버 설정
       </div>
+      <hr className='my-3 border-main-color border-1' />
       {positions.map((position, index) => (
         <div key={index}>
           <div className="font-bold my-2">{position.posName}</div>
@@ -197,7 +200,7 @@ const MemberSettingPage = () => {
               // my-2 대신 mx-1 사용하여 좌우 마진 적용, 상하 마진은 컨테이너에 적용
               <div key={memberIndex} className="relative mx-1">
                 <span
-                  className="bg-gray-200 p-2 m-1 rounded-full cursor-pointer"
+                  className="bg-sub-color p-2 m-1 rounded-full cursor-pointer"
                   onClick={(e) => toggleActionableModal(member.id, position.posCode, e.clientX + 20, e.clientY, member.nickname)}
                 >
                   {member.nickname}
