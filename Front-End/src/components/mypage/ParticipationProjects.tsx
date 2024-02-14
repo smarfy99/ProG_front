@@ -23,7 +23,7 @@ interface ParticipationProjectsProps {
 }
 
 interface ProjectItem {
-    id: number;
+    projectId: number;
     title: string;
     startDay: string;
     endDay: string;
@@ -79,6 +79,8 @@ const useProjectList = (api:string) => {
         getProjectList();
     }, [api]);
 
+    console.log(`myProjectList: ${JSON.stringify(myProjectList)}`);
+
     return myProjectList;
 }
 
@@ -86,11 +88,10 @@ const ParticipationProjects: React.FC<ParticipationProjectsProps> = ({ selectIte
     const myProjectList = useProjectList(selectItem?.api || '');
 
     return (
-        <section>
+        <div className={'p-card-container'}>
             {myProjectList.map((data, index) => (
                 <article key={index} className={'project-link'}>
-                    {/*TODO : 상세로 이동*/}
-                    <Link to={''} >
+                    <Link to={`/project/${data.projectId}`} >
                         {/*이미지 영역*/}
                         <div className={'img-box flex justify-center'}>
                             <ImageWithFallback src={data.projectImgUrl} alt={''} type={'project'}/>
@@ -126,7 +127,7 @@ const ParticipationProjects: React.FC<ParticipationProjectsProps> = ({ selectIte
                     </Link>
                 </article>
             ))}
-        </section>
+        </div>
     );
 
 }
