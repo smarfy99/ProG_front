@@ -7,6 +7,7 @@ import { useDetailCodes } from "../../hooks/useDetailCodes";
 interface KPTMemoProps {
   modalOpen: boolean;
   setModalOpen: (value: boolean) => void;
+  onKPTUpdate: () => void;
 }
 
 interface DetailCodeData {
@@ -17,6 +18,7 @@ interface DetailCodeData {
 const WriteKPTMemo: React.FC<KPTMemoProps> = ({
   modalOpen,
   setModalOpen,
+  onKPTUpdate,
 }): ReactElement => {
   const modalBackground = useRef<HTMLDivElement>(null);
   const [selectedSection, setSelectedSection] = useState<string | null>("Keep");
@@ -44,7 +46,7 @@ const WriteKPTMemo: React.FC<KPTMemoProps> = ({
           return;
         }
         
-        const numPId = +projectId;
+        const numPId = projectId;
         
         const KPTdata = {
           projectId: numPId,
@@ -59,7 +61,7 @@ const WriteKPTMemo: React.FC<KPTMemoProps> = ({
         try {
           await axiosInstance.post("/retrospects", KPTdata);
           closeModalAndClearText();
-          window.location.reload();
+          onKPTUpdate();
         } catch (error) {
           console.log("비상");
         }

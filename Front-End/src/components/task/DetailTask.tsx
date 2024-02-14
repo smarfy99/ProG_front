@@ -39,9 +39,10 @@ interface DetailCode {
 
 interface DetailTaskProps {
   onClose: () => void; // onClose의 타입 명시
+  onTaskUpdate: () => void;
 }
 
-const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
+const DetailTask: React.FC<DetailTaskProps> = ({ onClose, onTaskUpdate }) => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -59,6 +60,7 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
   const [id, setId] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
   const [endDay, setEndDay] = useState(tomorrow);
+  const [taskPostedSuccessfully, setTaskPostedSuccessfully] = useState(false);
 
   const { data: multipleDetailCodesData } = useMultipleDetailCodes([
     "WorkType",
@@ -81,6 +83,20 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
   };
 
   const postTask = async () => {
+    // 입력 필드 검증
+    if (
+      !title ||
+      !selectedMemberId ||
+      !selectedTypeId ||
+      !selectedPriorityId ||
+      !editorContent
+    ) {
+      // 필요한 모든 필드가 입력되지 않았으므로 모달 표시
+      setShowModal(true);
+      return; // 함수를 여기서 종료시켜서, API 호출을 방지
+    }
+
+    // 모든 필수 입력 필드가 채워져 있으면 업무 등록 API 호출
     const taskInfo = {
       projectId: projectId,
       producerId: id,
@@ -94,26 +110,17 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
       endDay: moment(endDay).format("YYYY-MM-DD"),
     };
 
-    if (
-      !title ||
-      !selectedMemberId ||
-      !selectedTypeId ||
-      !selectedPriorityId ||
-      !editorContent
-    ) {
-      setShowModal(true); // 필요한 모든 필드가 입력되지 않았으므로 모달 표시
-      return; // 함수를 여기서 종료시켜서, API 호출을 방지
-    }
-
     try {
       await axiosInstance.post("/works", taskInfo, {
         headers: {
-          "Content-Type": "application/json", // 명시적으로 Content-Type 설정
+          "Content-Type": "application/json",
         },
       });
+      onTaskUpdate(); // 업무 등록 성공 후 상위 컴포넌트 업데이트
+      setTaskPostedSuccessfully(true); // 성공 알림 상태 업데이트
     } catch (error) {
-      console.log(taskInfo);
       console.log(error);
+      setShowModal(true); // 실패 시 기존 모달 표시
     }
   };
 
@@ -153,6 +160,16 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
     getPrjMember();
   }, []);
 
+  const chipStyle = (isSelected: boolean) => ({
+    margin: 0.5,
+    color: isSelected ? "#fff" : "#000",
+    backgroundColor: isSelected ? "#4B33E3" : "#ffffff", // 선택 시 배경색 변경 대신, 하얀색 배경 유지
+    border: isSelected ? `2px solid #4B33E3` : "1px solid #000000", // 선택된 Chip의 경우 border 색상을 main-color로 설정
+    "&:hover": {
+      opacity: 0.75,
+    },
+  });
+
   if (!isOpen) return null;
 
   return (
@@ -190,8 +207,8 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
         />
         <hr />
         <div className="flex my-4">
-          <FaRegCircleUser className="text-gray-600 mt-4 mr-2" />
-          <label htmlFor="member-select" className="mt-3 mr-2">
+          <FaRegCircleUser className="text-gray-600 mt-3 mr-2" />
+          <label htmlFor="member-select" className="mt-2 mr-2">
             담당자:
           </label>
           <select
@@ -211,53 +228,28 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
             ))}
           </select>
         </div>
-        <div className="flex my-4">
-          <FaBookBookmark className="mt-4" />
-          {workTypes.map((workType: DetailCode, index: number) => (
+        <div className="flex">
+          <FaBookBookmark className="mt-3" />
+          {workTypes.map((workType: DetailCode) => (
             <Chip
               key={workType.id}
               label={workType.detailDescription}
               onClick={() => handleWorkTypeClick(workType.id)}
-              variant={selectedTypeId === workType.id ? "filled" : "outlined"}
-              sx={{
-                margin: 0.5,
-                color: selectedTypeId === workType.id ? "#fff" : "#000",
-                backgroundColor:
-                  selectedTypeId === workType.id
-                    ? ["#FF5733", "#33FF57", "#3357FF", "#F833FF", "#FF8333"][
-                        index % 5
-                      ]
-                    : "#e0e0e0",
-                "&:hover": {
-                  opacity: 0.75,
-                },
-              }}
+              variant="outlined"
+              sx={chipStyle(selectedTypeId === workType.id)}
             />
           ))}
         </div>
-        <div className="flex my-4">
-          <FaBoltLightning className="mt-4" />
-          {workPriorities.map((workPriority: DetailCode, index: number) => (
+
+        <div className="flex">
+          <FaBoltLightning className="mt-3" />
+          {workPriorities.map((workPriority: DetailCode) => (
             <Chip
               key={workPriority.id}
               label={workPriority.detailDescription}
               onClick={() => handleWorkPriorityClick(workPriority.id)}
-              variant={
-                selectedPriorityId === workPriority.id ? "filled" : "outlined"
-              }
-              sx={{
-                margin: 0.5,
-                color: selectedPriorityId === workPriority.id ? "#fff" : "#000",
-                backgroundColor:
-                  selectedPriorityId === workPriority.id
-                    ? ["#FF5733", "#33FF57", "#3357FF", "#F833FF", "#FF8333"][
-                        index % 5
-                      ]
-                    : "#e0e0e0",
-                "&:hover": {
-                  opacity: 0.75,
-                },
-              }}
+              variant="outlined"
+              sx={chipStyle(selectedPriorityId === workPriority.id)}
             />
           ))}
         </div>
@@ -272,13 +264,35 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose }) => {
             />
           </div>
         </div>
-        <button
-          onClick={postTask}
-          className="mt-10 bg-blue-500 text-white p-2 rounded"
-        >
-          업무 등록
-        </button>
+        <div className="flex justify-center">
+          <button
+            onClick={postTask}
+            className="mt-10 bg-blue-500 text-white p-4 rounded"
+          >
+            업무 등록
+          </button>
+        </div>
       </div>
+      {taskPostedSuccessfully && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white p-4 rounded-lg shadow-lg max-w-sm mx-auto">
+            <h2 className="text-xl font-bold mb-4">업무가 등록되었습니다!</h2>
+            <p className="mb-4">프로젝트를 위해 힘내주세요!</p>
+            <div className="flex justify-center">
+              <button
+                onClick={() => {
+                  setTaskPostedSuccessfully(false); // 모달 닫기
+                  onClose(); // DetailTask 모달 닫기
+                }}
+                className="bg-main-color hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                화이팅!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-white p-4 rounded-lg shadow-lg max-w-sm mx-auto">

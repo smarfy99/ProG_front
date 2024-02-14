@@ -8,9 +8,10 @@ interface Memo {
 
 interface BoardProps {
   memos: Memo[];
+  onKPTUpdate: () => void;
 }
 
-const KeepBoard: React.FC<BoardProps> = ({ memos }) => {
+const KeepBoard: React.FC<BoardProps> = ({ memos, onKPTUpdate }) => {
   const [showDetailModal, setShowDetailModal] = useState(false);
 
   const handleMoreClick = () => {
@@ -44,6 +45,7 @@ const KeepBoard: React.FC<BoardProps> = ({ memos }) => {
         isOpen={showDetailModal}
         onClose={() => setShowDetailModal(false)}
         memos={memos}
+        onKPTUpdate={onKPTUpdate}
       />
     </div>
   );

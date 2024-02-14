@@ -7,6 +7,7 @@ import moment from "moment";
 type TodoListProps = {
   title: string;
   tasks: Task[];
+  onTaskUpdate: () => void;
 };
 
 interface Task {
@@ -36,7 +37,7 @@ interface Task {
   endDay: string;
 }
 
-const TaskIndex: React.FC<TodoListProps> = ({ title, tasks }) => {
+const TaskIndex: React.FC<TodoListProps> = ({ title, tasks,  onTaskUpdate }) => {
   const [showButton, setShowButton] = useState<boolean>(false);
   const [indexListOn, setIndexListOn] = useState<boolean>(false);
   const [showDetailTaskModal, setShowDetailTaskModal] =
@@ -113,10 +114,11 @@ const TaskIndex: React.FC<TodoListProps> = ({ title, tasks }) => {
         <TaskOneDetail
           taskDetail={selectedTaskDetail}
           onClose={() => setSelectedTaskDetail(null)}
+          onTaskUpdate={onTaskUpdate}
         />
       )}
       {showDetailTaskModal && (
-        <DetailTask onClose={() => setShowDetailTaskModal((prev) => !prev)} />
+        <DetailTask onClose={() => setShowDetailTaskModal((prev) => !prev)} onTaskUpdate={onTaskUpdate} />
       )}
     </div>
   );

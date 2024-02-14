@@ -58,7 +58,6 @@ export const LoginPage: React.FC = () => {
 					<span className='text-3xl font-bold'>Prog</span>
 				</div>
 				<p className='m-2 text-center'>환영합니다!</p>
-				<p className='text-center'>로그인을 통해</p>
 				<p className='mb-4 text-center'>당신의 프로젝트와 꿈으로 나아가보세요</p>
 				<form onSubmit={handleSubmit} className='m-2'>
 					<div>

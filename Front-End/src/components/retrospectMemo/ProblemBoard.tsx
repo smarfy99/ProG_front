@@ -8,9 +8,10 @@ interface Memo {
 
 interface BoardProps {
   memos: Memo[];
+  onKPTUpdate: () => void;
 }
 
-const ProblemBoard: React.FC<BoardProps> = ({ memos }) => {
+const ProblemBoard: React.FC<BoardProps> = ({ memos, onKPTUpdate }) => {
   const [showDetailModal, setShowDetailModal] = useState(false);
   // +더보기 버튼을 클릭할 때 호출될 핸들러
   const handleMoreClick = () => {
@@ -44,6 +45,7 @@ const ProblemBoard: React.FC<BoardProps> = ({ memos }) => {
         isOpen={showDetailModal}
         onClose={() => setShowDetailModal(false)}
         memos={memos}
+        onKPTUpdate={onKPTUpdate}
       />
     </div>
   );

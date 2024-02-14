@@ -154,6 +154,7 @@ const MyProfile = () => {
               className="cursor-pointer text-indigo-500 hover:text-indigo-600 transition-colors duration-200"
             />
           </div>
+
           {isEditMode && (
             <button
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-auto block"
