@@ -7,6 +7,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { CustomArrowProps } from 'react-slick';
+import { useUserStore } from '../../stores/useUserStore';
+import { useRequireAuth } from '../../hooks/useRequireAuth';
 
 interface ProjectItem {
 	id: number;
@@ -24,6 +26,16 @@ interface ProjectItem {
 
 const HomePage = () => {
 	const navigate = useNavigate();
+	const profile = useUserStore((state) => state.profile);
+	const [isLogin, setIsLogin] = useState(false);
+	useRequireAuth(isLogin);
+
+	useEffect(() => {
+		if (profile) {
+			setIsLogin(true);
+		}
+	});
+
 	type NavigateOption = {
 		// [key: string]: any;
 		[key: string]: unknown;

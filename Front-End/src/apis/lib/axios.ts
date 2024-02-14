@@ -35,7 +35,10 @@ axiosInstance.interceptors.response.use(
 		//originalRequest._retry는 axios 요청 객체에 임의로 추가한 속성
 		//특정 요청이 이미 재시도되었는지 여부를 추적하는 데 사용됨
 		//accessToken이 만료되었을 때 토큰을 자동으로 갱신하고 원래 요청을 재시도하는 로직을 구현할 때 사용
-		if (errorCode === ERROR_CODES.TOKEN.EXPIRED_ACCESS_TOKEN && !originalRequest._retry) {
+		if (
+			(errorCode === ERROR_CODES.TOKEN.EXPIRED_ACCESS_TOKEN || errorCode === ERROR_CODES.TOKEN.INVALID_ACCESS_TOKEN) &&
+			!originalRequest._retry
+		) {
 			originalRequest._retry = true; //재시도한 요청 -> 무한 루프 빠지지 않게 재시도 요청x
 			try {
 				const newAccessToken = await reissueToken();

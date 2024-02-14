@@ -15,8 +15,8 @@ const ActionBoard = () => {
 			<div className='flex text-main-color font-semibold text-2xl'>Action</div>
 			<div className='flex flex-col'>
 				{action?.data?.map((act, index) => (
-					<div key={index} className='flex flex-col my-1'>
-						{act.content}
+					<div key={index} className='flex flex-col my-1 font-semibold text-lg justify-center'>
+						{`${index + 1}. ${act.content}`}
 					</div>
 				))}
 			</div>

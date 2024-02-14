@@ -9,6 +9,7 @@ import moment from 'moment';
 import 'moment/locale/ko'; //한국어 locale 설정
 import { axiosInstance } from '../../apis/lib/axios';
 import { useState, useEffect, useCallback, SetStateAction } from 'react';
+import { FaCircleChevronRight, FaCircleChevronLeft } from 'react-icons/fa6';
 
 interface CommuteCheckBtnProps {
 	projectId: number;
@@ -27,16 +28,29 @@ const CustomToolbar: React.FC<ToolbarProps> = ({ onNavigate, label, onView }) =>
 	};
 
 	return (
-		<div className='flex justify-center'>
-			<button type='button' onClick={() => onNavigate('PREV')} className='flex text-2xl'>
-				👈
-			</button>
-			<div className='flex text-2xl'>{label}</div>
-			<button type='button' onClick={() => onNavigate('NEXT')} className='flex text-2xl'>
-				👉
-			</button>
-			<button type='button' onClick={goToToday} className='flex text-2xl '>
-				오늘
+		<div className='flex justify-between items-center mb-3'>
+			<div className='flex justify-center items-center'>
+				<FaCircleChevronLeft
+					type='button'
+					onClick={() => onNavigate('PREV')}
+					className='flex mr-3 text-2xl cursor-pointer bg-white text-main-color'
+				/>
+
+				<div className='flex text-2xl'>{label}</div>
+
+				<FaCircleChevronRight
+					type='button'
+					onClick={() => onNavigate('NEXT')}
+					className='flex ml-3 text-2xl cursor-pointer bg-white text-main-color'
+				/>
+			</div>
+
+			<button
+				type='button'
+				onClick={goToToday}
+				className='flex text-medium w-14 h-10 rounded-2xl bg-main-color text-white justify-center items-center'
+			>
+				Today
 			</button>
 		</div>
 	);
