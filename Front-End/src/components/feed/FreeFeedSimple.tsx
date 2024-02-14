@@ -5,6 +5,7 @@ type FreeFeedSimpleProps = {
     memberId: number;
     nickname: string;
     imgUrl: string;
+    position: string;
     boardId: number;
     createdAt: string;
     isDeleted: boolean;
@@ -19,6 +20,7 @@ type FreeFeedSimpleProps = {
 const FreeFeedSimple: FC<FreeFeedSimpleProps> = ({
                                                      nickname,
                                                      imgUrl,
+                                                     position,
                                                      boardId,
                                                      createdAt,
                                                      title,
@@ -69,22 +71,25 @@ const FreeFeedSimple: FC<FreeFeedSimpleProps> = ({
             className="gap-4 hover:bg-stone-50 border-t-2 border-indigo-300 p-4 h-24"
         >
             <div className="flex justify-between items-center">
-                <div className="grid gap-4">
-                    <p><img className="flex-none w-8 h-8 rounded-full"
+                <div className="flex">
+                    <p><img className="flex-none w-12 h-12 rounded-full"
                             src={imgUrl} alt="Profile"/></p>
-                    <p>{nickname}</p>
-                </div>
-                <div className=" ml-4 mr-4">
-                    <p className="mt-2">{title}</p>
-                    {showDetail && (
-                        <FeedDetail
-                            boardId={boardId}
-                            onClose={onClickClose}
-                            popFeeds={popFeeds}
-                            index={index}
-                            getFreeFeeds={() => getFreeFeeds()}
-                        />
-                    )}
+                    <div className="grid ml-4">
+                        <p className="">{nickname}</p>
+                        <p className="text">{position}</p>
+                    </div>
+                    <div className=" ml-4 mr-4 pl-4">
+                        <p className="mt-2">{title}</p>
+                        {showDetail && (
+                            <FeedDetail
+                                boardId={boardId}
+                                onClose={onClickClose}
+                                popFeeds={popFeeds}
+                                index={index}
+                                getFreeFeeds={() => getFreeFeeds()}
+                            />
+                        )}
+                    </div>
                 </div>
                 <div className="flex gap-4">
                     <p>{formatDate(createdAt)}</p>

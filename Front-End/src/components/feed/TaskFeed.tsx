@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import TaskFeedSimple from './TaskFeedSimple.tsx';
-import { axiosInstance } from '../../apis/lib/axios.ts';
-import { useUserStore } from '../../stores/useUserStore.ts';
-import { useParams } from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import TaskFeedSimple from "./TaskFeedSimple.tsx";
+import {axiosInstance} from "../../apis/lib/axios.ts";
+import {useUserStore} from "../../stores/useUserStore.ts";
+import {useParams} from "react-router-dom";
 
 const TaskFeed = () => {
 	const { profile } = useUserStore();
@@ -30,24 +30,24 @@ const TaskFeed = () => {
 		getTaskFeed();
 	}, []);
 
-	return (
-		<div className='flex flex-col h-full'>
-			<div className='p-8 w-full mt-10 flex-grow overflow-y-auto'>
-				{feeds.map((feed, index) => (
-					<div className='flex flex-col' key={feed.feedId}>
-						<TaskFeedSimple
-							feedId={feed.feedId}
-							contentsCode={feed.contentsCode}
-							contentsId={feed.contentsId}
-							memberImgUrl={feed.memberImgUrl}
-							feedContent={feed.feedContent}
-							index={index}
-						/>
-					</div>
-				))}
-			</div>
-		</div>
-	);
+    return (
+        <div className='flex flex-col h-full'>
+            <div className="p-8 w-full mt-10 flex-grow overflow-y-auto">
+                {feeds.map((feed) => (
+                    <div className="flex flex-col" key={feed.feedId}>
+                        <TaskFeedSimple
+                            feedId={feed.feedId}
+                            contentsCode={feed.contentsCode}
+                            contentsId={feed.contentsId}
+                            memberImgUrl={feed.memberImgUrl}
+                            feedContent={feed.feedContent}
+                        />
+                    </div>
+                ))}
+            </div>
+
+        </div>
+    );
 };
 
 export default TaskFeed;

@@ -136,60 +136,67 @@ const FeedDetail: FC<FeedDetailProps> = ({ boardId, onClose = () => {}, popFeeds
 		return formattedDateTime;
 	};
 
-	return (
-		<div className='fixed inset-0 bg-gray-200 bg-opacity-50 flex justify-center items-center z-10 '>
-			<div
-				ref={modalRef}
-				id='indi'
-				className='bg-white mt-2 gap-4 border-2 border-main-color rounded-lg p-4 shadow-lg w-1/2 h-4/5 overflow-y-auto'
-			>
-				<div className='flex pt-4 pr-2 pl-2 pb-4 justify-between items-center'>
-					<div className='flex justify-between gap-4'>
-						<div className='row'>
-							<p>
-								<img className='ml-2 w-12 h-12 rounded-full' src={feed.imgUrl} alt='Profile' />
-							</p>
-							<p className=''>{feed.nickname}</p>
-						</div>
-					</div>
-					<div className='flex gap-2'>
-						<p>{formatDate(feed.createdAt)}</p>
-						<FaEllipsisVertical className='text-xl' color='#4B33E3' onClick={handleEllipsisClick} />
-						{showModiDelete && (
-							<div className='grid grid-rows-1 absolute 40 right-1/4 top-36 bg-white shadow-xl border-solid border-2 border-indigo-600 rounded-lg mt-1 z-40 h-30'>
-								<button className='w-40 m-2 hover:text-violet-600' onClick={handleModifyClick}>
-									수정하기
-								</button>
-								<button className='w-40 m-2 hover:text-violet-600' onClick={handleDelete}>
-									삭제하기
-								</button>
-							</div>
-						)}
-						{showModiDetail && (
-							<div className='z-40'>
-								<ModiDetail
-									boardId={boardId}
-									onClose={() => setShowModiDetail(false)}
-									getFreeFeedDetail={() => getFreeFeed()}
-								/>
-							</div>
-						)}{' '}
-					</div>
-				</div>
-				<div>
-					<p className='mt-2 mb-4 text-3xl'>{feed.title}</p>
-					<hr />
-					<div>
-						<div className='mt-4 mb-4 h-auto' dangerouslySetInnerHTML={{ __html: feed.content }}></div>
-					</div>
-					<hr />
-					<div className='bg-scroll'>
-						<Comment contentCode='게시물' contentId={boardId.toString()} />
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+    return (
+        <div className="fixed inset-0 bg-gray-200 bg-opacity-50 flex justify-center items-center z-10 ">
+            <div
+                ref={modalRef}
+                id="indi"
+                className="bg-white mt-2 gap-4 border-2 border-main-color rounded-lg p-4 shadow-lg w-1/2 h-4/5 overflow-y-auto"
+            >
+                <div className="flex pt-4 pr-2 pl-2 pb-4 justify-between items-center">
+                    <div className="flex justify-between gap-4">
+                        <div className="row">
+                            <p><img className="ml-2 w-12 h-12 rounded-full"
+                                    src={feed.imgUrl} alt="Profile"/></p>
+                            <p className="ml-3 pt-2">{feed.nickname}</p>
+                        </div>
+                    </div>
+                    <div className="flex gap-2">
+                        <p>{formatDate(feed.createdAt)}</p>
+                        <FaEllipsisVertical
+                            className="text-xl"
+                            color="#4B33E3"
+                            onClick={handleEllipsisClick}
+                        />
+                        {showModiDelete && (
+                            <div
+                                className="grid grid-rows-1 absolute 40 right-1/4 top-36 bg-white shadow-xl border-solid border-2 border-indigo-600 rounded-lg mt-1 z-40 h-30">
+                                <button className="w-40 m-2 hover:text-violet-600" onClick={handleModifyClick}>수정하기
+                                </button>
+                                <button className="w-40 m-2 hover:text-violet-600" onClick={handleDelete}>삭제하기</button>
+                            </div>
+                        )}
+                        {showModiDetail && (
+                            <div className="z-40">
+                                <ModiDetail
+                                    boardId={boardId}
+                                    onClose={() => setShowModiDetail(false)}
+                                    getFreeFeedDetail={() => getFreeFeed()}
+                                />
+                            </div>
+
+                        )}{" "}
+                    </div>
+                </div>
+                <div>
+                    <p className="mt-2 mb-4 text-3xl">{feed.title}</p>
+                    <div>
+                        <div
+                            className="ml-2 mt-5 mb-4 h-auto"
+                            dangerouslySetInnerHTML={{__html: feed.content}}
+                        ></div>
+                    </div>
+                    <hr/>
+                    <div className="bg-scroll pt-4">
+                        <Comment
+                            contentCode='게시물'
+                            contentId={boardId.toString()}
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default FeedDetail;
