@@ -1,5 +1,6 @@
 @import "common-color";
-section {
+//section {
+.p-card-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 2.4rem 1.5rem;
