@@ -221,7 +221,11 @@ const MemberSettingPage = () => {
           }}
         >
           <div className="font-bold">{actionableModal.nickname}</div>
-          <div className="block mt-2 cursor-pointer text-red-600" onClick={() => exile(actionableModal.memberId)}>추방</div>
+          <div className="block my-2 cursor-pointer text-red-600" onClick={() => exile(actionableModal.memberId)}>추방</div>
+          <hr className='my-3 border-main-color border-1' />
+          <div>
+          포지션 변경
+          </div>
           <div className="inline-block mt-2 relative">
             <select
               className="appearance-none w-full bg-white border px-4 py-2 pr-8 rounded leading-tight"
@@ -234,7 +238,9 @@ const MemberSettingPage = () => {
                 </option>
               ))}
             </select>
-            <button onClick={applyPositionChange} className="mt-2">변경</button>
+            <div className='flex justify-center '>
+            <button onClick={applyPositionChange} className="mt-2 rounded-lg bg-main-color p-2 text-white">변경</button>
+            </div>
           </div>
         </div>
       )}

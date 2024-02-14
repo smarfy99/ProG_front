@@ -16,7 +16,7 @@ const RecruitCard = () => {
             onClick={() => window.scrollTo({ top: 0 })}
           >
           <div className='flex justify-between w-auto mt-2'>
-            <span className={`bg-yellow-300 text-black font-bold px-2 py-1 rounded-lg ${
+            <span className={` text-black font-bold px-2 py-1 rounded-lg ${
                 result.statusCode.detailDescription === '모집중' ? 'bg-yellow-200' :
                 result.statusCode.detailDescription === '진행중' ? 'bg-green-200' :
                 result.statusCode.detailDescription === '완료' ? 'bg-red-200' : ''}`}>
@@ -30,17 +30,17 @@ const RecruitCard = () => {
             </div>
           </div>
 
-          <img src={result.projectImgUrl || logo} alt='Project Thumbnail' className='w-56 h-40 mt-2' />
+          <img src={result.projectImgUrl || logo} alt='Project Thumbnail' className='w-56 h-32 mt-2' />
 
           <div className='font-bold w-56'>{truncate(result.title, 14)}</div>
-          <div className='flex flex-wrap justify-center'>
+          <div className='flex flex-wrap justify-center w-56 h-20 my-1'>
             {result.techCodes.slice(0, 6).map((tag) => (
-              <span key={tag.id} className='mr-2 p-1 bg-gray-300 text-black rounded-lg mb-1 hover:bg-pink-300'>
+              <span key={tag.id} className='mr-2 p-1 bg-sub-color text-black rounded-lg mb-1 h-8'>
                 {tag.detailName}
               </span>
             ))}
           </div>
-            <div className='text-gray-600 font-semibold ml-7 mt-5'>
+            <div className='text-gray-600 font-semibold ml-7 mb-3'>
               모집인원 {result.current}/{result.total}
           </div>
             </Link>

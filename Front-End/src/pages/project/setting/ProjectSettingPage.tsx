@@ -44,7 +44,8 @@ const ProjectSettingPage: React.FC = () => {
     projectPeriodNum: 0,
     projectPeriodUnit: '주',
   });
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<string>("");
   useEffect(() => {
     getData();
     return () => {
@@ -118,17 +119,19 @@ const ProjectSettingPage: React.FC = () => {
 
   const handleSave = async () => {
     const { projectTitle, projectContent } = state;
-
-    if (projectTitle === '') {
-      alert('제목을 입력해주세요.');
+if (projectTitle === '') {
+      setModalMessage("제목을 입력해 주세요");
+      setIsModalOpen(true);
       return;
     } else if (projectContent === '') {
-      alert('본문을 입력해주세요.');
+      setModalMessage("본문을 입력해 주세요");
+      setIsModalOpen(true);
       return;
-    } else if (position.totalList.length === 0) {
-      alert('한 개 이상의 포지션을 입력해주세요.');
+    } else if (position.totalList.some(item => item.jobCode == 0)) {
+      setModalMessage("모든 포지션을 선택해 주세요");
+      setIsModalOpen(true);
       return;
-    } else {
+    }else {
       let periodCal;
       if (state.projectPeriodUnit === '달') {
         periodCal = state.projectPeriodNum * 4;
@@ -164,17 +167,14 @@ const ProjectSettingPage: React.FC = () => {
           },
         });
         console.log("Response:", response);
-        setModalVisible(true);
+        setModalMessage("프로젝트가 수정되었습니다!");
+        setIsModalOpen(true);
+        navigate('../'); // '/recruit' 경로로 네비게이션 합니다.
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // 페이지 상단으로 스크롤합니다.
       } catch (error) {
         console.error("Post failed:", error);
       }
     }
-  };
-  const closeModal = () => {
-    // Close the modal
-    setModalVisible(false);
-    navigate('../');
-    window.scrollTo({ top: 0 });
   };
 
   return (
@@ -262,15 +262,27 @@ const ProjectSettingPage: React.FC = () => {
         <button onClick={handleSave} className='mt-5 bg-main-color text-white p-3'>
           저장
         </button>
-
-        {isModalVisible && (
-          <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
-            <div className='bg-white p-8'>
-              <p>저장되었습니다!</p>
-              <button onClick={closeModal}>닫기</button>
+        {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+          <div className="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div className="mt-3 text-center">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                {modalMessage}
+              </h3>
+              <div className="items-center px-4 py-3">
+                <button
+                  onClick={() => {
+                    setIsModalOpen(false); // 모달을 닫습니다.
+                  }}
+                  className="mt-3 px-4 py-2 bg-main-color text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                  닫기
+                </button>
+              </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
       </div>
     </div>
   );

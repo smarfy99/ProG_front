@@ -175,7 +175,7 @@ const RecruitProjectPage = () => {
             <div className='m-5'>
               <div className='flex flex-wrap'>
                 {mystack.map((tech, index) => (
-                  <div key={index} className='bg-gray-200 p-1 m-1 rounded-full'>
+                  <div key={index} className='bg-sub-color p-1 m-1 rounded-lg'>
                     {tech}
                   </div>
                 ))}
