@@ -47,38 +47,35 @@ const TryDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos, onKPTUpd
   });
 
   const postAction = async () => {
-    const selectedAction = memos.find(
-      (memo) => memo.retrospectId === selectedActionId
-    );
-    if (!selectedAction) return; // 선택된 액션 없으면 함수 종료
-
-    if (selectedActionsCount > 3) {
+    const selectedAction = memos.find(memo => memo.retrospectId === selectedActionId);
+    if (!selectedAction) return;
+  
+    if (selectedActionsCount >= 3) {
       setShowLimitModal(true);
       return;
     }
-
+  
     const postInfo = {
       projectId: projectId,
-      contents: [{ content: selectedAction.content }], // 선택된 액션의 내용만 포함
+      contents: [{ content: selectedAction.content }],
       week: 1,
     };
-
+  
     try {
       await axiosInstance.post("/actions", postInfo, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      if (selectedActionsCount < 3) {
-        const newCount = selectedActionsCount + 1;
-        setSelectedActionsCount(newCount);
-        console.log(selectedActionsCount);
-      }
+      // 성공적으로 액션 등록 후 상태 업데이트
+      setSelectedActionsCount(prevCount => prevCount + 1);
+      // 성공적으로 액션 등록 후 모달 표시
+      setShowModal(true); 
     } catch (error) {
       console.error(error);
     }
   };
-
+  
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.slice(0, 50); // 최대 50글자까지 입력 가능
     setEditContent(newValue);

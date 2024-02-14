@@ -96,7 +96,7 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({
         </div>
 
         <div className="mb-4">
-          <strong className="mr-2">상태:</strong>
+          <strong className="mr-2 p-2">상태:</strong>
           {workStatus.map((status: DetailCode) => (
             <Chip
               key={status.id}
@@ -104,24 +104,32 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({
               onClick={() => handleChangeStatus(status.id)}
               color={selectedStatusId === status.id ? "primary" : "default"}
               variant="outlined"
-              className="mr-2"
+              style={{ marginRight: 8 }}
             />
           ))}
         </div>
-
-        <div className="mb-4">
+            <hr/>
+        <div className="mb-4 p-2">
           <strong>우선순위:</strong> {taskDetail.priorityCode.detailDescription}
         </div>
-        <div className="mb-4">
+        <hr/>
+        <div className="mb-4 p-2">
           <strong>담당자:</strong> {taskDetail.producerMemberName}
         </div>
-        {detailData && (
-          <div
-            className="mt-4"
-            dangerouslySetInnerHTML={{ __html: detailData.workContent }}
-          ></div>
-        )}
+        <hr/>
+        <div>
+          <strong className="p-2 mb-4">업무 내용</strong>
+          {detailData && (
+            <p
+              className="p-2"
+              dangerouslySetInnerHTML={{ __html: detailData.workContent }}
+            ></p>
+          )}
+        </div>
+        <hr/>
+        <div className="p-2">
         <TaskChkList taskDetail={taskDetail} />
+        </div>
         <div className="flex justify-end space-x-2 mt-4">
           <button
             onClick={() => setIsEditing(true)}
