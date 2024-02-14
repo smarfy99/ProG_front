@@ -18,18 +18,18 @@ export const RetrospectPage = () => {
 
 	const projectId = params.projectId;
 
+  const getKPT = async () => {
+    if (!isAuthenticated) return; // 인증이 완료되지 않았다면 함수를 종료한다.
+
+    try {
+      const response = await axiosInstance.get(`/retrospects/${projectId}`);
+      setKptData(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 	useEffect(() => {
-		const getKPT = async () => {
-			if (!isAuthenticated) return; // 인증이 완료되지 않았다면 함수를 종료한다.
-
-			try {
-				const response = await axiosInstance.get(`/retrospects/${projectId}`);
-				setKptData(response.data.data);
-			} catch (error) {
-				console.error(error);
-			}
-		};
-
 		if (!isLoading) {
 			getKPT();
 		}
@@ -41,15 +41,15 @@ export const RetrospectPage = () => {
 
 	return (
 		<div>
-			<p>현재 N주차</p>
+			<p>현재 1주차</p>
 			<div className='flex justify-center items-center'>
 				<div className='mt-10'>
-					<KeepBoard memos={kptData.Keep} />
-					<ProblemBoard memos={kptData.Problem} />
-					<TryBoard memos={kptData.Try} />
+					<KeepBoard memos={kptData.Keep} onKPTUpdate={getKPT}/>
+					<ProblemBoard memos={kptData.Problem} onKPTUpdate={getKPT}/>
+					<TryBoard memos={kptData.Try} onKPTUpdate={getKPT}/>
 					<div className='flex justify-center my-4'>
 						<FaAnglesLeft
-							onClick={() => navigate(`/project/${projectId}/prevretrospect`)} // 후에 url project params 받아서 다시 수정
+							onClick={() => navigate(`/project/${projectId}/prevretrospect`)}
 							className='cursor-pointer bg-sub-color border-black border-1 text-white font-bold rounded-full shadow-lg flex items-center justify-center w-12 h-12 m-2'
 						/>
 						<FaPlus
@@ -57,7 +57,7 @@ export const RetrospectPage = () => {
 							className='cursor-pointer m-2 bg-sub-color text-white font-bold rounded-full shadow-lg flex items-center justify-center w-12 h-12'
 						/>
 					</div>
-					<KPTMemo modalOpen={modalOpen} setModalOpen={setModalOpen} />
+					<KPTMemo modalOpen={modalOpen} setModalOpen={setModalOpen} onKPTUpdate={getKPT}/>
 				</div>
 			</div>
 		</div>

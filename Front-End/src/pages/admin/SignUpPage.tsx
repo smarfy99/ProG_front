@@ -5,14 +5,6 @@ import Timer from "../../components/alarm/Timer";
 import SignUpInfo from "../../components/alarm/SignUpInfo";
 import { useNavigate } from "react-router-dom";
 
-// interface UserData {
-//   email: string;
-//   certificationNo: string;
-//   password: string;
-//   name: string;
-//   nickname: string;
-// }
-
 export const SignUpForm: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>("");
   const [emailValid, setEmailValid] = useState(true);
@@ -21,6 +13,16 @@ export const SignUpForm: React.FC = () => {
   const [passwordChk, setPasswordChk] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
+  const [useNickname, setUseNickname] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<string>("");
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [isNicknameModalOpen, setIsNicknameModalOpen] =
+    useState<boolean>(false);
+  const [authModalMessage, setAuthModalMessage] = useState<string>("");
+  const [nicknameModalMessage, setNicknameModalMessage] = useState<string>("");
+
+  const [isEmailVerified, setIsEmailVerified] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -39,7 +41,7 @@ export const SignUpForm: React.FC = () => {
     try {
       const response = await axiosInstance.post("/members/sign-up", userData);
       console.log(response.data);
-      navigate('/');
+      navigate("/login");
     } catch (error) {
       console.error("회원가입 오류", error);
     }
@@ -54,63 +56,53 @@ export const SignUpForm: React.FC = () => {
   };
 
   const emailVerification = async () => {
-    console.log(userEmail);
     const veriEmail = {
       email: userEmail,
-    }
+    };
     try {
+      await axiosInstance.post("/members/email-verification", veriEmail);
       startTimer();
-      await axiosInstance.post(
-        "/members/email-verification",
-        veriEmail
-        );
-      console.log("이메일 사용 가능");
+      setModalMessage("메일을 확인해주세요!");
+      setIsModalOpen(true); // 모달창을 열어 사용자에게 메시지 표시
     } catch (error) {
-      console.log("이메일 오류");
+      setModalMessage("이메일 인증 요청 중 오류가 발생했습니다.");
+      setIsModalOpen(true);
     }
   };
-  
+
   const emailVerificationConfirm = async () => {
     const veridata = {
       email: userEmail,
       authCode: certificationNo,
-    }
-    console.log(veridata)
+    };
     try {
-      await axiosInstance.post(
-        "/members/email-verification-confirm",
-        veridata
-        );
-        
-// 인증 콘솔 지우고, Modal창으로 OK 해주기
+      await axiosInstance.post("/members/email-verification-confirm", veridata);
+      setAuthModalMessage("인증에 성공했습니다.");
+      setIsAuthModalOpen(true);
+      setIsEmailVerified(true); // 인증 성공 시 상태 업데이트
+    } catch (error) {
+      setAuthModalMessage("인증에 실패했습니다.");
+      setIsAuthModalOpen(true);
+      setIsEmailVerified(false); // 인증 실패 시 상태 업데이트
+    }
+  };
 
-        console.log("인증 완료");
-      } catch (error) {
-        console.log("인증 안됨 ㅠ");
-      }
-    };
-    
-    const chkNickNameDuplication = async () => {
-      try {
-        await axiosInstance.post(
-          "/members/nickname-validation-check",
-          { nickname: nickname }, // 요청 본문을 객체 형태로 수정
-          {
-            headers: {
-              'Content-Type': 'application/json' // 필요한 경우 Content-Type 설정
-            }
-          }
-        );
-  
-        console.log("닉네임 사용 가능");
-      } catch (error) {
-        console.log("닉네임 중복 오류");
-      }
-    };
+  const chkNickNameDuplication = async () => {
+    try {
+      await axiosInstance.post("/members/nickname-validation-check", {
+        nickname: nickname,
+      });
+      setNicknameModalMessage("닉네임 사용 가능");
+      setIsNicknameModalOpen(true);
+    } catch (error) {
+      setNicknameModalMessage("중복된 닉네임입니다.");
+      setIsNicknameModalOpen(true);
+    }
+  };
 
-    // TailWind는 따로 클래스로 빼서 사용할 수 있음..
-    const inputClass = "border-solid border-2 border-gray-300 p-2 rounded";
-    const buttonClass =
+  // TailWind는 따로 클래스로 빼서 사용할 수 있음..
+  const inputClass = "border-solid border-2 border-gray-300 p-2 rounded";
+  const buttonClass =
     "bg-main-color hover:bg-purple-400 text-white font-bold p-2 rounded";
 
   const validateEmail = (email: string) => {
@@ -183,7 +175,9 @@ export const SignUpForm: React.FC = () => {
       name !== "" &&
       validateName(name) &&
       nickname !== "" &&
-      validateNickName(nickname)
+      validateNickName(nickname) &&
+      isEmailVerified && // 이메일 인증 여부 확인
+      useNickname // 닉네임 사용 여부 확인
     );
   };
 
@@ -205,8 +199,10 @@ export const SignUpForm: React.FC = () => {
               <p className="text-2xl font-bold">ProG</p>
             </div>
             <div className="flex">
-            <p className="m-2 mb-10 text-center text-3xl font-bold">회원가입</p>
-            <SignUpInfo/>
+              <p className="m-2 mb-10 text-center text-3xl font-bold">
+                회원가입
+              </p>
+              <SignUpInfo />
             </div>
             <form
               onSubmit={signUpSubmit}
@@ -219,7 +215,7 @@ export const SignUpForm: React.FC = () => {
                   type="text"
                   value={userEmail}
                   onChange={handleEmailChange}
-                  placeholder="id@example.com"
+                  placeholder="id@prog.com"
                   className={`w-72 ${inputClass}`}
                 />
                 <button
@@ -262,6 +258,56 @@ export const SignUpForm: React.FC = () => {
                   확인
                 </button>
               </div>
+              {isModalOpen && (
+                <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+                  <div className="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div className="mt-3 text-center">
+                      <h3 className="text-lg leading-6 font-medium text-gray-900">
+                        {modalMessage}
+                      </h3>
+                      <div className="items-center px-4 py-3">
+                        <button
+                          onClick={() => setIsModalOpen(false)}
+                          className="mt-3 px-4 py-2 bg-main-color text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                        >
+                          닫기
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {isAuthModalOpen && (
+                <div
+                  className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center"
+                  id="auth-modal"
+                >
+                  <div className="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div className="mt-3 text-center">
+                      <h3 className="text-lg leading-6 font-medium text-gray-900">
+                        {authModalMessage}
+                      </h3>
+                      <div className="mt-2 px-7 py-3">
+                        <p className="text-sm text-gray-500">
+                          {authModalMessage === "인증에 실패했습니다."
+                            ? "다시 시도해 주세요."
+                            : "이메일이 성공적으로 인증되었습니다."}
+                        </p>
+                      </div>
+                      <div className="items-center px-4 py-3">
+                        <button
+                          onClick={() => setIsAuthModalOpen(false)}
+                          className="mt-3 px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                        >
+                          닫기
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <p className="font-bold mr-80 pr-1 mt-3 mb-3">비밀번호</p>
               <div className="w-full flex justify-center ml-7 mr-32 space-y-3">
                 <input
@@ -326,17 +372,63 @@ export const SignUpForm: React.FC = () => {
                   onChange={(e) => setNickname(e.target.value)}
                   placeholder="프로그박"
                   className={`w-72 ${inputClass}`}
+                  disabled={useNickname}
                 />
                 <button
                   id="nickname-check-button"
                   type="button"
-                  onClick={chkNickNameDuplication} // 닉네임 중복 검사 함수를 onClick 이벤트에 연결합니다.
+                  onClick={chkNickNameDuplication}
                   className={`w-20 ml-5 ${buttonClass}`}
+                  disabled={useNickname}
                 >
                   검사
                 </button>
               </div>
-
+              {isNicknameModalOpen && (
+                <div
+                  className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center"
+                  id="nickname-modal"
+                >
+                  <div className="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div className="mt-3 text-center">
+                      <h3 className="text-lg leading-6 font-medium text-gray-900">
+                        {nicknameModalMessage}
+                      </h3>
+                      <div className="mt-2 px-7 py-3">
+                        <p className="text-sm text-gray-500">
+                          {nicknameModalMessage === "중복된 닉네임입니다."
+                            ? "다른 닉네임을 선택해주세요."
+                            : "사용 가능한 닉네임입니다."}
+                        </p>
+                      </div>
+                      <div className="flex flex-col items-center px-4 py-3 space-y-3">
+                        {nicknameModalMessage === "중복된 닉네임입니다." && (
+                          <button
+                            onClick={() => setIsNicknameModalOpen(false)}
+                            className="px-4 py-2 bg-main-color text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                          >
+                            다시 입력
+                          </button>
+                        )}
+                        <button
+                          onClick={() => {
+                            if (nicknameModalMessage !== "중복된 닉네임입니다.")
+                              setUseNickname(true);
+                            setIsNicknameModalOpen(false);
+                          }}
+                          className={`px-4 py-2 ${
+                            nicknameModalMessage !== "중복된 닉네임입니다."
+                              ? "bg-main-color hover:bg-blue-400"
+                              : "bg-gray-500 hover:bg-gray-700"
+                          } text-white text-base font-medium rounded-md w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-green-300`}
+                        >
+                          확인
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="flex justify-center">
                 <button
                   id="sign-up-button"

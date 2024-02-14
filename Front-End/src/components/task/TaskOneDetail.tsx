@@ -9,9 +9,9 @@ interface DetailData {
   workContent: string;
 }
 
-interface DetailCode{
+interface DetailCode {
   detailDescription: ReactNode;
-  id: number,
+  id: number;
 }
 
 interface TaskOneDetailProps {
@@ -26,11 +26,13 @@ interface TaskOneDetailProps {
     endDay: string;
   };
   onClose: () => void;
+  onTaskUpdate: () => void; // 태스크 업데이트 콜백 함수 추가
 }
 
 const TaskOneDetail: React.FC<TaskOneDetailProps> = ({
   taskDetail,
   onClose,
+  onTaskUpdate,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [detailData, setDetailData] = useState<DetailData | null>(null);
@@ -49,7 +51,6 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({
         `/works/details/${taskDetail.workId}`
       );
       setDetailData(response.data.data);
-      console.log(detailData);
     } catch (error) {
       console.error(error);
     }
@@ -65,11 +66,21 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({
         statusCode: statusId,
       });
       setSelectedStatusId(statusId);
-      // window.location.reload(); 새로고침할 것인가 말 것인가,,
+      onTaskUpdate(); // 상태 변경 후 태스크 업데이트 호출
     } catch (error) {
       console.error(error);
     }
   };
+
+  if (isEditing) {
+    return (
+      <ModifyTask
+        taskDetail={taskDetail}
+        onClose={() => setIsEditing(false)}
+        onTaskUpdate={onTaskUpdate}
+      />
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-end mt-16">
@@ -110,9 +121,7 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({
             dangerouslySetInnerHTML={{ __html: detailData.workContent }}
           ></div>
         )}
-        <TaskChkList 
-        taskDetail={taskDetail}
-        />
+        <TaskChkList taskDetail={taskDetail} />
         <div className="flex justify-end space-x-2 mt-4">
           <button
             onClick={() => setIsEditing(true)}
@@ -120,9 +129,7 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({
           >
             수정
           </button>
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-          >
+          <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
             삭제
           </button>
         </div>
@@ -131,6 +138,7 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({
           <ModifyTask
             taskDetail={taskDetail}
             onClose={() => setIsEditing(false)}
+            onTaskUpdate={onTaskUpdate}
           />
         )}
       </div>

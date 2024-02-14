@@ -11,18 +11,20 @@ interface KeepDetailProps {
   isOpen: boolean;
   onClose: () => void;
   memos: Memo[];
+  onKPTUpdate: () => void;
 }
 
-const KeepDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos }) => {
+const KeepDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos, onKPTUpdate }) => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editContent, setEditContent] = useState<string>("");
   const queryClient = useQueryClient();
 
   const modifyMutation = useMutation({
-    mutationFn: (data: {retrospectId: number, text: string}) => modifyKPT(data),
+    mutationFn: (data: { retrospectId: number; text: string }) =>
+      modifyKPT(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["memos"] }).then(() => {
-        window.location.reload();
+        onKPTUpdate();
       });
       setEditingId(null); // 수정이 성공적으로 완료된 후 편집 모드 종료
     },
@@ -32,7 +34,7 @@ const KeepDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos }) => {
     mutationFn: (retrospectId: number) => deleteKPT(retrospectId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["memos"] }).then(() => {
-        window.location.reload();
+        onKPTUpdate();
       });
     },
   });
@@ -97,12 +99,14 @@ const KeepDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos }) => {
             </div>
           ))}
         </div>
-        <button
-          onClick={onClose}
-          className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition-colors"
-        >
-          닫기
-        </button>
+        <div className="flex justify-end mt-4">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition-colors"
+          >
+            닫기
+          </button>
+        </div>
       </div>
     </div>
   );

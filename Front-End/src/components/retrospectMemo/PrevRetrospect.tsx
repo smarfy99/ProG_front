@@ -24,7 +24,7 @@ interface RetrospectsResponse {
 
 const PrevRetrospect: FC<PrevRetrospectProps> = () => {
   const navigate = useNavigate();
-  const [selectedWeek, setSelectedWeek] = useState<string>("1"); // 타입 명시
+  const [selectedWeek, setSelectedWeek] = useState<number>(1); // 타입 명시
   const [weeks, setWeeks] = useState<string[]>([]);
   const { projectId } = useParams<string>(); // useParams 타입 명시
   const [retrospects, setRetrospects] = useState<RetrospectItem[]>([]); // 타입 명시
@@ -32,18 +32,21 @@ const PrevRetrospect: FC<PrevRetrospectProps> = () => {
   const getRetrospects = async () => {
     try {
       const response = await axiosInstance.get<RetrospectsResponse>(`/retrospects/${projectId}?week=${selectedWeek}`);
-      const data = response.data;
+      const { Keep, Problem, Try } = response.data;
+
       const retrospectsData = [
-        ...data.Keep.map(item => ({ ...item, category: "Keep" })),
-        ...data.Problem.map(item => ({ ...item, category: "Problem" })),
-        ...data.Try.map(item => ({ ...item, category: "Try" })),
+        ...(Keep ? Keep.map(item => ({ ...item, category: "Keep" })) : []),
+        ...(Problem ? Problem.map(item => ({ ...item, category: "Problem" })) : []),
+        ...(Try ? Try.map(item => ({ ...item, category: "Try" })) : []),
       ];
+      console.log(retrospects);
       setRetrospects(retrospectsData);
     } catch (error) {
       console.error(error);
       setRetrospects([]);
     }
   };
+  
 
   useEffect(() => {
     // 프로젝트 기간동안의 주차 정보 설정
@@ -72,7 +75,7 @@ const PrevRetrospect: FC<PrevRetrospectProps> = () => {
         <select
           className="ml-auto block appearance-none w-20 bg-white border border-gray-400 hover:border-gray-500 px-4 py-1 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
           value={selectedWeek}
-          onChange={(e) => setSelectedWeek(e.target.value)}
+          onChange={(e) => setSelectedWeek(e)}
         >
           {weeks.map((week) => (
             <option key={week} value={week}>{`${week} 주차`}</option>

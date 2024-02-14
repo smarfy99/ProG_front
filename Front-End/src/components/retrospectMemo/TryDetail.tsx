@@ -13,14 +13,16 @@ interface KeepDetailProps {
   isOpen: boolean;
   onClose: () => void;
   memos: Memo[];
+  onKPTUpdate: () => void;
 }
 
-const TryDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos }) => {
-  const [selectedActionsCount, setSelectedActionsCount] = useState(0);
+const TryDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos, onKPTUpdate }) => {
+  const [selectedActionsCount, setSelectedActionsCount] = useState(1);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [selectedActionId, setSelectedActionId] = useState<number | null>(null);
   const [editContent, setEditContent] = useState<string>("");
-  const [showLimitModal, setShowLimitModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showLimitModal, setShowLimitModal] = useState<boolean>(false);
   const { projectId } = useParams();
   const queryClient = useQueryClient();
 
@@ -29,7 +31,7 @@ const TryDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos }) => {
       modifyKPT(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["memos"] }).then(() => {
-        window.location.reload();
+        onKPTUpdate();
       });
       setEditingId(null); // 수정이 성공적으로 완료된 후 편집 모드 종료
     },
@@ -39,7 +41,7 @@ const TryDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos }) => {
     mutationFn: (retrospectId: number) => deleteKPT(retrospectId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["memos"] }).then(() => {
-        window.location.reload();
+        onKPTUpdate();
       });
     },
   });
@@ -50,7 +52,7 @@ const TryDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos }) => {
     );
     if (!selectedAction) return; // 선택된 액션 없으면 함수 종료
 
-    if (selectedActionsCount >= 3) {
+    if (selectedActionsCount > 3) {
       setShowLimitModal(true);
       return;
     }
@@ -67,7 +69,11 @@ const TryDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos }) => {
           "Content-Type": "application/json",
         },
       });
-      setSelectedActionsCount((count) => count + 1);
+      if (selectedActionsCount < 3) {
+        const newCount = selectedActionsCount + 1;
+        setSelectedActionsCount(newCount);
+        console.log(selectedActionsCount);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -84,6 +90,7 @@ const TryDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos }) => {
   };
 
   if (!isOpen) return null;
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -124,6 +131,28 @@ const TryDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos }) => {
                   >
                     액션 등록
                   </button>
+                  {selectedActionsCount <= 3 && showModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                      <div className="bg-white p-5 rounded-lg shadow-lg max-w-sm mx-auto">
+                        <h2 className="text-xl font-bold mb-4">
+                          액션 등록 완료
+                        </h2>
+                        <p className="mb-4">
+                          액션 등록이 완료되었습니다. ({selectedActionsCount}/3)
+                        </p>
+                        <div className="flex justify-center">
+                          <button
+                            onClick={() => {
+                              setShowModal(false); // 모달 닫기
+                            }}
+                            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition-colors"
+                          >
+                            확인
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   {showLimitModal && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                       <div className="bg-white p-5 rounded-lg shadow-lg w-11/12 max-w-md">
@@ -160,12 +189,14 @@ const TryDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos }) => {
             </div>
           ))}
         </div>
-        <button
-          onClick={onClose}
-          className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition-colors"
-        >
-          닫기
-        </button>
+        <div className="flex justify-end mt-4">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition-colors"
+          >
+            닫기
+          </button>
+        </div>
       </div>
     </div>
   );

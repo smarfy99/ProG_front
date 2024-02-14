@@ -33,7 +33,7 @@ const TaskDatePicker: React.FC<TaskDatePickerProps> = ({
         onChange={handleChange}
         minDate={tomorrow} // 오늘 날짜의 다음날을 최소 날짜로 설정
         dateFormat="yyyy-MM-dd"
-        className="mb-2 block w-32 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+        className="mb-2 block w-36 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
         
       />
     </div>
