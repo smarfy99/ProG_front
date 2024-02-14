@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import TechStackChange, { techStack } from '../../../components/techstack/TechStackChange';
@@ -115,13 +116,6 @@ const ProjectSettingPage: React.FC = () => {
     }
   };
 
-  const handleUnitClick = (unit: string) => {
-    setState((prev) => ({
-      ...prev,
-      projectPeriodUnit: unit,
-    }));
-  };
-
   const handleSave = async () => {
     const { projectTitle, projectContent } = state;
 
@@ -184,35 +178,37 @@ const ProjectSettingPage: React.FC = () => {
   };
 
   return (
-    <div className='bg-gray-100 w-11/12 h-max grid place-items-center'>
-      <div className='bg-sub-color w-11/12 h-20 justify-center flex items-center font-bold text-4xl'>
+    <div className='w-full h-lvh grid place-items-center overflow-y-scroll'>
+      <div className='bg-sub-color w-full h-20 justify-center flex items-center font-bold text-4xl'>
         프로젝트 수정
       </div>
-      <div className='bg-gray-300 w-9/12 h-auto p-16 m-5 border-black border-2 '>
+      <div className='w-9/12 h-auto p-16 m-5 shadow-2xl rounded-2xl'>
         <div>
-          <label htmlFor='projectTitle' className='font-bold text-lg my-3'>
+          <label htmlFor='projectTitle' className='font-bold text-3xl my-3'>
             프로젝트 제목
           </label>
+          <hr className='my-3 border-main-color border-1' />
           <div>
             <input
               type='text'
               id='projectTitle'
               name='projectTitle'
-              className='w-full h-10'
+              className='w-full h-10 mb-10'
               value={state.projectTitle}
               onChange={handleInputChange}
             />
           </div>
         </div>
         <div className='my-3'>
-          <label htmlFor='projectContent' className='font-bold text-lg '>
+          <label htmlFor='projectContent' className='font-bold text-3xl '>
             프로젝트 내용
           </label>
+          <hr className='my-3 border-main-color border-1' />
           <div>
             <textarea
               id='projectContent'
               name='projectContent'
-              className='w-full h-40'
+              className='w-full h-40 mb-10'
               value={state.projectContent}
               onChange={handleInputChange}
             />
@@ -221,9 +217,10 @@ const ProjectSettingPage: React.FC = () => {
           <TechStackChange initialTags={techLists} />
 
           <div className='my-3'>
-            <label htmlFor='projectImage' className='font-bold text-lg'>
+          <label className='font-bold text-3xl'>
               프로젝트 이미지 업로드
             </label>
+            <hr className='my-3 border-main-color border-1' />
             <div>
               <input
                 type='file'
@@ -231,41 +228,32 @@ const ProjectSettingPage: React.FC = () => {
                 name='projectImage'
                 accept='image/*'
                 onChange={handleImageChange}
-                className='w-max mt-2'
+                className='w-max mt-2 mb-10'
               />
-              {state.projectImage && <img src={state.projectImage} alt='Uploaded' className='mt-2 max-h-40' />}
+              {state.projectImage && typeof state.projectImage === 'object' ? (
+                <img src={URL.createObjectURL(state.projectImage)} alt='Uploaded' className='mt-2 max-h-40' />
+              ) : null}
             </div>
           </div>
 
           <div className='my-3'>
-            <label htmlFor='projectPeriod' className='font-bold text-lg my-3'>
+            <label htmlFor='projectPeriod' className='font-bold text-3xl my-3'>
               프로젝트 기간
             </label>
+            <hr className='my-3 border-main-color border-1' />
             <div>
-              <span className='p-2'>약</span>
               <input
                 type='text'
                 id='projectPeriodNum'
                 name='projectPeriodNum'
-                className='w-20 h-10 p-1 mr-2'
-                value={state.projectPeriodNum}
+                className='w-10 h-10 p-1 mb-2'
+                placeholder='기간'
                 onChange={handleInputChange}
               />
-              <button
-                className={`p-2 ${state.projectPeriodUnit === '주' ? 'bg-main-color text-white' : ''
-                  } border-main-color border-2`}
-                onClick={() => handleUnitClick('주')}
-              >
-                주
-              </button>
-              <button
-                className={`p-2 ${state.projectPeriodUnit === '달' ? 'bg-main-color text-white' : ''
-                  } border-main-color border-2`}
-                onClick={() => handleUnitClick('달')}
-              >
-                달
-              </button>
-              <div className='ml-8 bg-white p-1 w-max mt-3'>달을 선택하시면 자동으로 주 단위로 계산됩니다.</div>
+              주
+              {state.projectPeriodNum > 52 && (
+                <div className='text-red-500'>프로젝트 기간은 52주를 초과할 수 없습니다.</div>
+              )}
             </div>
           </div>
 

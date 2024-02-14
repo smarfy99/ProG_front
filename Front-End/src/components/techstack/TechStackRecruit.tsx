@@ -1,8 +1,6 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useState, useEffect } from "react";
 import { axiosInstance } from "../../apis/lib/axios";
 import { useRequireAuth } from "../../hooks/useRequireAuth";
-// import TechStackInfo from "./TechStackInfo";
 
 export const techStack = {
   mystack: [] as { techCode: number }[],
@@ -11,7 +9,6 @@ export const techStack = {
 const TechStack = () => {
   useRequireAuth()
   const [tags, setTags] = useState<{ id: number; detailName: string }[]>([]);
-  // Updated to include both id and techCode (detailName)
   const [selectedTags, setSelectedTags] = useState<{ id: number; techCode: string }[]>([]);
   const [selectedValue, setSelectedValue] = useState<string>("");
 
@@ -52,7 +49,6 @@ const TechStack = () => {
     <div>
       <div className="flex">
         <div className="text-3xl font-bold mr-2">기술 스택</div>
-        {/* <TechStackInfo/> */}
       </div>
       <hr className='my-3 border-main-color border-1' />
       <div className="h-auto w-full bg-gray-50 rounded-xl">

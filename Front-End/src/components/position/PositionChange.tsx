@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { axiosInstance } from "../../apis/lib/axios";
 import { useRequireAuth } from '../../hooks/useRequireAuth';
@@ -156,15 +158,16 @@ const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionP
   return (
     <div>
       <div className="my-3">
-        <label htmlFor="PositionName" className="font-bold text-lg my-3">
+      <label htmlFor="PositionName" className="font-bold text-3xl my-3">
           포지션
         </label>
+        <hr className='my-3 border-main-color border-1' />
         <div>
-          {state.positionDetailDescription.map((description, index) => (
+          {state.positionDetailDescription.map((_description, index) => (
             <div key={index} className="flex items-center mb-2">
               <button
                 onClick={() => handleRemovePosition(index)}
-                className="mr-2 p-2 pr-3 bg-red-500 text-white"
+                className="mr-2 p-3 pr-3 bg-red-500 text-white rounded-lg"
               >
                 -
               </button>
@@ -187,7 +190,7 @@ const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionP
                   </option>
                 ))}
               </select>
-              <div className="flex items-center">
+              <div className="flex items-center mx-7">
                 <button
                   onClick={() => handleDecrementPositionNumber(index)}
                   className={`p-2 bg-blue-500 text-white ${state.positionNumber[index] <= 1
@@ -202,7 +205,7 @@ const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionP
                   type="text"
                   id={`PositionNumber-${index}`}
                   name={`PositionNumber-${index}`}
-                  className="w-1/3 h-10"
+                  className="w-10 h-10"
                   placeholder="인원수"
                   value={state.positionNumber[index] || 1}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -224,9 +227,9 @@ const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionP
           ))}
           <button
             onClick={handleAddPosition}
-            className="p-2 bg-green-500 text-white"
+            className="p-2 bg-green-400 text-white rounded-lg ml-9 mb-10"
           >
-            +
+            포지션 추가
           </button>
         </div>
       </div>

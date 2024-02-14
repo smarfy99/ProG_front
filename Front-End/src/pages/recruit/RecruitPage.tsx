@@ -9,7 +9,7 @@ const RecruitPage: React.FC = () => {
 	useRequireAuth();
 	const { currentPage, setCurrentPage, totalPages } = useRecruitStore();
 
-	const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+	const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
 		setCurrentPage(page);
 	};
 
@@ -19,9 +19,9 @@ const RecruitPage: React.FC = () => {
 				<div className='font-bold text-6xl'>프로젝트 찾기</div>
 				<RecruitSearchBar currentPage={currentPage} />
 			</div>
-			<span className='p-1 m-1 flex justify-center items-center'>
+			<div className='px-16 m-1 flex justify-center'>
 				<RecruitCard />
-			</span>
+			</div>
 			<div className='flex justify-center mb-10'>
 				<Pagination
 					count={totalPages}

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { useState, useEffect } from 'react';
 import { axiosInstance } from "../../apis/lib/axios";
 import { useRequireAuth } from '../../hooks/useRequireAuth';
-import {useUserStore} from '../../stores/useUserStore';
+import { useUserStore } from '../../stores/useUserStore';
 import { useParams } from 'react-router-dom';
 
 export const techStack = {
@@ -63,31 +64,34 @@ const TechStackChange = ({ initialTags = [] }: TechStackProps) => {
     }
   };
 
-  const removeTag = async(idToRemove: number) => {
-    try{
+  const removeTag = async (idToRemove: number) => {
+    try {
       const response = await axiosInstance.delete(`/projects/${projectId}/${memberId}/projectTech/${idToRemove}`)
       console.log(response)
       setSelectedTags(prevTags => prevTags.filter(tag => tag.id !== idToRemove));
-  } catch (error) {
-    console.error("Failed to fetch tags:", error);
-  }
+    } catch (error) {
+      console.error("Failed to fetch tags:", error);
+    }
   };
 
   return (
     <div>
-      <div className="text-lg font-bold">기술 스택</div>
-      <div className="h-10 w-full bg-gray-100">
+      <div className="flex">
+        <div className="text-3xl font-bold mr-2">기술 스택</div>
+      </div>
+      <hr className='my-3 border-main-color border-1' />
+      <div className="h-auto w-full bg-gray-50 rounded-xl">
         {selectedTags.map((item, index) => (
           <span
             key={index}
-            className="bg-gray-200 p-1 m-1 inline-block cursor-pointer"
+            className="bg-sub-color p-1 m-1 inline-block cursor-pointer rounded-2xl"
             onClick={() => removeTag(item.id)}
           >
             {item.name} X
           </span>
         ))}
       </div>
-      <div>
+      <div className="mb-10">
         <select
           id="techStack"
           className="mt-2 p-2"
@@ -104,7 +108,7 @@ const TechStackChange = ({ initialTags = [] }: TechStackProps) => {
 
         <button
           onClick={putTag}
-          className="mt-5 bg-main-color text-white p-2 ml-2"
+          className="mt-5 bg-main-color text-white p-2 ml-2 rounded-lg"
         >
           등록
         </button>

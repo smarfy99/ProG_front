@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { axiosInstance } from "../../apis/lib/axios";
 import { useRequireAuth } from '../../hooks/useRequireAuth';
@@ -22,7 +23,7 @@ export const position = {
 const Position: React.FC = () => {
   useRequireAuth();
   const [positionList, setPositionList] = useState<{ id: number; detailDescription: string }[]>([]);
-  
+
   useEffect(() => {
     const getPositionList = async () => {
       try {
@@ -30,7 +31,7 @@ const Position: React.FC = () => {
         if (response.data.status === 'OK') {
           setPositionList(response.data.data.map(({ id, detailDescription }: { id: number; detailDescription: string }) => ({ id, detailDescription })));
         }
-        
+
       } catch (error) {
         console.error("Failed to fetch positions:", error);
       }
@@ -38,25 +39,30 @@ const Position: React.FC = () => {
     getPositionList();
     position.totalList.push({ jobCode: 0, total: 1, current: 0 });
   }, []);
-  
+
   const [state, setState] = useState<PositionState>({
     positionId: [0], // Initialized with 0 indicating no selection
     positionDetailDescription: [""], // New state for display descriptions
     positionNumber: [1],
     positionCurrent: [0],
   });
+  const [selectedPositionIds, setSelectedPositionIds] = useState<number[]>([]);
 
   const handlePositionChange = (index: number, id: number) => {
     const selectedOption = positionList.find(option => option.id === id);
+    const newSelectedIds = [...selectedPositionIds];
+    newSelectedIds[index] = id; // 현재 선택된 항목으로 ID 업데이트
+    setSelectedPositionIds(newSelectedIds.filter((id) => id !== 0)); // 0이 아닌 ID만 저장
+
     if (!selectedOption) return; // Early exit if no matching option found
-  
+
     setState(prevState => {
       const updatedPositions = prevState.positionId.map((pid, idx) => idx === index ? id : pid);
       const updatedDescriptions = prevState.positionDetailDescription.map((desc, idx) => idx === index ? selectedOption.detailDescription : desc);
-  
+
       // Update position.totalList here
       position.totalList[index].jobCode = id;
-  
+
       return {
         ...prevState,
         positionId: updatedPositions,
@@ -64,8 +70,8 @@ const Position: React.FC = () => {
       };
     });
   };
-  
-  
+
+
 
   const handleParticipateButtonClick = (index: number) => {
     const updatedPositionCurrent = Array(state.positionCurrent.length).fill(0);
@@ -97,8 +103,14 @@ const Position: React.FC = () => {
       positionNumber: prev.positionNumber.filter((_, i) => i !== index),
       positionCurrent: prev.positionCurrent.filter((_, i) => i !== index),
     }));
+  
     position.totalList.splice(index, 1);
+    setSelectedPositionIds((prevIds) => {
+      const removedId = state.positionId[index];
+      return prevIds.filter(id => id !== removedId);
+    });
   };
+  
 
   const handlePositionNumberChange = (index: number, value: number) => {
     const updatedPositionNumber = [...state.positionNumber];
@@ -123,15 +135,19 @@ const Position: React.FC = () => {
   return (
     <div>
       <div className="my-3">
-        <label htmlFor="PositionName" className="font-bold text-lg my-3">
+        <label htmlFor="PositionName" className="font-bold text-3xl my-3">
           포지션
         </label>
+        <hr className='my-3 border-main-color border-1' />
+        <div className='flex justify-end mr-72 mb-3 font-bold '>
+          내가 참여할 포지션
+        </div>
         <div>
-          {state.positionDetailDescription.map((description, index) => (
+          {state.positionDetailDescription.map((_description, index) => (
             <div key={index} className="flex items-center mb-2">
               <button
                 onClick={() => handleRemovePosition(index)}
-                className="mr-2 p-2 pr-3 bg-red-500 text-white"
+                className="mr-2 p-3 pr-3 bg-red-500 text-white rounded-lg"
               >
                 -
               </button>
@@ -149,17 +165,17 @@ const Position: React.FC = () => {
               >
                 <option value={0}>포지션 선택</option>
                 {positionList.map((option) => (
-                  <option key={option.id} value={option.id}>
+                  <option key={option.id} value={option.id} disabled={selectedPositionIds.includes(option.id)}>
                     {option.detailDescription}
                   </option>
                 ))}
               </select>
-              <div className="flex items-center">
+              <div className="flex items-center mx-7">
                 <button
                   onClick={() => handleDecrementPositionNumber(index)}
                   className={`p-2 bg-blue-500 text-white ${state.positionNumber[index] <= 1
-                      ? "bg-gray-300 cursor-not-allowed"
-                      : ""
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : ""
                     }`}
                   disabled={state.positionNumber[index] <= 1}
                 >
@@ -169,7 +185,7 @@ const Position: React.FC = () => {
                   type="text"
                   id={`PositionNumber-${index}`}
                   name={`PositionNumber-${index}`}
-                  className="w-1/3 h-10"
+                  className="w-10 h-10"
                   placeholder="인원수"
                   value={state.positionNumber[index] || 1}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -179,30 +195,30 @@ const Position: React.FC = () => {
                 <button
                   onClick={() => handleIncrementPositionNumber(index)}
                   className={`p-2 bg-blue-500 text-white ${state.positionNumber[index] >= 10
-                      ? "bg-gray-300 cursor-not-allowed"
-                      : ""
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : ""
                     }`}
                   disabled={state.positionNumber[index] >= 10}
                 >
                   +
                 </button>
                 <button
-                  className={`flex items-center ml-2 border-main-color border-2 p-2 ${state.positionCurrent[index] === 1
-                      ? "bg-main-color text-white"
-                      : ""
+                  className={`flex items-center ml-36 rounded-lg border-main-color border-2 p-2 ${state.positionCurrent[index] === 1
+                    ? "bg-main-color text-white"
+                    : ""
                     }`}
                   onClick={() => handleParticipateButtonClick(index)}
                 >
-                  참여
+                  선택
                 </button>
               </div>
             </div>
           ))}
           <button
             onClick={handleAddPosition}
-            className="p-2 bg-green-500 text-white"
+            className="p-2 bg-green-400 text-white rounded-lg ml-9 mb-10"
           >
-            +
+            포지션 추가
           </button>
         </div>
       </div>
