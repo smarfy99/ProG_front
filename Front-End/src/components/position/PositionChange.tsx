@@ -40,7 +40,10 @@ const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionP
   const memberId = profile?.id;
   const { projectId } = useParams();
   const [positionList, setPositionList] = useState<{ id: number; detailDescription: string }[]>([]);
+  const [selectedPositionIds, setSelectedPositionIds] = useState<number[]>([]);
   useEffect(() => {
+    const initialPositionIds = initialTags.map(tag => tag.id);
+    setSelectedPositionIds(initialPositionIds); // 초기 선택된 포지션 ID 설정
     const getPositionList = async () => {
       try {
         const response = await axiosInstance.get('/codes/details/Job');
@@ -84,6 +87,10 @@ const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionP
 
   const handlePositionChange = (index: number, id: number) => {
     const selectedOption = positionList.find(option => option.id === id);
+    const newSelectedIds = [...selectedPositionIds];
+    newSelectedIds[index] = id; // 현재 선택된 항목으로 ID 업데이트
+    setSelectedPositionIds(newSelectedIds.filter((id) => id !== 0)); // 0이 아닌 ID만 저장
+
     if (!selectedOption) return; // Early exit if no matching option found
   
     setState(prevState => {
@@ -185,7 +192,7 @@ const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionP
               >
                 <option value={0}>포지션 선택</option>
                 {positionList.map((option) => (
-                  <option key={option.id} value={option.id}>
+                  <option key={option.id} value={option.id} disabled={selectedPositionIds.includes(option.id)}>
                     {option.detailDescription}
                   </option>
                 ))}
