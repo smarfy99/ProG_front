@@ -1,0 +1,70 @@
+@import "../common/common-color";
+
+main {
+  height: calc(100vh - 64px);
+}
+
+section {
+  display: grid;
+  grid-template-rows: 0.6fr 1fr;
+  grid-template-columns: none;
+  grid-gap: 0;
+}
+
+.retrospect-container {
+  display: grid;
+  height: 100%;
+  grid-template-rows: 0.2fr 1fr;
+}
+
+.kp-box {
+  //height: 350px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 24px;
+}
+
+.t-box {
+  //height: 400px;
+}
+
+// 글자 사선 칠한 효과
+.oblique-line {
+  position: relative;
+  //color: transparent;
+  //color: white;
+  padding: 20px;
+  background: #fff;
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  &:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    //background: linear-gradient(45deg, #ff0000, #0ff);
+    //border-radius: 1.25rem;
+    //background-color: var(--main-color90);
+  }
+}
+
+.btn-box {
+  height: 45px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 8px;
+
+  > button {
+    //width: 100px;
+    width: 8.8rem;
+    border-radius: 0.8rem;
+    background-color: rgba(75, 51, 227, 0.9);
+    color: white;
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+}

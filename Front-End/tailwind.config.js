@@ -8,7 +8,7 @@ export default {
 				'sub-color': '#EBE9FC',
 			},
 			fontFamily: {
-				sans: ['Noto Sans KR', 'sans-serif'],
+				sans: ['NanumSquareRound', 'Noto Sans KR', 'sans-serif'],
 			},
 		},
 	},

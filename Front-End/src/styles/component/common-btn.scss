@@ -1,0 +1,19 @@
+@import "../common/common-color";
+
+@mixin basic {
+  border-radius: 0.8rem;
+  font-weight: 600;
+  font-size: 1.25rem;
+  padding: 8px;
+}
+
+@mixin basic-btn-f600 {
+  background-color: var(--main-color90);
+  color: white;
+  @include basic;
+}
+
+@mixin basic-none-border-f600 {
+  border: 2px solid var(--main-color90);;
+  @include basic;
+}

@@ -1,4 +1,3 @@
-// import { proxyAxiosInstance } from '../../apis/lib/proxyAxios';
 import { axiosInstance } from '../../apis/lib/axios';
 import { useEffect } from 'react';
 import { useAuthStore } from '../../stores/useAuthStore';
@@ -42,7 +41,7 @@ const GithubLoginPage = () => {
 		}
 	};
 
-	return <div>GithubLoginPage</div>;
+	return <div></div>;
 };
 
 export default GithubLoginPage;

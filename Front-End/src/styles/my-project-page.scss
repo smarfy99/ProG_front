@@ -1,20 +1,27 @@
+@import "common/common-color";
+
 main {
   padding: 1.5rem 0.25rem
 }
+
 .my-project-container {
   width: 70%;
   margin: 0 auto;
   max-width: 1440px;
+
+  > div {
+    padding: 2.5rem 0;
+    overflow: scroll;
+    max-height: calc(100% - 20px);
+  }
 }
+
+
 
 #condition-menu{
   display: flex;
   border-bottom: 1px solid #dee2e6;
   list-style: none;
-
-  > li  {
-
-  }
 
   > li button {
     background: none;
@@ -26,7 +33,7 @@ main {
   }
 
   > li.active button{
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--main-color90);
     font-weight: bold;
   }
 }

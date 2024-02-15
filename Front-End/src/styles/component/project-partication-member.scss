@@ -1,0 +1,97 @@
+.member-card {
+  width: 250px;
+  border: 2px solid var(--main-color30);
+  border-radius: 12px;
+  overflow: hidden;
+
+  display: inline-block;
+  transition: all 0.3s ease; // 모든 속성의 변화를 0.3초 동안 부드럽게 애니메이션화
+
+  &:hover {
+    border-color: #000000;
+    border-radius: 0.9rem;
+    transform: translateY(-0.8rem); // hover 상태일 때 위로 이동
+    box-shadow: 0 0.8rem 0 0 var(--gray100);
+    cursor: pointer;
+  }
+
+}
+
+.member-img-box {
+  display: grid;
+  grid-template-columns: 6fr 4fr;
+
+  >:nth-child(1) {
+    width: 100px;
+    height: 100px;
+    border-radius: 70%;
+    overflow: hidden;
+    border: 2px solid var(--gray);
+
+    > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+
+    }
+  }
+
+}
+
+.tag {
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.56px;
+
+  border: 2px solid var(--main-color90);
+  color: rgb(20, 71, 236);
+}
+
+@mixin team-people-border{
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.56px;
+  text-align: center;
+}
+
+.team-leader{
+  @include team-people-border;
+  border: 2px solid rgb(182, 20, 236);
+  color: rgb(182, 20, 236);;
+  position: relative;
+
+  &:before{
+    //> span{
+    content: "⭐";
+    position: absolute;
+    top: -15px;
+    left: 0;
+    font-size: 1.5rem;
+    color: #FFD700;
+    //animation: sparkle 1.5s infinite, spin 3s infinite linear;
+    animation:spin 3s infinite linear;
+  }
+}
+
+.team-member{
+  @include team-people-border;
+  border: 2px solid var(--main-color90);
+  color: rgb(20, 71, 236);
+}
+
+@keyframes sparkle {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+@keyframes spin {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(1turn); }
+}

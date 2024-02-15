@@ -1,0 +1,67 @@
+@import "../common/common-color";
+
+@mixin btn-bg-main90{
+  button{
+    background-color: rgba(75, 51, 227, 0.9);
+  }
+}
+
+@mixin kp-box-grid{
+  position: relative;
+  display: grid;
+  grid-template-rows: 0.6fr 2fr;
+  height: 250px;
+}
+
+@mixin div-hidden {
+  //max-height: 60px;
+  //min-height: 60px;
+  height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kpt-contents{
+  overflow: scroll;
+  max-height: calc(250px - 60%);
+  //max-height: 80%;
+
+  > div {
+    @include div-hidden;
+  }
+}
+
+// KEEP, PROBLEM
+.keep-box {
+  width: 100%;
+  background-color: #f1f158ba;
+  @include btn-bg-main90;
+  @include kp-box-grid;
+}
+
+.problem-box{
+  width: 100%;
+  background-color: #edbcc3c9;
+  @include btn-bg-main90;
+  @include kp-box-grid;
+}
+
+
+// TRY
+.try-box {
+  min-width: 100%;
+  background-color: rgb(0 0 157 / 72%);
+
+  display: grid;
+  grid-template-rows: 0.6fr 2fr;
+  height: 400px;
+
+  :nth-child(2) {
+      overflow: scroll;
+      max-height: calc(400px - 50%);
+
+    > div {
+      @include div-hidden;
+    }
+  }
+}
