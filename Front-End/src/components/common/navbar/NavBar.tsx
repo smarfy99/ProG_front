@@ -6,6 +6,7 @@ import { useUserStore } from '../../../stores/useUserStore';
 import { useEffect, useState } from 'react';
 import { logout } from '../../../utils/logout';
 import logo from '../../../assets/logo.png';
+import ImageWithFallback from "../../../utils/DefaultImgage.tsx";
 
 interface Tab {
 	label: string;
@@ -72,7 +73,7 @@ const Nav = () => {
 			<div className='flex space-x-4 items-center'>
 				{isAuthenticated && profile && (
 					<>
-						<img src={profile.imgUrl} alt='Profile' className='w-8 h-8 rounded-full' />
+						<ImageWithFallback src={profile.imgUrl} alt='Profile' type='member' style='w-8 h-8 rounded-full object-cover'/>
 						<div>{profile.nickname}</div>
 					</>
 				)}
