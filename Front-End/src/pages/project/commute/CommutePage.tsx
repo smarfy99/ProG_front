@@ -24,7 +24,7 @@ const CommutePage = () => {
 	return (
 		<div className='flex flex-col justify-center'>
 			{/* action, ranking div */}
-			<div className='flex justify-center mt-5 w-auto'>
+			<div className='flex justify-center my-3 w-auto'>
 				<ActionBoard />
 			</div>
 
