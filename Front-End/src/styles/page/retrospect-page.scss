@@ -1,13 +1,17 @@
 @import "../common-color";
 
-section{
+main {
+  height: calc(100vh - 64px);
+}
+
+section {
   display: grid;
   grid-template-rows: 0.6fr 1fr;
   grid-template-columns: none;
   grid-gap: 0;
 }
 
-.retrospect-container{
+.retrospect-container {
   display: grid;
   height: 100%;
   grid-template-rows: 0.2fr 1fr;
@@ -16,16 +20,16 @@ section{
 .kp-box {
   //height: 350px;
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 24px;
 }
 
-.t-box{
+.t-box {
   //height: 400px;
 }
 
 // 글자 사선 칠한 효과
-.oblique-line{
+.oblique-line {
   position: relative;
   //color: transparent;
   //color: white;
@@ -34,7 +38,7 @@ section{
   -webkit-background-clip: text;
   background-clip: text;
 
-  &:after{
+  &:after {
     content: "";
     position: absolute;
     z-index: -1;
@@ -48,14 +52,15 @@ section{
   }
 }
 
-.btn-box{
+.btn-box {
   height: 45px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 8px;
 
   > button {
-    width: 100px;
+    //width: 100px;
+    width: 8.8rem;
     border-radius: 0.8rem;
     background-color: rgba(75, 51, 227, 0.9);
     color: white;
