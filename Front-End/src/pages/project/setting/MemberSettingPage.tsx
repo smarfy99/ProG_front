@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 import {axiosInstance} from '../../../apis/lib/axios';
 import {useRequireAuth} from '../../../hooks/useRequireAuth';
 import {useUserStore} from '../../../stores/useUserStore';

@@ -1,13 +1,22 @@
-@import "common-color";
+@import "common/common-color";
 
 main {
   padding: 1.5rem 0.25rem
 }
+
 .my-project-container {
   width: 70%;
   margin: 0 auto;
   max-width: 1440px;
+
+  > div {
+    padding: 2.5rem 0;
+    overflow: scroll;
+    max-height: calc(100% - 20px);
+  }
 }
+
+
 
 #condition-menu{
   display: flex;
