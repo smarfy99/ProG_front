@@ -1,47 +1,46 @@
-import { FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import ProgImage from "../../assets/logo.png";
-import { useAuthStore } from "../../stores/useAuthStore";
-import { fetchUserProfile } from "../../utils/fetchUserProfile";
-import { useUserStore } from "../../stores/useUserStore";
-import { ERROR_CODES } from "../../constants/errorCodes";
-// import { axiosInstance } from "../../apis/lib/axios";
-import { proxyAxiosInstance } from "../../apis/lib/proxyAxios";
-import axios from "axios";
-import { FaGithubAlt } from "react-icons/fa6";
+import { FormEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import ProgImage from '../../assets/logo.png';
+import { useAuthStore } from '../../stores/useAuthStore';
+import { fetchUserProfile } from '../../utils/fetchUserProfile';
+import { useUserStore } from '../../stores/useUserStore';
+import { ERROR_CODES } from '../../constants/errorCodes';
+import { axiosInstance } from '../../apis/lib/axios';
+import axios from 'axios';
+import { FaGithubAlt } from 'react-icons/fa6';
 
 export const LoginPage: React.FC = () => {
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  const { setAccessToken } = useAuthStore();
-  const { setProfile } = useUserStore();
+	const [username, setUserName] = useState('');
+	const [password, setPassword] = useState('');
+	const navigate = useNavigate();
+	const { setAccessToken } = useAuthStore();
+	const { setProfile } = useUserStore();
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      const response = await proxyAxiosInstance.post("/members/login", {
-        email: username,
-        password: password,
-      });
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		try {
+			const response = await axiosInstance.post('/members/login', {
+				email: username,
+				password: password,
+			});
 
-      const accessToken = response.headers["accesstoken"];
+			const accessToken = response.headers['accesstoken'];
 
-      if (accessToken) {
-        setAccessToken(accessToken); // 추출한 토큰을 Zustand 스토어에 저장
+			if (accessToken) {
+				setAccessToken(accessToken); // 추출한 토큰을 Zustand 스토어에 저장
 
-        await fetchUserProfile(accessToken, setProfile, navigate); // 사용자 프로필 정보 가져오기
+				await fetchUserProfile(accessToken, setProfile, navigate); // 사용자 프로필 정보 가져오기
 
-        navigate("/");
-      } else {
-        // 토큰이 없는 경우의 처리
-        console.log("로그인 응답에 토큰이 없습니다.");
-      }
-    } catch (error) {
-      //axios error인지 확인, error_code 처리
-      if (axios.isAxiosError(error) && error.response) {
-        const errorCode = error.response.data.exceptionDto.errorCode;
-        const errorMsg = error.response.data.exceptionDto.errorMessage;
+				navigate('/');
+			} else {
+				// 토큰이 없는 경우의 처리
+				console.log('로그인 응답에 토큰이 없습니다.');
+			}
+		} catch (error) {
+			//axios error인지 확인, error_code 처리
+			if (axios.isAxiosError(error) && error.response) {
+				const errorCode = error.response.data.exceptionDto.errorCode;
+				const errorMsg = error.response.data.exceptionDto.errorMessage;
 
 				if (errorCode === ERROR_CODES.MEMBER.LOGIN_FAILED) {
 					alert(errorMsg);

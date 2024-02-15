@@ -1,4 +1,3 @@
-// import { proxyAxiosInstance } from '../../apis/lib/proxyAxios';
 import { axiosInstance } from '../../apis/lib/axios';
 import { useEffect } from 'react';
 import { useAuthStore } from '../../stores/useAuthStore';
