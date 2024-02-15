@@ -6,7 +6,7 @@ const MyPage = () => {
 
 	return (
 		<div className='p-4'>
-			<MyProfile/>
+			<MyProfile />
 		</div>
 	);
 };

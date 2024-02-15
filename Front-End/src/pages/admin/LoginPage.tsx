@@ -15,6 +15,8 @@ export const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
 	const { setAccessToken } = useAuthStore();
 	const { setProfile } = useUserStore();
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [modalMessage, setModalMessage] = useState<string>('');
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -40,10 +42,11 @@ export const LoginPage: React.FC = () => {
 			//axios error인지 확인, error_code 처리
 			if (axios.isAxiosError(error) && error.response) {
 				const errorCode = error.response.data.exceptionDto.errorCode;
-				const errorMsg = error.response.data.exceptionDto.errorMessage;
 
 				if (errorCode === ERROR_CODES.MEMBER.LOGIN_FAILED) {
-					alert(errorMsg);
+					// alert(errorMsg);
+					setModalMessage('이메일과 비밀번호를 확인해주세요!');
+					setIsModalOpen(true); // 모달창을 열어 사용자에게 메시지 표시
 				}
 			}
 		}
@@ -103,6 +106,23 @@ export const LoginPage: React.FC = () => {
 						GitHub으로 로그인
 					</a>
 				</div>
+				{isModalOpen && (
+					<div className='fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center'>
+						<div className='relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white'>
+							<div className='mt-3 text-center'>
+								<h3 className='text-lg leading-6 font-medium text-gray-900'>{modalMessage}</h3>
+								<div className='items-center px-4 py-3'>
+									<button
+										onClick={() => setIsModalOpen(false)}
+										className='mt-3 px-4 py-2 bg-main-color text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300'
+									>
+										닫기
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);
