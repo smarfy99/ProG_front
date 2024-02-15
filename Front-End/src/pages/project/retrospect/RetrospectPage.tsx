@@ -7,6 +7,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {axiosInstance} from '../../../apis/lib/axios';
 import {useRefreshAuth} from '../../../hooks/useRefreshAuth';
 import '../../../styles/page/retrospect-page.scss';
+import { useRequireAuth } from '../../../hooks/useRequireAuth';
 
 
 export const RetrospectPage = () => {
@@ -16,6 +17,8 @@ export const RetrospectPage = () => {
     const navigate = useNavigate();
     const params = useParams<{ projectId: string }>();
     const projectId = params.projectId;
+
+    useRequireAuth();
 
     const onHandleClick = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>, type:string) => {
         e.preventDefault();
@@ -27,17 +30,17 @@ export const RetrospectPage = () => {
         }
     }
 
-    useEffect(() => {
-        const getKPT = async () => {
-            if (!isAuthenticated) return; // 인증이 완료되지 않았다면 함수를 종료한다.
+    const getKPT = async () => {
+        if (!isAuthenticated) return; // 인증이 완료되지 않았다면 함수를 종료한다.
 
-            try {
-                const response = await axiosInstance.get(`/retrospects/${projectId}`);
-                setKptData(response.data.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
+        try {
+            const response = await axiosInstance.get(`/retrospects/${projectId}`);
+            setKptData(response.data.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    useEffect(() => {
 
         if (!isLoading) {
             getKPT();
@@ -53,7 +56,7 @@ export const RetrospectPage = () => {
             {/*header*/}
             <header className='flex justify-center justify-between px-7 items-center'>
                 <div className={'flex justify-center items-center oblique-line'}>
-                    <p className={'text-4xl font-bold '}>🚀 현재 N주차</p>
+                    <p className={'text-4xl font-bold '}>🚀 이주의 회고</p>
                 </div>
                 <div className={'flex justify-center btn-box'}>
                     <button onClick={(e) => onHandleClick(e, 'list')}>목록</button>
@@ -71,12 +74,12 @@ export const RetrospectPage = () => {
             {/*content*/}
             <section className='px-7'>
             <div className='flex grow kp-box'>
-                    <KeepBoard memos={kptData.Keep}/>
-                    <ProblemBoard memos={kptData.Problem}/>
+                    <KeepBoard memos={kptData.Keep} onKPTUpdate={getKPT}/>
+                    <ProblemBoard memos={kptData.Problem} onKPTUpdate={getKPT}/>
                 </div>
                 <div className={'mt-8 t-box'}>
-                    <TryBoard memos={kptData.Try}/>
-                    <KPTMemo modalOpen={modalOpen} setModalOpen={setModalOpen}/>
+                    <TryBoard memos={kptData.Try} onKPTUpdate={getKPT}/>
+                    <KPTMemo modalOpen={modalOpen} setModalOpen={setModalOpen} onKPTUpdate={getKPT}/>
                 </div>
             </section>
         </div>

@@ -50,15 +50,15 @@ export const LoginPage: React.FC = () => {
 	};
 
 	return (
-		<div className='flex items-center justify-center h-screen'>
-			<div className='border-solid border-2 p-4 rounded-lg'>
+		<div className='flex items-center justify-center pt-20 h-full'>
+			<div className='border-solid border-2 p-6 rounded-lg'>
 				<div className='flex items-center justify-center'>
 					<img src={ProgImage} alt='로고 이미지' className='h-16' />
 					<span className='text-3xl font-bold'>ProG</span>
 				</div>
 				<p className='m-2 text-center'>환영합니다!</p>
 				<p className='mb-4 text-center'>당신의 프로젝트와 꿈으로 나아가보세요</p>
-				<form onSubmit={handleSubmit} className='m-2'>
+				<form onSubmit={handleSubmit} className='p-2'>
 					<div>
 						<label htmlFor='id-input' />
 						<input

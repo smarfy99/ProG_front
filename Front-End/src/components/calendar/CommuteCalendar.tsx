@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
 	Calendar,
 	// CalendarProps,
@@ -92,7 +93,7 @@ const CommuteCalendar = ({ projectId, memberId }: CommuteCheckBtnProps) => {
 	const [currentDate, setCurrentDate] = useState(new Date());
 
 	const fetchAttendanceLogs = useCallback(
-		async (year: number, month: number) => {
+		async (_year: number, _month: number) => {
 			try {
 				// const { data } = await axiosInstance.get(`/attendances/${projectId}/${memberId}?month=${month}`);
 				const { data } = await axiosInstance.get<CommuteWork>(`/attendances/${projectId}/${memberId}?month=2`);

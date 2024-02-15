@@ -1,14 +1,24 @@
-import {useEffect, useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from 'react';
 import TaskFeedSimple from "./TaskFeedSimple.tsx";
-import {axiosInstance} from "../../apis/lib/axios.ts";
-import {useUserStore} from "../../stores/useUserStore.ts";
-import {useParams} from "react-router-dom";
+import { axiosInstance } from "../../apis/lib/axios.ts";
+import { useUserStore } from "../../stores/useUserStore.ts";
+import { useParams } from "react-router-dom";
+
+interface Feed {
+  feedId: number;
+  contentsCode: number;
+  contentsId: number;
+  memberImgUrl: string;
+  feedContent: string;
+  // Add other properties as needed
+}
 
 const TaskFeed = () => {
 	const { profile } = useUserStore();
 	const memberId = profile?.id;
-	const projectId = useParams();
-	const [feeds, setFeeds] = useState([]);
+	const { projectId } = useParams<{ projectId: string }>();
+	const [feeds, setFeeds] = useState<Feed[]>([]);
 
 	const getTaskFeed = async () => {
 		console.log(projectId);
@@ -16,7 +26,7 @@ const TaskFeed = () => {
 			const response = await axiosInstance.get('/feeds', {
 				params: {
 					memberId: memberId,
-					projectId: projectId.projectId,
+					projectId: projectId,
 				},
 			});
 
@@ -45,7 +55,6 @@ const TaskFeed = () => {
                     </div>
                 ))}
             </div>
-
         </div>
     );
 };

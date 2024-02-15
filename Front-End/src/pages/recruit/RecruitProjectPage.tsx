@@ -146,7 +146,7 @@ const RecruitProjectPage = () => {
   return (
     <div>
       <div className='flex items-center justify-center '>
-        <div className='w-10/12 h-screen flex p-10 flex-col '>
+        <div className='w-10/12 h-full flex p-10 flex-col '>
 
           <div className='h-auto shadow-xl rounded-3xl p-5'>
             <div className='align-middle text-center text-5xl font-bold mt-5'> {title}</div>

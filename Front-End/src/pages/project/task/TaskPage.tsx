@@ -30,7 +30,7 @@ interface Task {
 	endDay: string;
 }
 const TaskPage = () => {
-	useRequireAuth();
+  useRequireAuth();
 
 	const { projectId } = useParams();
 	const [tasks, setTasks] = useState<Task[]>([]);
