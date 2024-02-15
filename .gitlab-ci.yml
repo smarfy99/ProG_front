@@ -84,7 +84,7 @@ frontend_package:
     - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
   script:
     - cd Front-End
-    - echo "$ENV_PRODUCTION" > ".env.production"
+    - echo "$ENV_PRODUCTION" > ".env.development"
     - docker build -t $DOCKER_REGISTRY_USER/$REACT_IMAGE_NAME .
     - docker push $DOCKER_REGISTRY_USER/$REACT_IMAGE_NAME:latest
   after_script:
