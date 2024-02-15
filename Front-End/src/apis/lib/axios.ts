@@ -4,8 +4,7 @@ import { ERROR_CODES } from '../../constants/errorCodes';
 import { reissueToken } from '../../utils/authUtils';
 
 export const axiosInstance = axios.create({
-	baseURL: 'http://i10a210.p.ssafy.io:8080',
-	// baseURL: 'https://ssafy-prog.shop/api',
+	baseURL: import.meta.env.VITE_API_URL,
 	withCredentials: true, //쿠키 포함
 });
 

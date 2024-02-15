@@ -1,8 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../constants/queryKeys';
 import { axiosInstance } from './lib/axios';
 import { useRequireAuth } from '../hooks/useRequireAuth';
-// import { proxyAxiosInstance } from './lib/proxyAxios';
 
 //출근 - post
 //api 호출 함수 정의
