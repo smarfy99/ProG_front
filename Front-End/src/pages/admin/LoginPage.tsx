@@ -27,13 +27,16 @@ export const LoginPage: React.FC = () => {
 			});
 
 			const accessToken = response.headers['accesstoken'];
+			const refreshToken = response.headers['set-cookie'];
+
+			console.log('refresh : ', refreshToken);
 
 			if (accessToken) {
 				setAccessToken(accessToken); // 추출한 토큰을 Zustand 스토어에 저장
 
 				await fetchUserProfile(accessToken, setProfile, navigate); // 사용자 프로필 정보 가져오기
 
-				navigate('/');
+				// navigate('/');
 			} else {
 				// 토큰이 없는 경우의 처리
 				console.log('로그인 응답에 토큰이 없습니다.');
