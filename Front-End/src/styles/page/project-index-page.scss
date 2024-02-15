@@ -1,0 +1,39 @@
+@import "../common-color";
+@import "../component/common-btn";
+
+
+main {
+  padding: 2.5rem 3.25rem;
+  overflow: scroll;
+  max-height: calc(100% - 20px);
+}
+
+.under-line {
+  padding: 24px 0;
+  border-bottom: 2px solid #EBE9FC;
+
+  > h2 {
+    font-size: 1.75rem;
+  }
+}
+
+.title-box {
+
+}
+
+.project-box {
+  display: grid;
+  grid-template-rows: 0.6fr 1fr;
+}
+
+.project-home-btn {
+  @include basic-btn-f600;
+}
+.end {
+  background-color: rgb(227 51 77 / 90%);
+}
+
+.my-work-btn {
+  //width: 120px;
+  @include basic-none-border-f600;
+}
