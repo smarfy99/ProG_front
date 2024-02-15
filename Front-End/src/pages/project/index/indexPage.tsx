@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from 'react';
-// import {FaGear, FaCircleUser} from 'react-icons/fa6';
-import { useParams, useNavigate, NavigateFunction } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { FaGear, FaCircleUser } from 'react-icons/fa6';
+import { useParams, useNavigate, Link, NavigateFunction } from 'react-router-dom';
 import { axiosInstance } from '../../../apis/lib/axios';
 import { useRequireAuth } from '../../../hooks/useRequireAuth';
 import { useUserStore } from '../../../stores/useUserStore';
-// import logo from '../../../assets/logo.png';
-// import ImageWithFallback from "../../../utils/DefaultImgage.tsx";
+import logo from '../../../assets/logo.png';
+import ImageWithFallback from '../../../utils/DefaultImgage.tsx';
 import '../../../styles/page/project-index-page.scss';
 import { LineProgressBar } from '@frogress/line';
 import MemberSettingPage from '../setting/MemberSettingPage.tsx';
 
-// interface Position {
-//     posName: string;
-//     posCode: number;
-//     posNowNumber: number;
-//     posNumber: number;
-//     members: string[];
-// }
+interface Position {
+	posName: string;
+	posCode: number;
+	posNowNumber: number;
+	posNumber: number;
+	members: string[];
+}
 
 interface MemberData {
 	jobCode: {
@@ -29,7 +29,7 @@ interface MemberData {
 }
 
 interface HomeData {
-	projectId: string;
+	projectId: number;
 	title: string;
 	startDay: string;
 	endDay: string;
@@ -92,13 +92,13 @@ const IndexPage = () => {
 	//인덱스 페이지에서 세팅 페이지로 이동
 	const navigate = useNavigate();
 	const [isProjectStarted, setIsProjectStarted] = useState(false);
-	// const [startDay, setStartDay] = useState('');
-	// const [title, setTitle] = useState('');
-	// const [description, setDescription] = useState('');
-	// const [img, setImg] = useState('');
-	// const [mystack, setMyStack] = useState<string[]>([]);
-	// const [period, setPeriod] = useState<number>(0);
-	// const [positions, setPositions] = useState<Position[]>([]);
+	const [startDay, setStartDay] = useState('');
+	const [title, setTitle] = useState('');
+	const [description, setDescription] = useState('');
+	const [img, setImg] = useState('');
+	const [mystack, setMyStack] = useState<string[]>([]);
+	const [period, setPeriod] = useState<number>(0);
+	const [positions, setPositions] = useState<Position[]>([]);
 	const { projectId } = useParams();
 
 	const myHomeInfo = useHomeInfo(projectId || '');
@@ -106,10 +106,10 @@ const IndexPage = () => {
 	//     // const numericProjectId = parseInt(projectId);
 	// }
 
-	// const MemberSetting = () => {
-	//     navigate('./membersetting');
-	//     window.scrollTo({top: 0});
-	// };
+	const MemberSetting = () => {
+		navigate('./membersetting');
+		window.scrollTo({ top: 0 });
+	};
 
 	const Setting = () => {
 		navigate('./setting');
@@ -134,28 +134,28 @@ const IndexPage = () => {
 		}
 	};
 
-	// const calculatePeriod = () => {
-	//     if (!startDay) return '0 일';
-	//
-	//     const startDate = new Date(startDay);
-	//     const currentDate = new Date();
-	//     const differenceInTime = currentDate.getTime() - startDate.getTime(); // Correctly typed as number - number
-	//     const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-	//
-	//     return `${differenceInDays} 일`;
-	// };
+	const calculatePeriod = () => {
+		if (!startDay) return '0 일';
+
+		const startDate = new Date(startDay);
+		const currentDate = new Date();
+		const differenceInTime = currentDate.getTime() - startDate.getTime(); // Correctly typed as number - number
+		const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+
+		return `${differenceInDays} 일`;
+	};
 
 	const getData = async () => {
 		try {
 			const response = await axiosInstance.get(`/projects/${projectId}/${memberId}`);
 			const data = response.data.data;
-			// setTitle(data.title);
-			// setDescription(data.content);
-			// setImg(data.projectImgUrl);
-			// setMyStack(data.techCodes.map((tech: { detailName: any }) => tech.detailName));
-			// setPeriod(data.period);
+			setTitle(data.title);
+			setDescription(data.content);
+			setImg(data.projectImgUrl);
+			setMyStack(data.techCodes.map((tech: { detailName: any }) => tech.detailName));
+			setPeriod(data.period);
 			setIsProjectStarted(data.startDay !== null);
-			// setStartDay(data.startDay);
+			setStartDay(data.startDay);
 
 			const updatedPositions = data.projectTotals.map(
 				(item: { jobCode: { detailDescription: any; id: any }; current: any; total: any }) => ({
@@ -180,7 +180,7 @@ const IndexPage = () => {
 				}
 			});
 
-			// setPositions(updatedPositions);
+			setPositions(updatedPositions);
 		} catch (error) {
 			console.error('Loading failed:', error);
 		}
