@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { axiosInstance } from "../../apis/lib/axios";
 import { useRequireAuth } from "../../hooks/useRequireAuth";
 
+import '../../styles/component/project/position.scss'
+
 export const techStack = {
   mystack: [] as { techCode: number }[],
 };
@@ -50,22 +52,22 @@ const TechStack = () => {
       <div className="flex">
         <div className="text-3xl font-bold mr-2">기술 스택</div>
       </div>
-      <hr className='my-3 border-main-color border-1' />
+      <hr className='my-3 border-1' />
       <div className="h-auto w-full bg-gray-50 rounded-xl">
         {selectedTags.map((item, index) => (
           <span
             key={index}
-            className="bg-sub-color p-1 m-1 inline-block cursor-pointer rounded-2xl"
+            className="cursor-pointer inline-block m-1 p-1 px-3 rounded-2xl tech-stack"
             onClick={() => removeTag(item.id)}
           >
-            {item.techCode} X
+            {item.techCode} ❌
           </span>
         ))}
       </div>
-      <div className="mb-10">
+      <div className="mb-10 mt-2">
         <select
           id="techStack"
-          className="mt-2 p-2"
+          className="p-2 position-select"
           value={selectedValue}
           onChange={(e) => setSelectedValue(e.target.value)}
         >
@@ -79,7 +81,7 @@ const TechStack = () => {
 
         <button
           onClick={putTag}
-          className="mt-5 bg-main-color text-white p-2 ml-2 rounded-lg"
+          className="ml-2 p-2 position-btn px-5 text-white"
         >
           등록
         </button>

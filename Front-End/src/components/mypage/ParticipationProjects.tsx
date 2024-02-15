@@ -65,6 +65,7 @@ const useProjectList = (api:string) => {
             // const response = await axiosInstance.get(`/projects/myproject/${memberId}`, {});
             console.log(`api: ${api}`)
             const response = await axiosInstance.get(api, {});
+            // const response = await axiosInstance.get('/projects/myproject/5', {});
             if (response.data.status === "OK") {
                 const data: ProjectItem[] = response.data.data;
                 console.log(`받은 데이터 : ${JSON.stringify(data)}`)
@@ -95,7 +96,7 @@ const ParticipationProjects: React.FC<ParticipationProjectsProps> = ({ selectIte
                     <Link to={`/project/${data.projectId}`} >
                         {/*이미지 영역*/}
                         <div className={'img-box flex justify-center'}>
-                            <ImageWithFallback src={data.projectImgUrl} alt={''} type={'project'}/>
+                            <ImageWithFallback src={data.projectImgUrl} alt={''} type={'project'} style={''}/>
                             {/*<img src={`${data.projectImgUrl}`} alt="이미지없음"/>*/}
                         </div>
                         {/*컨텐츠 영역*/}

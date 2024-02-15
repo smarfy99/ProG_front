@@ -15,6 +15,10 @@ const ImageWithFallback: React.FC<Props> = ({ src, alt, type , style}) => {
     'member': memberImg,
   };
 
+  if (src === null || src === '' || src === 'null') {
+    src = defaultImages[type];
+  }
+
   return <img src={src || defaultImages[type]} alt={alt} className={style} />;
 };
 export default ImageWithFallback;

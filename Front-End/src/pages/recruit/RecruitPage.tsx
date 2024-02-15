@@ -5,6 +5,8 @@ import Pagination from '@mui/material/Pagination';
 import useRecruitStore from '../../stores/useRecruitStore.ts';
 import { useRequireAuth } from '../../hooks/useRequireAuth';
 
+import '../../styles/page/recruit/recruit-page.scss';
+
 const RecruitPage: React.FC = () => {
   useRequireAuth();
   const { currentPage, setCurrentPage, totalPages } = useRecruitStore();
@@ -19,26 +21,27 @@ const RecruitPage: React.FC = () => {
   }, []);
   return (
     <React.StrictMode>
-      <div className='grid text-center'>
-        <div className='font-bold text-6xl'>프로젝트 찾기</div>
-        <RecruitSearchBar currentPage={currentPage} />
-      </div>
-      <div className='flex justify-center'>
-
-        <div className='px-16 m-1 flex justify-start'>
-          <RecruitCard />
+        <div className={'recurit-container'}>
+          <div className='text-center mt-10 w-full'>
+            <div className='font-bold text-6xl'>프로젝트 찾기</div>
+            <RecruitSearchBar currentPage={currentPage} />
+          </div>
+          <div className='w-full'>
+            <div className='m-1'>
+              <RecruitCard />
+            </div>
+          </div>
+          <div className='flex justify-center mb-10'>
+            <Pagination
+              count={totalPages}
+              variant='outlined'
+              shape='rounded'
+              page={currentPage}
+              onChange={handlePageChange}
+              onClick={() => window.scrollTo({ top: 0 })}
+            />
+          </div>
         </div>
-      </div>
-      <div className='flex justify-center mb-10'>
-        <Pagination
-          count={totalPages}
-          variant='outlined'
-          shape='rounded'
-          page={currentPage}
-          onChange={handlePageChange}
-          onClick={() => window.scrollTo({ top: 0 })}
-        />
-      </div>
     </React.StrictMode>
   );
 };

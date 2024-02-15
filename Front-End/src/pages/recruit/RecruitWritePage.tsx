@@ -6,6 +6,8 @@ import { axiosInstance } from '../../apis/lib/axios';
 import { useRequireAuth } from '../../hooks/useRequireAuth';
 import { useUserStore } from '../../stores/useUserStore';
 
+import '../../styles/page/recruit/recruit-write.scss';
+
 interface State {
 	projectTitle: string;
 	projectContent: string;
@@ -152,7 +154,7 @@ const RecruitWritePage: React.FC = () => {
 					<label htmlFor='projectTitle' className='font-bold text-3xl my-3'>
 						프로젝트 제목
 					</label>
-					<hr className='my-3 border-main-color border-1' />
+					<hr className='my-3 border-1' />
 					<div>
 						<input
 							type='text'
@@ -168,7 +170,7 @@ const RecruitWritePage: React.FC = () => {
 					<label htmlFor='projectContent' className='font-bold text-3xl '>
 						프로젝트 내용
 					</label>
-					<hr className='my-3 border-main-color border-1' />
+					<hr className='my-3 border-1' />
 					<div>
 						<textarea
 							id='projectContent'
@@ -178,12 +180,11 @@ const RecruitWritePage: React.FC = () => {
 							onChange={handleInputChange}
 						/>
 					</div>
-
 					<TechStack />
 
 					<div className='my-3'>
 						<label className='font-bold text-3xl'>프로젝트 이미지 업로드</label>
-						<hr className='my-3 border-main-color border-1' />
+						<hr className='my-3 border-1' />
 						<div>
 							<input
 								type='file'
@@ -203,7 +204,7 @@ const RecruitWritePage: React.FC = () => {
 						<label htmlFor='projectPeriod' className='font-bold text-3xl my-3'>
 							프로젝트 기간
 						</label>
-						<hr className='my-3 border-main-color border-1' />
+						<hr className='my-3 border-1' />
 						<div>
 							<input
 								type='text'
@@ -219,12 +220,13 @@ const RecruitWritePage: React.FC = () => {
 							)}
 						</div>
 					</div>
-
 					<Position />
 				</div>
-				<button onClick={handleSave} className='mt-5 bg-main-color text-white p-3'>
-					저장
-				</button>
+				<div className={'flex justify-center'}>
+					<button onClick={handleSave} className='save-btn'>
+						저장
+					</button>
+				</div>
 
 				{isModalOpen && (
 					<div className='fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center'>

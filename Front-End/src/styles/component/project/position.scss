@@ -1,0 +1,27 @@
+@import "../../common/common-color";
+@import "../../common/common-style";
+
+hr {
+  border-color: var(--gray30);
+}
+
+.position-select {
+  @include border-gray;
+}
+
+.tech-stack {
+  border: 2px solid var(--main-color90);
+}
+
+.position-btn{
+  background-color: var(--main-color90);
+}
+
+.select-btn-border{
+  border: 2px solid var(--main-color90);
+}
+
+.position-add-btn{
+  margin-left: 52px;
+  background-color: rgb(0 128 0 / 73%);
+}

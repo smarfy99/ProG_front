@@ -18,9 +18,12 @@ let memberId = 0;
 const userProfileKey = 'userProfile';
 const userProfileString = localStorage.getItem(userProfileKey);
 if (userProfileString) {
+	console.log(`여기 타나 타나탄타나`);
 	const userProfile = JSON.parse(userProfileString);
 	memberId = userProfile.id;
 }
+
+console.log(`회원 IO : ${memberId}`)
 
 const useCodeDetailList = () => {
 	// const[codeDetails, setCodeDetails] = useState<codeDetailItem[]>([]);
@@ -138,10 +141,10 @@ const MyProject = () => {
 			<header className='grid text-center'>
 				<Menu />
 			</header>
-			<main>
+			<div>
 				{/*<main >*/}
 				<ParticipationProjects selectItem={selectItem} />
-			</main>
+			</div>
 		</div>
 	);
 };
