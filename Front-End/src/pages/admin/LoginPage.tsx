@@ -5,7 +5,8 @@ import { useAuthStore } from '../../stores/useAuthStore';
 import { fetchUserProfile } from '../../utils/fetchUserProfile';
 import { useUserStore } from '../../stores/useUserStore';
 import { ERROR_CODES } from '../../constants/errorCodes';
-import { axiosInstance } from '../../apis/lib/axios';
+// import { axiosInstance } from '../../apis/lib/axios';
+import { proxyAxiosInstance } from '../../apis/lib/proxyAxios';
 import axios from 'axios';
 import { FaGithubAlt } from 'react-icons/fa6';
 
@@ -21,7 +22,7 @@ export const LoginPage: React.FC = () => {
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		try {
-			const response = await axiosInstance.post('/members/login', {
+			const response = await proxyAxiosInstance.post('/members/login', {
 				email: username,
 				password: password,
 			});
