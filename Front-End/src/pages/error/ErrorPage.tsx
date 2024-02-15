@@ -5,7 +5,7 @@ function ErrorPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-full">
       <img
         src={errorImage}
         alt="Error"

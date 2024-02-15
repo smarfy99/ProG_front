@@ -21,7 +21,10 @@ export const SignUpForm: React.FC = () => {
     useState<boolean>(false);
   const [authModalMessage, setAuthModalMessage] = useState<string>("");
   const [nicknameModalMessage, setNicknameModalMessage] = useState<string>("");
-
+  const [isSignUpCompleteModalOpen, setIsSignUpCompleteModalOpen] =
+    useState(false);
+  const [signUpCompleteModalMessage, setSignUpCompleteModalMessage] =
+    useState("");
   const [isEmailVerified, setIsEmailVerified] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -41,7 +44,11 @@ export const SignUpForm: React.FC = () => {
     try {
       const response = await axiosInstance.post("/members/sign-up", userData);
       console.log(response.data);
-      navigate("/login");
+
+      // 회원가입 성공 모달 메시지 설정 및 모달 열기
+      setSignUpCompleteModalMessage("회원가입이 완료되었습니다!");
+      setIsSignUpCompleteModalOpen(true);
+
     } catch (error) {
       console.error("회원가입 오류", error);
     }
@@ -191,7 +198,7 @@ export const SignUpForm: React.FC = () => {
 
   return (
     <div className="mt-20 mb-20">
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-full">
         <div className="w-1/2 border-solid border-2 p-10 rounded-lg bg-white shadow-md">
           <div className="flex flex-col items-center justify-center">
             <div className="flex items-center justify-center mb-10">
@@ -440,6 +447,28 @@ export const SignUpForm: React.FC = () => {
                 </button>
               </div>
             </form>
+            {isSignUpCompleteModalOpen && (
+              <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+                <div className="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                  <div className="mt-3 text-center">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                      {signUpCompleteModalMessage}
+                    </h3>
+                    <div className="mt-4">
+                      <button
+                        onClick={() => {
+                          setIsSignUpCompleteModalOpen(false);
+                          navigate("/login"); // 모달 닫을 때 로그인 페이지로 리다이렉트
+                        }}
+                        className="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-main-color text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
+                      >
+                        확인
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

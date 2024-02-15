@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect, useState} from "react";
 import '../../styles/my-project-card.scss';
 import {LineProgressBar} from '@frogress/line'
