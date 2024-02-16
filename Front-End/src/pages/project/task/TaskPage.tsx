@@ -43,9 +43,7 @@ const TaskPage = () => {
 			const response = await axiosInstance.get(`/works/${projectId}`);
 			const responseData = response.data.data ? response.data.data : [];
 			setTasks(responseData);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch (error) {}
 	};
 
 	// 컴포넌트 마운트 시 태스크 데이터 불러오기

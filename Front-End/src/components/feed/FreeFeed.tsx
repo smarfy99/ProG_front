@@ -48,29 +48,20 @@ const FreeFeed = () => {
 		try {
 			const respons = await axiosInstance.post('/boards', form, {});
 
-			console.log(respons);
-
 			getFreeFeeds();
 
 			setEditorContent('');
-		} catch (e) {
-			console.error(e);
-		}
+		} catch (e) {}
 	};
 	const updateGetFeeds = useFeedStore((state) => state.updateGetFeeds);
 
 	const getFreeFeeds = async () => {
 		try {
-			console.log(projectId);
-
 			const response = await axiosInstance.get(`/boards/${projectId}`, {});
 
 			const data = response.data.data.boards;
 			updateGetFeeds(data);
-			console.log('프리피드', data);
-		} catch (e) {
-			console.error(e);
-		}
+		} catch (e) {}
 	};
 
 	useEffect(() => {
@@ -80,16 +71,11 @@ const FreeFeed = () => {
 	const { getFeeds } = useFeedStore();
 
 	const deleteBoard = async (boardId: number, index: number) => {
-		console.log('상위 삭제 함수 들어옴');
 		try {
 			const response = await axiosInstance.patch(`/boards/${boardId}`);
 
-			console.log('deleted ' + response);
-
 			popFeeds(index);
-		} catch (e) {
-			console.error(e);
-		}
+		} catch (e) {}
 	};
 
 	const [feeds, setFeeds] = useState(getFeeds);
@@ -102,8 +88,6 @@ const FreeFeed = () => {
 		const newFeeds = [...feeds];
 		newFeeds.splice(index, 1);
 		setFeeds(newFeeds);
-		console.log('삭제요청옴');
-		console.log(newFeeds);
 	};
 
 	return (

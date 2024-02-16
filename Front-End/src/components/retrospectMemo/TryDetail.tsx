@@ -70,9 +70,7 @@ const TryDetail: React.FC<KeepDetailProps> = ({ isOpen, onClose, memos, onKPTUpd
 			setSelectedActionsCount((prevCount) => prevCount + 1);
 			// 성공적으로 액션 등록 후 모달 표시
 			setShowModal(true);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch (error) {}
 	};
 
 	const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {

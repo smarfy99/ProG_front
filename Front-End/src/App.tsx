@@ -21,6 +21,7 @@ import MemberSettingPage from './pages/project/setting/MemberSettingPage';
 import ProjectSettingPage from './pages/project/setting/ProjectSettingPage';
 import PrevRetrospect from './components/retrospectMemo/PrevRetrospect';
 import ErrorPage from './pages/error/ErrorPage';
+import GithubLoginPage from './pages/admin/GithubLoginPage';
 
 function App() {
 	//라우터 설정
@@ -61,6 +62,10 @@ function App() {
 				{
 					path: 'recruit/project/:projectId',
 					element: <RecruitProjectPage />,
+				},
+				{
+					path: 'login/oauth2/code/github',
+					element: <GithubLoginPage />,
 				},
 				{
 					path: 'project/:projectId',

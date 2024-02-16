@@ -12,7 +12,6 @@ export const reissueToken = async () => {
 			return newAccessToken;
 		}
 	} catch (error) {
-		console.error('Failed to refresh token', error);
 		useAuthStore.getState().setAccessToken(null); //accessToken 초기화
 	}
 	return null;

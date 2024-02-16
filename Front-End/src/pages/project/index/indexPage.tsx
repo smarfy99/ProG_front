@@ -45,7 +45,7 @@ const CustomLabelComponent = ({ percent }: { percent: number }) => {
 	);
 };
 
-const useHomeInfo = (projectId: string, trigger:number) => {
+const useHomeInfo = (projectId: string, trigger: number) => {
 	let memberId = 0;
 
 	// 로컬 스토리지에서 userProfile을 가져옴
@@ -61,21 +61,15 @@ const useHomeInfo = (projectId: string, trigger:number) => {
 		try {
 			const response = await axiosInstance.get(`/projects/home/${projectId}/${memberId}`);
 			const data = response.data.data;
-			console.log(`Data loaded : ${JSON.stringify(data)}`);
 			setHomeData(data);
-
-		} catch (error) {
-			console.error('Loading failed:', error);
-		}
+		} catch (error) {}
 	};
 
 	useEffect(() => {
-		console.log(`useEffect 홈데이터 get`);
 		if (projectId && projectId !== '') {
-			console.log(`데이터 있음`);
 			getHomdeInfo();
 		}
-	}, [projectId,trigger]);
+	}, [projectId, trigger]);
 
 	return homeData;
 };
@@ -89,7 +83,6 @@ const IndexPage = () => {
 	useRequireAuth();
 	const { profile } = useUserStore();
 	const memberId = profile?.id;
-	console.log(memberId);
 	//인덱스 페이지에서 세팅 페이지로 이동
 	const navigate = useNavigate();
 	const [isProjectStarted, setIsProjectStarted] = useState(false);
@@ -122,89 +115,27 @@ const IndexPage = () => {
 
 	const startProject = async () => {
 		try {
-			console.log(`startProject`)
 			await axiosInstance.patch(`/projects/${projectId}/start/${memberId}`);
 			// getData(); // Refresh data after starting the project
-			setIsProjectStarted(true)
-			setTrigger(prev => prev + 1);
-		} catch (error) {
-			console.error('Start failed:', error);
-		}
+			setIsProjectStarted(true);
+			setTrigger((prev) => prev + 1);
+		} catch (error) {}
 	};
 
 	const endProject = async () => {
 		try {
-			console.log(`endProject`)
 			await axiosInstance.patch(`/projects/${projectId}/end/${memberId}`);
 			// getData(); // Refresh data after ending the project
-			setTrigger(prev => prev + 1);
-		} catch (error) {
-			console.error('End failed:', error);
-		}
+			setTrigger((prev) => prev + 1);
+		} catch (error) {}
 	};
 
-	// const calculatePeriod = () => {
-	//     if (!startDay) return '0 일';
-	//
-	//     const startDate = new Date(startDay);
-	//     const currentDate = new Date();
-	//     const differenceInTime = currentDate.getTime() - startDate.getTime(); // Correctly typed as number - number
-	//     const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-	//
-	//     return `${differenceInDays} 일`;
-	// };
-
-	// const getData = async () => {
-	// 	try {
-	// 		const response = await axiosInstance.get(`/projects/${projectId}/${memberId}`);
-	// 		const data = response.data.data;
-	// 		// setTitle(data.title);
-	// 		// setDescription(data.content);
-	// 		// setImg(data.projectImgUrl);
-	// 		// setMyStack(data.techCodes.map((tech: { detailName: any }) => tech.detailName));
-	// 		// setPeriod(data.period);
-	// 		setIsProjectStarted(data.startDay !== null);
-	// 		// setStartDay(data.startDay);
-	//
-	// 		const updatedPositions = data.projectTotals.map(
-	// 			(item: { jobCode: { detailDescription: any; id: any }; current: any; total: any }) => ({
-	// 				posName: item.jobCode.detailDescription,
-	// 				posCode: item.jobCode.id, // Ensure this is correctly populated
-	// 				posNowNumber: item.current,
-	// 				posNumber: item.total,
-	// 				members: [],
-	// 			}),
-	// 		);
-	//
-	// 		const membersResponse = await axiosInstance.get(`/projects/${projectId}/members`);
-	// 		const membersData = membersResponse.data.data;
-	// 		console.log(membersData);
-	// 		membersData.forEach((memberData: MemberData) => {
-	// 			console.log('Looking for position with posCode:', memberData.jobCode.id);
-	// 			const position = updatedPositions.find((pos: { posCode: any }) => pos.posCode === memberData.jobCode.id);
-	// 			if (position) {
-	// 				position.members.push(memberData.member.nickname);
-	// 			} else {
-	// 				console.log('No matching position found for jobCode.id:', memberData.jobCode.id);
-	// 			}
-	// 		});
-	//
-	// 		// setPositions(updatedPositions);
-	// 	} catch (error) {
-	// 		console.error('Loading failed:', error);
-	// 	}
-	// };
-
 	useEffect(() => {
-		console.log(`useEffect : ${isProjectStarted}`);
 		// 시작일이 있으면 프로젝트 시작 상태 true
 		// if (myHomeInfo?.startDay !== null && myHomeInfo?.startDay !== 'null') {
 		if (myHomeInfo?.startDay) {
-			console.log('여기타나? true만듦')
-			console.log(`값 : :${isProjectStarted}`)
 			setIsProjectStarted(true);
 		}
-
 	}, [projectId, myHomeInfo]);
 
 	return (

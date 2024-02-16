@@ -68,13 +68,11 @@ const MyProject = () => {
 	const userProfileString = localStorage.getItem(userProfileKey);
 	const getMemberId = () => {
 		if (userProfileString) {
-			console.log(`여기 타나 타나탄타나`);
 			const userProfile = JSON.parse(userProfileString);
 			// memberId = userProfile.id;
 			setMemberId(userProfile.id);
 		}
 	};
-	console.log(`회원 IO : ${memberId}`);
 
 	const makeCode = () => {
 		const menuPropsItems: MenuProps[] = codeDetails.map((item) => {
@@ -133,7 +131,6 @@ const MyProject = () => {
 		});
 
 		setActiveItem([...menuPropsItems].sort((a, b) => a.index - b.index));
-		console.log(`additionalItem[0] : ${JSON.stringify(additionalItem[0])}`);
 		setSelectItem(additionalItem[0]);
 	};
 

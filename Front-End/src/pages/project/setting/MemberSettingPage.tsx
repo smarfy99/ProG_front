@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, {useCallback, useEffect, useState} from 'react';
-import {axiosInstance} from '../../../apis/lib/axios';
-import {useRequireAuth} from '../../../hooks/useRequireAuth';
-import {useUserStore} from '../../../stores/useUserStore';
-import ImageWithFallback from "../../../utils/DefaultImgage.tsx";
-import ProjectApplicationStatus, {MemberData} from "../../../components/project_home/ProjectApplicationStatus.tsx";
-import '../../../styles/component/project-partication-member.scss'
-import ProjectMemberContext from "../../../components/project_home/ProjectMemberContext.tsx";
+import React, { useCallback, useEffect, useState } from 'react';
+import { axiosInstance } from '../../../apis/lib/axios';
+import { useRequireAuth } from '../../../hooks/useRequireAuth';
+import { useUserStore } from '../../../stores/useUserStore';
+import ImageWithFallback from '../../../utils/DefaultImgage.tsx';
+import ProjectApplicationStatus, { MemberData } from '../../../components/project_home/ProjectApplicationStatus.tsx';
+import '../../../styles/component/project-partication-member.scss';
+import ProjectMemberContext from '../../../components/project_home/ProjectMemberContext.tsx';
+import { useParams } from 'react-router-dom';
 
 interface MemberSettingPageProps {
     projectId: string | undefined;

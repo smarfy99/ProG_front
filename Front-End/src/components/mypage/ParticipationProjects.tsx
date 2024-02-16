@@ -62,24 +62,18 @@ const useProjectList = (api: string) => {
 	const getProjectList = async () => {
 		try {
 			// const response = await axiosInstance.get(`/projects/myproject/${memberId}`, {});
-			console.log(`api: ${api}`);
 			const response = await axiosInstance.get(api, {});
 			// const response = await axiosInstance.get('/projects/myproject/5', {});
 			if (response.data.status === 'OK') {
 				const data: ProjectItem[] = response.data.data;
-				console.log(`받은 데이터 : ${JSON.stringify(data)}`);
 				setMyProjectList(data);
 			}
-		} catch (error) {
-			console.error('Loading failed:', error);
-		}
+		} catch (error) {}
 	};
 
 	useEffect(() => {
 		getProjectList();
 	}, [api]);
-
-	console.log(`myProjectList: ${JSON.stringify(myProjectList)}`);
 
 	return myProjectList;
 };

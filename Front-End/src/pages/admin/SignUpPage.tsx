@@ -40,14 +40,11 @@ export const SignUpForm: React.FC = () => {
 
 		try {
 			const response = await axiosInstance.post('/members/sign-up', userData);
-			console.log(response.data);
 
 			// 회원가입 성공 모달 메시지 설정 및 모달 열기
 			setSignUpCompleteModalMessage('회원가입이 완료되었습니다!');
 			setIsSignUpCompleteModalOpen(true);
-		} catch (error) {
-			console.error('회원가입 오류', error);
-		}
+		} catch (error) {}
 
 		// 폼 제출 후 입력 필드 초기화
 		setUserEmail('');
@@ -124,7 +121,6 @@ export const SignUpForm: React.FC = () => {
 	};
 
 	const handleTimerComplete = () => {
-		console.log('Timer Completed!');
 		setIsTimerActive(false);
 	};
 

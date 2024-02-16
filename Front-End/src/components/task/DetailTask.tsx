@@ -62,10 +62,7 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose, onTaskUpdate }) => {
 		try {
 			const response = await axiosInstance.get(`/projects/${projectId}/members`);
 			setProjectMembers(response.data.data);
-			console.log(response.data.data);
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	};
 
 	const postTask = async () => {
@@ -99,7 +96,6 @@ const DetailTask: React.FC<DetailTaskProps> = ({ onClose, onTaskUpdate }) => {
 			onTaskUpdate(); // 업무 등록 성공 후 상위 컴포넌트 업데이트
 			setTaskPostedSuccessfully(true); // 성공 알림 상태 업데이트
 		} catch (error) {
-			console.log(error);
 			setShowModal(true); // 실패 시 기존 모달 표시
 		}
 	};

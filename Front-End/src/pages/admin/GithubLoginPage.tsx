@@ -16,9 +16,6 @@ const GithubLoginPage = () => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const code = urlParams.get('code');
 
-		console.log('urlParams : ', urlParams);
-		console.log('code : ', code);
-
 		//서버로 code post 요청
 		if (code) {
 			postCode(code);
@@ -28,7 +25,6 @@ const GithubLoginPage = () => {
 	const postCode = async (code: string) => {
 		try {
 			const response = await proxyAxiosInstance.post(`/members/login/oauth2/github?code=${code}`);
-			console.log('github response : ', response.data);
 
 			const accessToken = response.headers['accesstoken'];
 
@@ -37,9 +33,7 @@ const GithubLoginPage = () => {
 
 				await fetchUserProfile(accessToken, setProfile, navigate); // 사용자 프로필 정보 가져오기
 			}
-		} catch (error) {
-			console.log('github error : ', error);
-		}
+		} catch (error) {}
 	};
 
 	return <div></div>;

@@ -69,9 +69,7 @@ const HomePage = () => {
 				setProjectList(formattedData);
 			}
 			ProjectCarousel();
-		} catch (error) {
-			console.error('Loading failed:', error);
-		}
+		} catch (error) {}
 	};
 
 	// ■■■■■■■■■■■■■■■■■■■ 캐러셀 start ■■■■■■■■■■■■■■■■■■■
@@ -184,7 +182,6 @@ const HomePage = () => {
 			if (e.key == 'Enter') {
 				// const search = e.target.value;
 				const search = e.currentTarget.value;
-				console.log(`보낸 값 : ${search}`);
 				// navigate('../recruit/', {'keyword': search});
 				navigate('../recruit/', { keyword: search } as NavigateOption);
 			}

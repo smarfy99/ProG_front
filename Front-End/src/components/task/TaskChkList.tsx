@@ -28,7 +28,6 @@ const TaskChkList: React.FC<TaskChkListProps> = ({ taskDetail }) => {
 			const response = await axiosInstance.get(`/worklist/${taskDetail.workId}`);
 			setChecklist(response.data.data || []);
 		} catch (error) {
-			console.error('Fetching checklist failed: ', error);
 			setChecklist([]);
 		}
 	};
@@ -48,9 +47,7 @@ const TaskChkList: React.FC<TaskChkListProps> = ({ taskDetail }) => {
 			});
 			setNewItemText('');
 			fetchChecklist();
-		} catch (error) {
-			console.error('Adding checklist item failed: ', error);
-		}
+		} catch (error) {}
 	};
 
 	const handleChecklistChange = async (checkListId: number) => {
@@ -73,18 +70,14 @@ const TaskChkList: React.FC<TaskChkListProps> = ({ taskDetail }) => {
 			);
 
 			fetchChecklist(); // 체크리스트를 다시 불러옵니다.
-		} catch (error) {
-			console.error('Updating checklist item failed: ', error);
-		}
+		} catch (error) {}
 	};
 
 	const removeChecklistItem = async (checkListId: number) => {
 		try {
 			await axiosInstance.delete(`/worklist/${checkListId}`);
 			fetchChecklist();
-		} catch (error) {
-			console.error('Removing checklist item failed: ', error);
-		}
+		} catch (error) {}
 	};
 
 	const handleSubmit = (e: React.FormEvent) => {

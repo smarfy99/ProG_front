@@ -82,11 +82,8 @@ const FeedDetail: FC<FeedDetailProps> = ({ boardId, onClose = () => {}, popFeeds
 				viewCnt: data.viewCnt,
 				isNotice: data.isNotice,
 			}));
-			console.log('피드 디테일', data);
 			getFreeFeeds();
-		} catch (e) {
-			console.error(e);
-		}
+		} catch (e) {}
 	};
 
 	useEffect(() => {
@@ -113,9 +110,7 @@ const FeedDetail: FC<FeedDetailProps> = ({ boardId, onClose = () => {}, popFeeds
 	const handleDelete = (event: React.MouseEvent) => {
 		// 삭제하기 버튼 눌렀을 때 요청.
 		event.stopPropagation();
-		console.log('버튼 클릭');
 		if (popFeeds) {
-			console.log('삭제 함수 실행');
 			popFeeds(boardId, index);
 		}
 	};

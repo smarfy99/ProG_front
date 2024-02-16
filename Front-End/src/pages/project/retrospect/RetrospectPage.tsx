@@ -35,9 +35,7 @@ export const RetrospectPage = () => {
 		try {
 			const response = await axiosInstance.get(`/retrospects/${projectId}`);
 			setKptData(response.data.data);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch (error) {}
 	};
 	useEffect(() => {
 		if (!isLoading) {

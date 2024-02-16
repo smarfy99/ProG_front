@@ -39,9 +39,7 @@ const Position: React.FC = () => {
 						})),
 					);
 				}
-			} catch (error) {
-				console.error('Failed to fetch positions:', error);
-			}
+			} catch (error) {}
 		};
 		getPositionList();
 		position.totalList.push({ jobCode: 0, total: 1, current: 0 });
@@ -84,7 +82,6 @@ const Position: React.FC = () => {
 		const updatedPositionCurrent = Array(state.positionCurrent.length).fill(0);
 		updatedPositionCurrent[index] = 1;
 		setIsSelected(true);
-		console.log(isSelected);
 		setState((prev) => ({
 			...prev,
 			positionCurrent: updatedPositionCurrent,

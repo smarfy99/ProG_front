@@ -37,7 +37,6 @@ export const LoginPage: React.FC = () => {
 				navigate('/');
 			} else {
 				// 토큰이 없는 경우의 처리
-				console.log('로그인 응답에 토큰이 없습니다.');
 			}
 		} catch (error) {
 			//axios error인지 확인, error_code 처리

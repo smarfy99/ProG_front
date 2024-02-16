@@ -70,10 +70,7 @@ const ModifyTask: React.FC<ModifyTaskProps> = ({ taskDetail, onTaskUpdate }) => 
 		try {
 			const response = await axiosInstance.get(`/projects/${projectId}/members`);
 			setProjectMembers(response.data.data);
-			console.log(response.data.data);
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	};
 
 	const modifyTask = async () => {
@@ -103,9 +100,7 @@ const ModifyTask: React.FC<ModifyTaskProps> = ({ taskDetail, onTaskUpdate }) => 
 			setTaskModified(!taskModified);
 			setConfirmModal(true);
 			handleClose();
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	};
 
 	const handleMemberChange = (event: ChangeEvent<HTMLSelectElement>): void => {

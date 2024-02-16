@@ -39,7 +39,6 @@ const FreeFeedSimple: FC<FreeFeedSimpleProps> = ({
 
 	//보드 디테일 모달 닫기 버튼
 	const onClickClose = () => {
-		console.log('모달닫아');
 		setShowDetail(false);
 	};
 

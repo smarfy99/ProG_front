@@ -21,7 +21,6 @@ const TaskFeed = () => {
 	const [feeds, setFeeds] = useState<Feed[]>([]);
 
 	const getTaskFeed = async () => {
-		console.log(projectId);
 		try {
 			const response = await axiosInstance.get('/feeds', {
 				params: {
@@ -31,9 +30,7 @@ const TaskFeed = () => {
 			});
 
 			setFeeds(response.data.data);
-		} catch (e) {
-			console.error(e);
-		}
+		} catch (e) {}
 	};
 
 	useEffect(() => {

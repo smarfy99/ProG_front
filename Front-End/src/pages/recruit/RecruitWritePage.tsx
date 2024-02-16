@@ -57,9 +57,7 @@ const RecruitWritePage: React.FC = () => {
 
 	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0] || null; // 파일이 없으면 null을 반환
-		console.log(file);
 		setFormImage(file);
-		console.log(formImage);
 		if (file) {
 			// const imageUrl = URL.createObjectURL(file);
 			setState((prev) => ({
@@ -95,15 +93,12 @@ const RecruitWritePage: React.FC = () => {
 				totechList: [...techStack.mystack], // 객체 복사
 				totalList: position.totalList,
 			};
-			console.log(projectData);
-			console.log(projectData.totalList);
 			let currentCheck = 0;
 			for (let i = 0; i < projectData.totalList.length; i++) {
 				if (projectData.totalList[i].current == 1) {
 					currentCheck = 1;
 				}
 			}
-			console.log(currentCheck);
 			if (currentCheck == 0) {
 				setModalMessage('내가 참여할 포지션을 선택해 주세요');
 				setIsModalOpen(true);
@@ -116,23 +111,17 @@ const RecruitWritePage: React.FC = () => {
 				form.append('file', state.projectImage);
 				// form.append('file', )
 			}
-			console.log(projectDataString);
-			console.log('FormData entries:');
 			for (const pair of form.entries()) {
-				console.log(pair[0] + ': ' + pair[1]);
 			}
-			console.log(memberId);
 			try {
 				const response = await axiosInstance.post(`/projects/${memberId}`, form, {
 					headers: {
 						'Content-Type': undefined,
 					},
 				});
-				console.log('Response:', response);
 				setFinalModalMessage('프로젝트가 등록되었습니다!');
 				setIsFinalModalOpen(true);
 			} catch (error) {
-				console.error('Post failed:', error);
 				setModalMessage('에러가 발생했습니다');
 				setIsModalOpen(true);
 			}
