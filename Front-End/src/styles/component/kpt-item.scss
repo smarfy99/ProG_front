@@ -34,14 +34,14 @@
 // KEEP, PROBLEM
 .keep-box {
   width: 100%;
-  background-color: #f1f158ba;
+  background-color: rgb(241 241 88 / 90%);
   @include btn-bg-main90;
   @include kp-box-grid;
 }
 
 .problem-box{
   width: 100%;
-  background-color: #edbcc3c9;
+  background-color: rgb(237 188 195 / 90%);
   @include btn-bg-main90;
   @include kp-box-grid;
 }

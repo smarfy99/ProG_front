@@ -10,7 +10,7 @@ const RecruitCard = () => {
 	const { searchResults } = useRecruitStore();
 
 	return (
-		<div className='grid grid-cols-6'>
+		<div className='recurit-card-box grid grid-cols-6'>
 			{searchResults.map((result) => (
 				<div
 					key={result.id}

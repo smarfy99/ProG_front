@@ -46,6 +46,16 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({ taskDetail, onClose, onTa
 		}
 	};
 
+	const deleteDetailTask = async () => {
+		try {
+			await axiosInstance.delete(`/works/${taskDetail.workId}`);
+			onClose();
+			onTaskUpdate();
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	useEffect(() => {
 		fetchDetailTask();
 	}, [taskDetail.workId]);
@@ -113,7 +123,12 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({ taskDetail, onClose, onTa
 					>
 						수정
 					</button>
-					<button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>삭제</button>
+					<button
+						onClick={deleteDetailTask}
+						className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+					>
+						삭제
+					</button>
 				</div>
 
 				{isEditing && (

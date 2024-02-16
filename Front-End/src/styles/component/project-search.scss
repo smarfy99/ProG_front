@@ -2,7 +2,7 @@
 @import "../common/common-style";
 
 .search-container {
-  @include border-gray;
+  border-bottom: 1px solid var(--gray30);
 }
 
 .search-item{

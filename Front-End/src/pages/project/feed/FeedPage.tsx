@@ -3,6 +3,8 @@ import FreeFeed from '../../../components/feed/FreeFeed';
 import TaskFeed from '../../../components/feed/TaskFeed';
 import { useRequireAuth } from '../../../hooks/useRequireAuth';
 
+import '../../../styles/page/project-home/feed.scss';
+
 const FeedPage = () => {
 	useRequireAuth();
 
@@ -31,7 +33,7 @@ const FeedPage = () => {
 	const selectedButtonClass = 'text-main-color';
 
 	return (
-		<div className='relative h-5/6'>
+		<div className='relative h-5/6 feed-main'>
 			<div className='flex justify-center items-center relative mt-20 '>
 				<button
 					ref={taskButtonRef}

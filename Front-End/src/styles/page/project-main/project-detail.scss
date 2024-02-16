@@ -1,0 +1,75 @@
+@import "../../common/common-style";
+@import "../../common/common-color";
+@import "../../component/common-btn";
+
+.project-main {
+  width: 85%;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    padding: 3rem 0.5rem 0.5rem;
+    border-bottom: 1px solid var(--gray30);
+  }
+}
+
+.project-thumnail {
+  max-width: 800px;
+  max-height: 600px;
+  overflow: hidden;
+
+  > img {
+    object-fit: cover;
+  }
+}
+
+.project-detail-btn {
+  display: flex;
+  border-radius: 0.8rem;
+  font-weight: 600;
+  font-size: 1.25rem;
+  padding: 1rem 1rem;
+  //border: 2px solid var(--main-color90);
+  background-color: var(--main-color90);
+  color: white;
+
+  > * {
+    //flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.tech-list{
+  display: flex;
+  align-items: center;
+
+  :first-child {
+    width: 220px;
+    display: flex;
+  }
+
+  button {
+    margin-left: 1.75rem;
+  }
+}
+
+.content-foot{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--gray30);
+}
+
+.liked{
+  &:before {
+    content: "❤️";
+  }
+}
+
+.dint-liked{
+  &:before {
+    content: "🤍";
+  }
+}

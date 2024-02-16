@@ -1,0 +1,16 @@
+@import "../../common/common-style";
+@import "../../common/common-color";
+
+.feed-main{
+  @include main-height-vh
+}
+
+.feed-contents-border{
+  > * {
+    border-top: 2px solid var(--gray30);
+  }
+
+  > *:last-child {
+    border-bottom: 2px solid var(--gray30);
+  }
+}

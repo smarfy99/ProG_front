@@ -1,0 +1,14 @@
+@import "../../common/common-color";
+@import "../../component/common-btn";
+
+.task-main{
+  max-height: calc(100vh - 84px);
+}
+
+.table-border-color {
+  border-color: var(--gray30);
+}
+
+.table-border-btm-color {
+  border-bottom: 1px solid var(--gray30);
+}

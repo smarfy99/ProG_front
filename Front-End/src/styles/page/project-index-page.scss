@@ -36,4 +36,9 @@ main {
 .my-work-btn {
   //width: 120px;
   @include basic-none-border-f600;
+
+  &:hover {
+    background-color: var(--main-color90);
+    color: white;
+  }
 }

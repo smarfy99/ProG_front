@@ -10,3 +10,19 @@
     object-fit: contain;
   }
 }
+
+.recurit-card-box {
+  grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
+}
+
+//@media screen and (min-width: 1920px) {
+//  .recurit-card-box {
+//    grid-template-columns: repeat(6, minmax(0, 1fr));
+//  }
+//}
+//
+//@media screen and (min-width: 1680px) {
+//  .recurit-card-box {
+//    grid-template-columns: repeat(5, minmax(0, 1fr));
+//  }
+//}

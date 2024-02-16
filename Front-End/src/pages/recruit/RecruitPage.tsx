@@ -21,8 +21,8 @@ const RecruitPage: React.FC = () => {
 	}, []);
 	return (
 		<React.StrictMode>
-			<div className={'recurit-container'}>
-				<div className='text-center mt-10 w-full'>
+			<div className={'recruit-container'}>
+				<div className='text-center w-full'>
 					<div className='font-bold text-6xl'>프로젝트 찾기</div>
 					<RecruitSearchBar currentPage={currentPage} />
 				</div>

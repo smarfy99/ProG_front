@@ -13,7 +13,8 @@ const TaskFeedSimple: FC<TaskFeedSimpleProps> = ({
   feedContent,
 }) => {
   return (
-    <div className="gap-4 hover:bg-stone-50 border-t-2 border-indigo-300 p-4 h-24">
+    // <div className="gap-4 hover:bg-stone-50 border-t-2 border-indigo-300 p-4 h-24">
+    <div className="gap-4 hover:bg-stone-50 p-4 h-24">
       <div className="flex items-center">
         <div className="grid gap-4">
           <p>
