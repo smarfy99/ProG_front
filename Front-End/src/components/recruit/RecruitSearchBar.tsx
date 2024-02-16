@@ -127,7 +127,7 @@ const RecruitSearchBar: React.FC<RecruitSearchBarProps> = ({ currentPage }) => {
 						<label htmlFor='searchInput'></label>
 						<input
 							id='searchInput'
-							className='ml-2 p-2 w-72 shadow'
+							className='ml-2 p-2 w-72'
 							type='text'
 							placeholder='검색어를 입력하세요.'
 							value={searchInput}

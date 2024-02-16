@@ -17,6 +17,11 @@
 
 }
 
+.part-member-box {
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  row-gap: 1rem;
+}
+
 .member-img-box {
   display: grid;
   grid-template-columns: 6fr 4fr;
@@ -37,6 +42,7 @@
   }
 
 }
+
 
 .tag {
   padding: 2px 8px;

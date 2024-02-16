@@ -11,7 +11,7 @@ import 'moment/locale/ko'; //한국어 locale 설정
 import { axiosInstance } from '../../apis/lib/axios';
 import { useState, useEffect, useCallback, SetStateAction } from 'react';
 import { FaCircleChevronRight, FaCircleChevronLeft } from 'react-icons/fa6';
-
+import { useLocation } from 'react-router-dom';
 interface CommuteCheckBtnProps {
 	projectId: number;
 	memberId: number;
@@ -91,6 +91,7 @@ interface CommuteWork {
 const CommuteCalendar = ({ projectId, memberId }: CommuteCheckBtnProps) => {
 	const [events, setEvents] = useState<{ title: string; start: Date; end: Date }[]>([]);
 	const [currentDate, setCurrentDate] = useState(new Date());
+	const location = useLocation();
 
 	const fetchAttendanceLogs = useCallback(
 		async (_year: number, _month: number) => {
@@ -120,10 +121,9 @@ const CommuteCalendar = ({ projectId, memberId }: CommuteCheckBtnProps) => {
 	);
 
 	useEffect(() => {
-		const year = currentDate.getFullYear();
 		const month = currentDate.getMonth() + 1; // JavaScript의 getMonth()는 0부터 시작하므로 1을 더해줍니다.
-		fetchAttendanceLogs(year, month);
-	}, [currentDate, fetchAttendanceLogs]);
+		fetchAttendanceLogs(month);
+	}, [currentDate, fetchAttendanceLogs, location]);
 
 	const handleNavigate = (newDate: SetStateAction<Date>) => {
 		setCurrentDate(newDate);

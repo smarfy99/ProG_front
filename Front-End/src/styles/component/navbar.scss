@@ -1,0 +1,13 @@
+@import "../common/common-color";
+
+.commute-btn{
+  font-weight: 600;
+  //border-right: 2px solid #edecec;
+  background-color: var(--main-color20);
+
+  &:hover {
+    border: none;
+    background-color: var(--main-color90);
+    color: white;
+  }
+}

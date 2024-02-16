@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAttendanceEndMutation, useAttendanceStartMutation } from '../../apis/useAttendance';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/component/navbar.scss'
 
 export interface CommuteCheckBtnProps {
 	projectId: number;
@@ -69,23 +70,19 @@ const CommuteCheckBtn = ({ projectId, memberId }: CommuteCheckBtnProps) => {
 
 	const closeModal = () => setShowModal(false);
 
-	const confirmWork = () => {
+	const confirmWork = async () => {
+		// await
 		closeModal();
 		navigate(`/project/${projectId}/commute`);
 	};
 
-	//startAt시간 -> 한국시간으로 포맷팅
-	const convertToKST = (dateString: string) => {
-		const serverDateTime = new Date(dateString);
-		const koreaDateTime = new Date(serverDateTime.getTime() + 9 * 60 * 60 * 1000);
-
-		//날짜 형식 포맷팅
-		const date = `${koreaDateTime.getMonth() + 1}. ${koreaDateTime.getDate()}`;
-
-		//시간 형식 포맷팅
-		const hours = koreaDateTime.getHours().toString().padStart(2, '0');
-		const minutes = koreaDateTime.getMinutes().toString().padStart(2, '0');
-		const time = `${hours}:${minutes}`;
+	//서버에서 받은 시간 포맷팅
+	const convertToKST = (serverDateTime: string) => {
+		console.log('server : ', serverDateTime);
+		const [datePart, timePart] = serverDateTime.split('T');
+		const date = datePart.split('-').slice(1).join('.'); // '02.14' 형식으로 변환
+		const time = timePart.slice(0, 5); // '06:29' 형식으로 변환
+		console.log(date, time);
 
 		return { date, time };
 	};
@@ -102,7 +99,7 @@ const CommuteCheckBtn = ({ projectId, memberId }: CommuteCheckBtnProps) => {
 				<button
 					disabled={isWorking}
 					className={`flex w-20 h-20 rounded-2xl items-center justify-center  ${
-						isWorking ? 'bg-gray-300' : 'bg-sub-color hover:bg-main-color'
+						isWorking ? 'bg-gray-300' : 'commute-btn'
 					}`}
 					onClick={handleStartAttendance}
 				>
@@ -111,7 +108,7 @@ const CommuteCheckBtn = ({ projectId, memberId }: CommuteCheckBtnProps) => {
 				<button
 					disabled={!isWorking}
 					className={`flex w-20 h-20 rounded-2xl items-center justify-center ${
-						!isWorking ? 'bg-gray-300' : 'bg-sub-color hover:bg-main-color'
+						!isWorking ? 'bg-gray-300' : 'commute-btn'
 					}`}
 					onClick={handleEndAttendance}
 				>

@@ -12,19 +12,6 @@ export interface MenuProps {
 	index: number;
 }
 
-let memberId = 0;
-
-// 로컬 스토리지에서 userProfile을 가져옴
-const userProfileKey = 'userProfile';
-const userProfileString = localStorage.getItem(userProfileKey);
-if (userProfileString) {
-	console.log(`여기 타나 타나탄타나`);
-	const userProfile = JSON.parse(userProfileString);
-	memberId = userProfile.id;
-}
-
-console.log(`회원 IO : ${memberId}`);
-
 const useCodeDetailList = () => {
 	// const[codeDetails, setCodeDetails] = useState<codeDetailItem[]>([]);
 	const [codeDetails, setCodeDetails] = useState<codeDetailItem[]>([]);
@@ -46,6 +33,7 @@ const useCodeDetailList = () => {
 const MyProject = () => {
 	const [activeItem, setActiveItem] = useState<MenuProps[]>([]);
 	const [selectItem, setSelectItem] = useState<MenuProps>();
+	const [memberId, setMemberId] = useState<number>(0);
 	const codeDetails = useCodeDetailList();
 	const Menu = () => {
 		const handleClick = (clickedItem: MenuProps) => {
@@ -71,6 +59,22 @@ const MyProject = () => {
 			</ul>
 		);
 	};
+
+	// let memberId = 0;
+
+	// 로컬 스토리지에서 userProfile을 가져옴
+
+	const userProfileKey = 'userProfile';
+	const userProfileString = localStorage.getItem(userProfileKey);
+	const getMemberId = () => {
+		if (userProfileString) {
+			console.log(`여기 타나 타나탄타나`);
+			const userProfile = JSON.parse(userProfileString);
+			// memberId = userProfile.id;
+			setMemberId(userProfile.id);
+		}
+	};
+	console.log(`회원 IO : ${memberId}`);
 
 	const makeCode = () => {
 		const menuPropsItems: MenuProps[] = codeDetails.map((item) => {
@@ -129,12 +133,14 @@ const MyProject = () => {
 		});
 
 		setActiveItem([...menuPropsItems].sort((a, b) => a.index - b.index));
+		console.log(`additionalItem[0] : ${JSON.stringify(additionalItem[0])}`);
 		setSelectItem(additionalItem[0]);
 	};
 
 	useEffect(() => {
+		getMemberId();
 		makeCode();
-	}, [codeDetails]);
+	}, [codeDetails, userProfileString]);
 
 	return (
 		<div className={'my-project-container'}>

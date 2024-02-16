@@ -42,7 +42,7 @@ const TaskFeed = () => {
 
 	return (
 		<div className='flex flex-col h-full'>
-			<div className='p-8 w-full mt-10 flex-grow overflow-y-auto'>
+			<div className='p-8 w-full mt-10 flex-grow overflow-y-auto feed-contents-border'>
 				{feeds.map((feed) => (
 					<div className='flex flex-col' key={feed.feedId}>
 						<TaskFeedSimple

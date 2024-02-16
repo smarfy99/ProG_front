@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useUserStore } from '../../stores/useUserStore';
 import { axiosInstance } from '../../apis/lib/axios.ts';
 import NestedComment from './NestedComment.tsx';
-import ImageWithFallback from '../../utils/DefaultImgage.tsx';
 
 interface CommentProps {
 	contentCode: string;
@@ -16,6 +15,9 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 	const [editedComment, setEditedComment] = useState<string[]>([]);
 	const [showReplies, setShowReplies] = useState<boolean[]>([]);
 	const [showEditor, setShowEditor] = useState<boolean[]>([]);
+	const [showModal, setShowModal] = useState(false);
+	const [message, setMessage] = useState('');
+	const memberId = profile?.id;
 
 	useEffect(() => {
 		fetchComments();
@@ -52,9 +54,12 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 			});
 
 			fetchComments();
-
+			setShowModal(true);
+			setMessage('댓글이 등록되었습니다.');
 			setNewComment('');
 		} catch (error) {
+			setShowModal(true);
+			setMessage('댓글 등록에 실패했습니다.');
 			console.log(error);
 		}
 	};
@@ -65,9 +70,13 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 				content: editedComment[index],
 			});
 
+			setShowModal(true);
+			setMessage('댓글이 수정되었습니다.');
 			changeEditor(index, '');
 			fetchComments();
 		} catch (error) {
+			setShowModal(true);
+			setMessage('댓글 수정에 실패했습니다.');
 			console.log(error);
 		}
 	};
@@ -76,8 +85,12 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 		try {
 			await axiosInstance.delete(`/comments/${commentId}/${memberId}`);
 
+			setShowModal(true);
+			setMessage('댓글이 삭제되었습니다.');
 			fetchComments();
 		} catch (error) {
+			setShowModal(true);
+			setMessage('댓글 삭제에 실패했습니다.');
 			console.log(error);
 		}
 	};
@@ -125,12 +138,7 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 			<div className='py-3 px-3'>
 				<div className='flex flex-col'>
 					<div className='flex'>
-						<ImageWithFallback
-							src={profile?.imgUrl || ''}
-							alt='Profile'
-							type='member'
-							style='flex-none w-12 h-12 rounded-full'
-						/>
+						<img src={profile?.imgUrl} alt='Profile' className='flex-none w-12 h-12 rounded-full'></img>
 						<div className='flex-initial w-full mx-3 my-3.5'>
 							<p className='font-bold'>{profile?.nickname}</p>
 						</div>
@@ -154,13 +162,7 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 					<div className='flex flex-col my-3' key={comment.id}>
 						<div className='p-2'>
 							<div className='flex items-center'>
-								<ImageWithFallback
-									src={comment.member.imgUrl}
-									alt='Profile'
-									type='member'
-									style='flex-none w-12 h-12 rounded-full'
-								/>
-								<img className='flex-none w-12 h-12 rounded-full' src={comment.member.imgUrl} alt='Profile' />
+								<img src={comment.member.imgUrl} alt='Profile' className='flex-none w-12 h-12 rounded-full' />
 								<div className='flex-initial w-full mx-3'>
 									<p className='font-bold'>{comment.member.nickname}</p>
 									<p className='text-xs'>
@@ -181,7 +183,7 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 								)}
 							</div>
 						</div>
-						<div className='px-3 py-3'>
+						<div className='mx-3 my-3'>
 							{comment.isDeleted ? (
 								<p className='text-gray-500 italic'> ❗️삭제된 댓글입니다.</p>
 							) : !showEditor[index] ? (
@@ -243,6 +245,28 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 					</div>
 				))}
 			</div>
+			{showModal && (
+				<div
+					className='fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center'
+					id='my-modal'
+				>
+					<div className='relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white'>
+						<div className='mt-3 text-center'>
+							<h3 className='text-lg leading-6 font-medium text-gray-900'>{message}</h3>
+							<div className='mt-2 px-7 py-3'></div>
+							<div className='items-center px-4 py-3'>
+								<button
+									id='ok-btn'
+									onClick={() => setShowModal(false)}
+									className='px-4 py-2 bg-main-color text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-green-300'
+								>
+									확인
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

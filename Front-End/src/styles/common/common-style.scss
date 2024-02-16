@@ -7,3 +7,10 @@
 @mixin border-gray{
   border: 1px solid var(--gray30);
 }
+
+// 메인 영역만 스크롤 생기게 변경
+@mixin main-height-vh{
+  overflow: auto;
+  height: calc(100vh - 84px);
+}
+

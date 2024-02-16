@@ -67,7 +67,7 @@ const FreeFeedSimple: FC<FreeFeedSimpleProps> = ({
 		return formattedDateTime;
 	};
 	return (
-		<div onClick={handleDetailClick} className='gap-4 hover:bg-stone-50 border-t-2 border-indigo-300 p-4 h-24'>
+		<div onClick={handleDetailClick} className='gap-4 hover:bg-stone-50 p-4 h-24'>
 			<div className='flex justify-between items-center'>
 				<div className='flex'>
 					<p>

@@ -19,14 +19,14 @@ import MemberSettingPage from '../setting/MemberSettingPage.tsx';
 //     members: string[];
 // }
 
-interface MemberData {
-	jobCode: {
-		id: number; // Or string, based on your actual data model
-	};
-	member: {
-		nickname: string;
-	};
-}
+// interface MemberData {
+// 	jobCode: {
+// 		id: number; // Or string, based on your actual data model
+// 	};
+// 	member: {
+// 		nickname: string;
+// 	};
+// }
 
 interface HomeData {
 	projectId: string;
@@ -45,7 +45,7 @@ const CustomLabelComponent = ({ percent }: { percent: number }) => {
 	);
 };
 
-const useHomeInfo = (projectId: string) => {
+const useHomeInfo = (projectId: string, trigger:number) => {
 	let memberId = 0;
 
 	// 로컬 스토리지에서 userProfile을 가져옴
@@ -63,6 +63,7 @@ const useHomeInfo = (projectId: string) => {
 			const data = response.data.data;
 			console.log(`Data loaded : ${JSON.stringify(data)}`);
 			setHomeData(data);
+
 		} catch (error) {
 			console.error('Loading failed:', error);
 		}
@@ -74,7 +75,7 @@ const useHomeInfo = (projectId: string) => {
 			console.log(`데이터 있음`);
 			getHomdeInfo();
 		}
-	}, [projectId]);
+	}, [projectId,trigger]);
 
 	return homeData;
 };
@@ -101,7 +102,10 @@ const IndexPage = () => {
 	// const [positions, setPositions] = useState<Position[]>([]);
 	const { projectId } = useParams();
 
-	const myHomeInfo = useHomeInfo(projectId || '');
+	// const [test, setTest] = useState<useHomeInfo(projectId || '')>;
+
+	const [trigger, setTrigger] = useState(0);
+	const myHomeInfo = useHomeInfo(projectId || '', trigger);
 	// if (projectId && projectId !== '') {
 	//     // const numericProjectId = parseInt(projectId);
 	// }
@@ -118,8 +122,11 @@ const IndexPage = () => {
 
 	const startProject = async () => {
 		try {
+			console.log(`startProject`)
 			await axiosInstance.patch(`/projects/${projectId}/start/${memberId}`);
-			getData(); // Refresh data after starting the project
+			// getData(); // Refresh data after starting the project
+			setIsProjectStarted(true)
+			setTrigger(prev => prev + 1);
 		} catch (error) {
 			console.error('Start failed:', error);
 		}
@@ -127,8 +134,10 @@ const IndexPage = () => {
 
 	const endProject = async () => {
 		try {
+			console.log(`endProject`)
 			await axiosInstance.patch(`/projects/${projectId}/end/${memberId}`);
-			getData(); // Refresh data after ending the project
+			// getData(); // Refresh data after ending the project
+			setTrigger(prev => prev + 1);
 		} catch (error) {
 			console.error('End failed:', error);
 		}
@@ -145,55 +154,62 @@ const IndexPage = () => {
 	//     return `${differenceInDays} 일`;
 	// };
 
-	const getData = async () => {
-		try {
-			const response = await axiosInstance.get(`/projects/${projectId}/${memberId}`);
-			const data = response.data.data;
-			// setTitle(data.title);
-			// setDescription(data.content);
-			// setImg(data.projectImgUrl);
-			// setMyStack(data.techCodes.map((tech: { detailName: any }) => tech.detailName));
-			// setPeriod(data.period);
-			setIsProjectStarted(data.startDay !== null);
-			// setStartDay(data.startDay);
-
-			const updatedPositions = data.projectTotals.map(
-				(item: { jobCode: { detailDescription: any; id: any }; current: any; total: any }) => ({
-					posName: item.jobCode.detailDescription,
-					posCode: item.jobCode.id, // Ensure this is correctly populated
-					posNowNumber: item.current,
-					posNumber: item.total,
-					members: [],
-				}),
-			);
-
-			const membersResponse = await axiosInstance.get(`/projects/${projectId}/members`);
-			const membersData = membersResponse.data.data;
-			console.log(membersData);
-			membersData.forEach((memberData: MemberData) => {
-				console.log('Looking for position with posCode:', memberData.jobCode.id);
-				const position = updatedPositions.find((pos: { posCode: any }) => pos.posCode === memberData.jobCode.id);
-				if (position) {
-					position.members.push(memberData.member.nickname);
-				} else {
-					console.log('No matching position found for jobCode.id:', memberData.jobCode.id);
-				}
-			});
-
-			// setPositions(updatedPositions);
-		} catch (error) {
-			console.error('Loading failed:', error);
-		}
-	};
+	// const getData = async () => {
+	// 	try {
+	// 		const response = await axiosInstance.get(`/projects/${projectId}/${memberId}`);
+	// 		const data = response.data.data;
+	// 		// setTitle(data.title);
+	// 		// setDescription(data.content);
+	// 		// setImg(data.projectImgUrl);
+	// 		// setMyStack(data.techCodes.map((tech: { detailName: any }) => tech.detailName));
+	// 		// setPeriod(data.period);
+	// 		setIsProjectStarted(data.startDay !== null);
+	// 		// setStartDay(data.startDay);
+	//
+	// 		const updatedPositions = data.projectTotals.map(
+	// 			(item: { jobCode: { detailDescription: any; id: any }; current: any; total: any }) => ({
+	// 				posName: item.jobCode.detailDescription,
+	// 				posCode: item.jobCode.id, // Ensure this is correctly populated
+	// 				posNowNumber: item.current,
+	// 				posNumber: item.total,
+	// 				members: [],
+	// 			}),
+	// 		);
+	//
+	// 		const membersResponse = await axiosInstance.get(`/projects/${projectId}/members`);
+	// 		const membersData = membersResponse.data.data;
+	// 		console.log(membersData);
+	// 		membersData.forEach((memberData: MemberData) => {
+	// 			console.log('Looking for position with posCode:', memberData.jobCode.id);
+	// 			const position = updatedPositions.find((pos: { posCode: any }) => pos.posCode === memberData.jobCode.id);
+	// 			if (position) {
+	// 				position.members.push(memberData.member.nickname);
+	// 			} else {
+	// 				console.log('No matching position found for jobCode.id:', memberData.jobCode.id);
+	// 			}
+	// 		});
+	//
+	// 		// setPositions(updatedPositions);
+	// 	} catch (error) {
+	// 		console.error('Loading failed:', error);
+	// 	}
+	// };
 
 	useEffect(() => {
-		// getData();
-	}, [projectId]);
+		console.log(`useEffect : ${isProjectStarted}`);
+		// 시작일이 있으면 프로젝트 시작 상태 true
+		// if (myHomeInfo?.startDay !== null && myHomeInfo?.startDay !== 'null') {
+		if (myHomeInfo?.startDay) {
+			console.log('여기타나? true만듦')
+			console.log(`값 : :${isProjectStarted}`)
+			setIsProjectStarted(true);
+		}
+
+	}, [projectId, myHomeInfo]);
 
 	return (
 		<main>
 			{/*제목*/}
-			{/*TODO: 정보 받아서 뿌리기 */}
 			<div className={'title-box under-line'}>
 				<h2>{myHomeInfo?.title}</h2>
 			</div>
@@ -248,7 +264,6 @@ const IndexPage = () => {
 				</div>
 			</div>
 			{/*참여멤버*/}
-			{/*TODO : 컴포넌트에 넣기 props로 프로젝트ID 넘겨주기*/}
 			<MemberSettingPage projectId={myHomeInfo?.projectId} />
 		</main>
 	);

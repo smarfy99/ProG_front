@@ -108,7 +108,7 @@ const FreeFeed = () => {
 
 	return (
 		<div className='flex flex-col h-full '>
-			<div className='p-8 w-full mt-10flex-grow overflow-y-scroll'>
+			<div className='p-8 w-full mt-10flex-grow overflow-y-scroll feed-contents-border'>
 				{feeds.map((freeFeed, index) => (
 					<div key={freeFeed.boardId}>
 						<FreeFeedSimple

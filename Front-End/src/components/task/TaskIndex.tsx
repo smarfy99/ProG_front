@@ -59,7 +59,7 @@ const TaskIndex: React.FC<TodoListProps> = ({ title, tasks, onTaskUpdate }) => {
 	return (
 		<div>
 			<div
-				className='flex border bg-gray-100 border-b-main-color p-2 items-center' // 여기
+				className='flex border bg-gray-100 p-2 items-center' // 여기
 				onMouseEnter={() => setShowButton(true)}
 				onMouseLeave={() => setShowButton(false)}
 			>

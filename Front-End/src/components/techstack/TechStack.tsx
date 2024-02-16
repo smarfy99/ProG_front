@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { axiosInstance } from '../../apis/lib/axios';
 import { useRequireAuth } from '../../hooks/useRequireAuth';
+// import TechStackInfo from "./TechStackInfo";
 
 export const techStack = {
 	mystack: [] as { techCode: number }[],

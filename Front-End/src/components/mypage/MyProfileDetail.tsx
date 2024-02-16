@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { axiosInstance } from "../../apis/lib/axios";
 import ChangePwInfo from "../alarm/ChangePwInfo.tsx";
-import ImageWithFallback from "../../utils/DefaultImgage.tsx";
+import {useNavigate} from "react-router-dom";
+import {useUserStore} from "../../stores/useUserStore.ts";
 
 interface ProfileData {
     email: string;
@@ -21,6 +22,7 @@ const MyProfileDetail = () => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmNewPassword, setConfirmNewPassword] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const [withdrawalModal, setWithdrawalModal] = useState(false);
     const [message, setMessage] = useState('');
     const [profileData, setProfileData] = useState<ProfileData>({
         email: "",
@@ -30,25 +32,22 @@ const MyProfileDetail = () => {
         imgUrl: "",
     });
     const [loadProfile, setLoadProfile] = useState<boolean>(true); // 프로필 데이터를 불러올지 여부를 결정하는 상태
-    const [id, setId] = useState<string>("");
+    const profile = useUserStore((state) => state.profile);
+    const setProfile = useUserStore((state) => state.setProfile);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const userProfileString = localStorage.getItem("userProfile");
-        if (userProfileString) {
-            const userProfile = JSON.parse(userProfileString);
-            setId(userProfile.id); // 닉네임 상태 업데이트
-        }
-
         profileGet();
     }, [loadProfile]);
 
     const profileGet = async () => {
         try {
             const response = await axiosInstance.get(
-                `members/detail-profile/${id}`
+                `members/detail-profile/${profile?.id}`
             ); // 지금 여기 id로 바뀜
+
             const data = response.data.data;
-            console.log(data);
+
             setProfileData({
                 email: data.email,
                 name: data.name,
@@ -63,8 +62,6 @@ const MyProfileDetail = () => {
         }
     };
 
-
-
     const toggleEditMode = () => {
         setIsEditMode(!isEditMode);
 
@@ -77,7 +74,7 @@ const MyProfileDetail = () => {
 
     const changeProfile = async () => {
         const profileData = {
-            id: id,
+            id: profile?.id,
             name: changeName,
             nickname: changeNickname,
             description: changeDescription,
@@ -94,6 +91,12 @@ const MyProfileDetail = () => {
 
         try {
             await axiosInstance.patch("/members/update-profile", form, {});
+
+            const response = await axiosInstance.get("/members/my-profile");
+
+            console.log(response.data.data)
+
+            setProfile(response.data.data);
             setMessage('정보가 수정되었습니다.')
             setShowModal(true)
             setIsEditMode(!isEditMode);
@@ -107,7 +110,7 @@ const MyProfileDetail = () => {
 
     const chkNickNameDuplication = async () => {
         try {
-            await axiosInstance.post(`/members/nickname-validation-check/${id}`, {
+            await axiosInstance.post(`/members/nickname-validation-check/${profile?.id}`, {
                 nickname: changeNickname,
             });
             setMessage('사용 가능한 닉네임 입니다.')
@@ -129,7 +132,7 @@ const MyProfileDetail = () => {
 
     const changePw = async () => {
         const pwData = {
-            id: id,
+            id: profile?.id,
             originPassword: currentPassword,
             updatePassword: newPassword,
             updatePasswordCheck: confirmNewPassword,
@@ -148,6 +151,16 @@ const MyProfileDetail = () => {
             setConfirmNewPassword('')
         } catch (error) {
             setMessage('비밀번호를 확인해 주세요.')
+            setShowModal(true)
+        }
+    };
+
+    const withdrawMember = async () => {
+        try {
+            await axiosInstance.delete(`/members/withdrawal-member${profile?.id}`);
+            navigate('/')
+        } catch (error) {
+            setMessage(error?.response.data.message)
             setShowModal(true)
         }
     };
@@ -171,7 +184,7 @@ const MyProfileDetail = () => {
                             className="w-60 h-60 rounded-full object-cover"
                         />
                     ) : (
-                        <ImageWithFallback src={profileData.imgUrl} alt='Profile' type='member' style='w-60 h-60 rounded-full object-cover'/>
+                        <img src={profileData.imgUrl} alt="Profile" className="w-60 h-60 rounded-full object-cover"/>
                     )}
                     {isEditMode && (
                         <label
@@ -335,6 +348,10 @@ const MyProfileDetail = () => {
                 </div>
             </div>
 
+            <button className="mt-10 bg-red-200 shadow rounded-lg py-2 px-4 text-xl" onClick={() => setWithdrawalModal(true)}>
+                탈퇴하기
+            </button>
+
             {showModal && (
                 <div
                     className='fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center'
@@ -352,6 +369,39 @@ const MyProfileDetail = () => {
                                     className='px-4 py-2 bg-main-color text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-green-300'
                                 >
                                     확인
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {withdrawalModal && (
+                <div
+                    className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                    id="my-modal"
+                >
+                    <div className="relative top-80 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                        <div className="mt-3 text-center">
+                            <h3 className="text-lg leading-6 font-medium text-gray-900">
+                                정말로 탈퇴하시겠습니까?
+                            </h3>
+                            <div className="mt-2 px-7 py-3">
+                                <p className="text-sm text-gray-500">
+                                    이 작업은 되돌릴 수 없습니다.
+                                </p>
+                            </div>
+                            <div className="items-center px-4 py-3">
+                                <button
+                                    onClick={withdrawMember}
+                                    className="mt-3 mr-2 px-4 py-2 bg-red-600 text-white text-base font-medium rounded-md w-30 shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                >
+                                    탈퇴하기
+                                </button>
+                                <button
+                                    onClick={() => setWithdrawalModal(false)}
+                                    className="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-20 shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                                >
+                                    취소
                                 </button>
                             </div>
                         </div>

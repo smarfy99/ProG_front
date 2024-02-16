@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useUserStore } from '../../stores/useUserStore.ts';
 import { axiosInstance } from '../../apis/lib/axios.ts';
-import ImageWithFallback from '../../utils/DefaultImgage.tsx';
 
 interface NestedCommentProps {
 	contentCode: string;
@@ -15,6 +14,8 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 	const [newComment, setNewComment] = useState('');
 	const [editedComment, setEditedComment] = useState<string[]>([]);
 	const [showEditor, setShowEditor] = useState<boolean[]>([]);
+	const [showModal, setShowModal] = useState(false);
+	const [message, setMessage] = useState('');
 	const memberId = profile?.id;
 
 	useEffect(() => {
@@ -42,9 +43,12 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 			});
 
 			fetchComments();
-
+			setShowModal(true);
+			setMessage('댓글이 등록되었습니다.');
 			setNewComment('');
 		} catch (error) {
+			setShowModal(true);
+			setMessage('댓글 등록에 실패했습니다.');
 			console.log(error);
 		}
 	};
@@ -56,8 +60,12 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 			});
 
 			changeEditor(index, '');
+			setShowModal(true);
+			setMessage('댓글이 수정되었습니다.');
 			fetchComments();
 		} catch (error) {
+			setShowModal(true);
+			setMessage('댓글 수정에 실패했습니다.');
 			console.log(error);
 		}
 	};
@@ -66,8 +74,12 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 		try {
 			await axiosInstance.delete(`/comments/${commentId}/${memberId}`);
 
+			setShowModal(true);
+			setMessage('댓글이 삭제되었습니다.');
 			fetchComments();
 		} catch (error) {
+			setShowModal(true);
+			setMessage('댓글 삭제에 실패했습니다.');
 			console.log(error);
 		}
 	};
@@ -107,12 +119,7 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 				<div className='flex flex-col px-5 py-2' key={comment.id}>
 					<div className='px-2 py-2'>
 						<div className='flex items-center'>
-							<ImageWithFallback
-								src={comment.member.imgUrl}
-								alt='Profile'
-								type='member'
-								style='flex-none w-12 h-12 rounded-full'
-							/>
+							<img src={comment.member.imgUrl} alt='Profile' className='flex-none w-12 h-12 rounded-full' />
 							<div className='flex-initial w-full mx-3'>
 								<p className='font-bold'>{comment.member.nickname}</p>
 								<p className='text-xs'>
@@ -133,7 +140,7 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 							)}
 						</div>
 					</div>
-					<div className='p-2'>
+					<div className='p-2 my-2'>
 						{comment.isDeleted ? (
 							<p className='text-gray-500 italic'> ❗️삭제된 댓글입니다.</p>
 						) : !showEditor[index] ? (
@@ -184,12 +191,7 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 			<div className='px-5 py-2'>
 				<div className='flex flex-col p-2'>
 					<div className='flex'>
-						<ImageWithFallback
-							src={profile?.imgUrl || ''}
-							alt='Profile'
-							type='member'
-							style='flex-none w-12 h-12 rounded-full'
-						/>
+						<img src={profile?.imgUrl} alt='Profile' className='flex-none w-12 h-12 rounded-full' />
 						<div className='flex-initial w-full mx-3 my-3.5'>
 							<p className='font-bold'>{profile?.nickname}</p>
 						</div>
@@ -208,6 +210,28 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 					</button>
 				</div>
 			</div>
+			{showModal && (
+				<div
+					className='fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center'
+					id='my-modal'
+				>
+					<div className='relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white'>
+						<div className='mt-3 text-center'>
+							<h3 className='text-lg leading-6 font-medium text-gray-900'>{message}</h3>
+							<div className='mt-2 px-7 py-3'></div>
+							<div className='items-center px-4 py-3'>
+								<button
+									id='ok-btn'
+									onClick={() => setShowModal(false)}
+									className='px-4 py-2 bg-main-color text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-green-300'
+								>
+									확인
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

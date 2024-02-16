@@ -19,8 +19,6 @@ const CommutePage = () => {
 		memberId = userProfile.id;
 	}
 
-	// console.log(projectId);
-
 	return (
 		<div className='flex flex-col justify-center'>
 			{/* action, ranking div */}
@@ -28,7 +26,6 @@ const CommutePage = () => {
 				<ActionBoard />
 			</div>
 
-			{/* calendar div */}
 			<div className='flex justify-center'>
 				<CommuteCalendar projectId={projectId} memberId={memberId} w-auto />
 			</div>
