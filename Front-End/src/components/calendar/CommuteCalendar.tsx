@@ -111,18 +111,14 @@ const CommuteCalendar = ({ projectId, memberId }: CommuteCheckBtnProps) => {
 					};
 				});
 
-				console.log(datas);
 				setEvents(formattedEvents);
-			} catch (error) {
-				console.error('근무 기록 가져오기 실패', error);
-			}
+			} catch (error) {}
 		},
 		[projectId, memberId],
 	);
 
 	useEffect(() => {
 		const month = currentDate.getMonth() + 1; // JavaScript의 getMonth()는 0부터 시작하므로 1을 더해줍니다.
-		fetchAttendanceLogs(month);
 	}, [currentDate, fetchAttendanceLogs, location]);
 
 	const handleNavigate = (newDate: SetStateAction<Date>) => {

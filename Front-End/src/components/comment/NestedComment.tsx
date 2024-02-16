@@ -27,9 +27,7 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 			const response = await axiosInstance.get(`/comments/${parentId}/children`, {});
 
 			setComments(response.data.data);
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	};
 
 	const addComment = async () => {
@@ -49,7 +47,6 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 		} catch (error) {
 			setShowModal(true);
 			setMessage('댓글 등록에 실패했습니다.');
-			console.log(error);
 		}
 	};
 
@@ -66,7 +63,6 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 		} catch (error) {
 			setShowModal(true);
 			setMessage('댓글 수정에 실패했습니다.');
-			console.log(error);
 		}
 	};
 
@@ -80,7 +76,6 @@ const NestedComment: React.FC<NestedCommentProps> = ({ contentCode, contentId, p
 		} catch (error) {
 			setShowModal(true);
 			setMessage('댓글 삭제에 실패했습니다.');
-			console.log(error);
 		}
 	};
 

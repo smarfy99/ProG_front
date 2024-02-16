@@ -78,16 +78,12 @@ const CommuteCheckBtn = ({ projectId, memberId }: CommuteCheckBtnProps) => {
 
 	//서버에서 받은 시간 포맷팅
 	const convertToKST = (serverDateTime: string) => {
-		console.log('server : ', serverDateTime);
 		const [datePart, timePart] = serverDateTime.split('T');
 		const date = datePart.split('-').slice(1).join('.'); // '02.14' 형식으로 변환
 		const time = timePart.slice(0, 5); // '06:29' 형식으로 변환
-		console.log(date, time);
 
 		return { date, time };
 	};
-
-	console.log(isWorking);
 
 	return (
 		<div className='flex flex-col justify-center space-y-2'>

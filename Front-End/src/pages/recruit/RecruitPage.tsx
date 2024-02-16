@@ -17,7 +17,6 @@ const RecruitPage: React.FC = () => {
 	useEffect(() => {
 		setCurrentPage(1);
 		<RecruitSearchBar currentPage={1} />;
-		console.log(currentPage);
 	}, []);
 	return (
 		<React.StrictMode>

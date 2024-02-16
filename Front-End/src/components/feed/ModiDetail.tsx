@@ -48,8 +48,6 @@ const ModiDetail: FC<ModiDetailProps> = ({ boardId, onClose, getFreeFeedDetail }
 			...perv,
 			title: e.target.value,
 		}));
-
-		console.log(e.target.value);
 	};
 
 	const getFreeFeed = async () => {
@@ -69,10 +67,7 @@ const ModiDetail: FC<ModiDetailProps> = ({ boardId, onClose, getFreeFeedDetail }
 				viewCnt: data.viewCnt,
 				isNotice: data.isNotice,
 			}));
-			console.log('피드 디테일', data);
-		} catch (e) {
-			console.error(e);
-		}
+		} catch (e) {}
 	};
 
 	useEffect(() => {
@@ -95,15 +90,12 @@ const ModiDetail: FC<ModiDetailProps> = ({ boardId, onClose, getFreeFeedDetail }
 		try {
 			const respons = await axiosInstance.patch(`/boards/detail/${boardId}`, form, {});
 
-			console.log(respons);
 			if (getFreeFeedDetail) {
 				getFreeFeedDetail();
 			}
 
 			onClose();
-		} catch (e) {
-			console.error(e);
-		}
+		} catch (e) {}
 	};
 
 	const handleSave = () => {

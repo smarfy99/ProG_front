@@ -55,9 +55,7 @@ const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionP
 						})),
 					);
 				}
-			} catch (error) {
-				console.error('Failed to fetch positions:', error);
-			}
+			} catch (error) {}
 		};
 
 		getPositionList();
@@ -77,8 +75,6 @@ const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionP
 		});
 
 		// 추가된 로그로 확인 (실제 코드에서는 제거 가능)
-		console.log(position.totalList);
-		console.log(state);
 	}, [initialTags]); // initialTags가 변경될 때마다 useEffect 실행
 
 	const [state, setState] = useState<PositionState>({
@@ -123,8 +119,6 @@ const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionP
 
 		// 불변성을 유지하며 position.totalList 업데이트
 		position.totalList = [...position.totalList, { jobCode: 0, total: 1, current: 0 }];
-		console.log(position.totalList);
-		console.log(state);
 	};
 
 	const handleRemovePosition = async (index: number) => {
@@ -147,9 +141,7 @@ const PositionChange: React.FC<PositionProps> = ({ initialTags = [] }: PositionP
 
 			// 여기서 setSelectedPositionIds를 사용하여 선택된 포지션 ID 목록을 업데이트
 			setSelectedPositionIds((prevIds) => prevIds.filter((_, i) => i !== index));
-		} catch (error) {
-			console.error('Failed to remove position:', error);
-		}
+		} catch (error) {}
 	};
 
 	const handlePositionNumberChange = (index: number, value: number) => {

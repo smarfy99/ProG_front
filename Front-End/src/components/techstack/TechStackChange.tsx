@@ -39,9 +39,7 @@ const TechStackChange = ({ initialTags = [] }: TechStackProps) => {
 				if (response.data.status === 'OK') {
 					setTags(response.data.data);
 				}
-			} catch (error) {
-				console.error('Failed to fetch tags:', error);
-			}
+			} catch (error) {}
 		};
 		fetchTags();
 	}, []);
@@ -67,11 +65,8 @@ const TechStackChange = ({ initialTags = [] }: TechStackProps) => {
 	const removeTag = async (idToRemove: number) => {
 		try {
 			const response = await axiosInstance.delete(`/projects/${projectId}/${memberId}/projectTech/${idToRemove}`);
-			console.log(response);
 			setSelectedTags((prevTags) => prevTags.filter((tag) => tag.id !== idToRemove));
-		} catch (error) {
-			console.error('Failed to fetch tags:', error);
-		}
+		} catch (error) {}
 	};
 
 	return (

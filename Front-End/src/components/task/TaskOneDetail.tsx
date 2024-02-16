@@ -41,9 +41,7 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({ taskDetail, onClose, onTa
 		try {
 			const response = await axiosInstance.get(`/works/details/${taskDetail.workId}`);
 			setDetailData(response.data.data);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch (error) {}
 	};
 
 	const deleteDetailTask = async () => {
@@ -51,9 +49,7 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({ taskDetail, onClose, onTa
 			await axiosInstance.delete(`/works/${taskDetail.workId}`);
 			onClose();
 			onTaskUpdate();
-		} catch (error) {
-			console.error(error);
-		}
+		} catch (error) {}
 	};
 
 	useEffect(() => {
@@ -67,9 +63,7 @@ const TaskOneDetail: React.FC<TaskOneDetailProps> = ({ taskDetail, onClose, onTa
 			});
 			setSelectedStatusId(statusId);
 			onTaskUpdate(); // 상태 변경 후 태스크 업데이트 호출
-		} catch (error) {
-			console.error(error);
-		}
+		} catch (error) {}
 	};
 
 	if (isEditing) {

@@ -21,7 +21,6 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 
 	useEffect(() => {
 		fetchComments();
-		console.log(profile?.id);
 	}, []);
 
 	//댓글 목록 불러오기
@@ -35,12 +34,8 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 				},
 			});
 
-			console.log(response);
-
 			setComments(response.data.data);
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	};
 
 	const addComment = async () => {
@@ -60,7 +55,6 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 		} catch (error) {
 			setShowModal(true);
 			setMessage('댓글 등록에 실패했습니다.');
-			console.log(error);
 		}
 	};
 
@@ -77,7 +71,6 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 		} catch (error) {
 			setShowModal(true);
 			setMessage('댓글 수정에 실패했습니다.');
-			console.log(error);
 		}
 	};
 
@@ -91,7 +84,6 @@ const Comment: React.FC<CommentProps> = ({ contentCode, contentId }) => {
 		} catch (error) {
 			setShowModal(true);
 			setMessage('댓글 삭제에 실패했습니다.');
-			console.log(error);
 		}
 	};
 

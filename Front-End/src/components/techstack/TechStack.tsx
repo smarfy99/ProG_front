@@ -24,9 +24,7 @@ const TechStack = () => {
 						response.data.data.map(({ id, detailName }: { id: number; detailName: string }) => ({ id, detailName })),
 					);
 				}
-			} catch (error) {
-				console.error('tag failed:', error);
-			}
+			} catch (error) {}
 		};
 
 		getTags();

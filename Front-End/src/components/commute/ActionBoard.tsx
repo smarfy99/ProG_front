@@ -8,8 +8,6 @@ const ActionBoard = () => {
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error{error.message}</div>;
 
-	console.log(action);
-	// console.log(action);
 	//상위 3개의 action만 추출
 	const displayActions = action?.data?.slice(0, 3) || [];
 

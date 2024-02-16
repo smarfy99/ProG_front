@@ -45,18 +45,14 @@ const RecruitSearchBar: React.FC<RecruitSearchBarProps> = ({ currentPage }) => {
 				},
 			});
 			test = response.data.data.content;
-			console.log(test);
 			const totalPages = response.data.data.totalPages;
 			updateSearchResults(response.data.data.content);
 			useRecruitStore.getState().setTotalPages(totalPages);
 			if (test.length > 0) {
 				updateSearchResults(test);
 			} else {
-				console.log('검색 결과가 없습니다.');
 			}
-		} catch (error) {
-			console.error('Search failed:', error);
-		}
+		} catch (error) {}
 	};
 
 	useEffect(() => {
@@ -68,9 +64,7 @@ const RecruitSearchBar: React.FC<RecruitSearchBarProps> = ({ currentPage }) => {
 						response.data.data.map(({ id, detailName }: { id: number; detailName: string }) => ({ id, detailName })),
 					);
 				}
-			} catch (error) {
-				console.error('tag failed:', error);
-			}
+			} catch (error) {}
 		};
 
 		const getStatuses = async () => {
@@ -84,14 +78,11 @@ const RecruitSearchBar: React.FC<RecruitSearchBarProps> = ({ currentPage }) => {
 						})),
 					);
 				}
-			} catch (error) {
-				console.error('status failed:', error);
-			}
+			} catch (error) {}
 		};
 		search();
 		getTags();
 		getStatuses();
-		console.log(currentPage);
 	}, []);
 	useEffect(() => {
 		search();

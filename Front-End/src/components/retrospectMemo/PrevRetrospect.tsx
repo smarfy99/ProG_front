@@ -40,10 +40,8 @@ const PrevRetrospect: FC<PrevRetrospectProps> = () => {
 				...(Problem ? Problem.map((item) => ({ ...item, category: 'Problem' })) : []),
 				...(Try ? Try.map((item) => ({ ...item, category: 'Try' })) : []),
 			];
-			console.log(retrospects);
 			setRetrospects(retrospectsData);
 		} catch (error) {
-			console.error(error);
 			setRetrospects([]);
 		}
 	};

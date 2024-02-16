@@ -81,9 +81,6 @@ const ProjectSettingPage: React.FC = () => {
 				}),
 			);
 			setPositionLists(positionLists);
-			console.log(positionLists);
-			console.log(data);
-			console.log(data.projectTotals);
 			const projectPeriodNum = data.period;
 			const projectPeriodUnit = '주'; // Default to weeks, adjust as needed
 
@@ -96,9 +93,7 @@ const ProjectSettingPage: React.FC = () => {
 				projectPeriodUnit: projectPeriodUnit,
 				// Include additional fields as necessary
 			});
-		} catch (error) {
-			console.error('Failed to fetch project data:', error);
-		}
+		} catch (error) {}
 	};
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -161,7 +156,6 @@ const ProjectSettingPage: React.FC = () => {
 				totechList: [...techStack.mystack], // 객체 복사
 				totalList: position.totalList,
 			};
-			console.log(projectData);
 
 			const projectDataString = JSON.stringify(projectData);
 			const form = new FormData();
@@ -169,24 +163,17 @@ const ProjectSettingPage: React.FC = () => {
 			if (state.projectImage !== null) {
 				form.set('file', state.projectImage);
 			}
-			console.log(projectDataString);
-			console.log('FormData entries:');
 			for (const pair of form.entries()) {
-				console.log(pair[0] + ': ' + pair[1]);
 			}
-			console.log(memberId);
 			try {
 				const response = await axiosInstance.patch(`/projects/${projectId}/${memberId}`, form, {
 					headers: {
 						'Content-Type': undefined,
 					},
 				});
-				console.log('Response:', response);
 				setFinalModalMessage('프로젝트가 수정되었습니다!');
 				setIsFinalModalOpen(true);
-			} catch (error) {
-				console.error('Post failed:', error);
-			}
+			} catch (error) {}
 		}
 	};
 

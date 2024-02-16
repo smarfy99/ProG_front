@@ -7,9 +7,7 @@ import { useUserStore } from '../stores/useUserStore';
 export const logout = async (navigate: NavigateFunction) => {
 	try {
 		await proxyAxiosInstance.post('/members/logout');
-	} catch (error) {
-		console.error('Failed to logout', error);
-	}
+	} catch (error) {}
 
 	//클라이언트에서 accessToken 초기화
 	useAuthStore.getState().setAccessToken(null);

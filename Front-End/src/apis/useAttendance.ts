@@ -23,9 +23,6 @@ export const useAttendanceStartMutation = () => {
 
 	return useMutation<AttendanceResponse, unknown, { projectId: number; memberId: number }>({
 		mutationFn: startAttendance,
-		onSuccess: (data) => {
-			console.log(data);
-		},
 	});
 };
 

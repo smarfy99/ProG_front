@@ -37,7 +37,6 @@ const WriteKPTMemo: React.FC<KPTMemoProps> = ({ modalOpen, setModalOpen, onKPTUp
 				(d: DetailCodeData) => d.detailName === selectedSection,
 			) as DetailCodeData;
 			if (!selectedDetailCode) {
-				console.error('선택된 섹션에 대한 상세 코드 정보가 없습니다.');
 				return;
 			}
 
@@ -51,15 +50,11 @@ const WriteKPTMemo: React.FC<KPTMemoProps> = ({ modalOpen, setModalOpen, onKPTUp
 				content: textareaValue,
 			};
 
-			console.log(KPTdata);
-
 			try {
 				await axiosInstance.post('/retrospects', KPTdata);
 				closeModalAndClearText();
 				onKPTUpdate();
-			} catch (error) {
-				console.log('비상');
-			}
+			} catch (error) {}
 		}
 	};
 

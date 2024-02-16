@@ -20,7 +20,6 @@ export const useRequireAuth = (additionalDeps?: boolean) => {
 					logout(navigate);
 				}
 			} catch (error) {
-				console.error('Failed to refresh token', error);
 				logout(navigate);
 			}
 		};

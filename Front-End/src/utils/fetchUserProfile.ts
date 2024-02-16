@@ -13,7 +13,6 @@ export const fetchUserProfile = async (
 	try {
 		const response = await axiosInstance.get('/members/my-profile');
 		const data = response.data.data;
-		// console.log(data);
 
 		setProfile({
 			id: data.id,
@@ -23,7 +22,5 @@ export const fetchUserProfile = async (
 		});
 
 		navigate('/'); // 사용자 프로필 성공적으로 가져오면 홈으로 이동
-	} catch (error) {
-		console.error('Fetching user profile failed:', error);
-	}
+	} catch (error) {}
 };
