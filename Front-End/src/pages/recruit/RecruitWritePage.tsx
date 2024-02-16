@@ -80,10 +80,6 @@ const RecruitWritePage: React.FC = () => {
 			setModalMessage('본문을 입력해 주세요');
 			setIsModalOpen(true);
 			return;
-		} else if (position.totalList.some((item) => item.jobCode == 0)) {
-			setModalMessage('모든 포지션을 선택해 주세요');
-			setIsModalOpen(true);
-			return;
 		} else {
 			let periodCal;
 			if (state.projectPeriodUnit === '달') {
