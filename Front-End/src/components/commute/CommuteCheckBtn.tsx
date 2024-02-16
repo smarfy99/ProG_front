@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAttendanceEndMutation, useAttendanceStartMutation } from '../../apis/useAttendance';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/component/navbar.scss'
+import '../../styles/component/navbar.scss';
 
 export interface CommuteCheckBtnProps {
 	projectId: number;
