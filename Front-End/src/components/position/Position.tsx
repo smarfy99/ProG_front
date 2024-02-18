@@ -92,7 +92,7 @@ const Position: React.FC = () => {
 	const handleAddPosition = () => {
 		setState((prev) => {
 			return {
-				positionId: [...prev.positionId, 0], // Adding default value for new position
+				positionId: [...prev.positionId, 1], // Adding default value for new position
 				positionDetailDescription: [...prev.positionDetailDescription, ''], // Adding empty string for new description
 				positionNumber: [...prev.positionNumber, 1],
 				positionCurrent: [...prev.positionCurrent, 0],
