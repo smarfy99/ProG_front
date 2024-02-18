@@ -61,12 +61,6 @@ const Position: React.FC = () => {
 
 		if (!selectedOption) return; // Early exit if no matching option found
 
-		for (let i = 0; i < position.totalList.length; i++) {
-			if(position.totalList[i].jobCode == 0){
-				position.totalList.splice(i);
-			}
-		}
-
 		setState((prevState) => {
 			const updatedPositions = prevState.positionId.map((pid, idx) => (idx === index ? id : pid));
 			const updatedDescriptions = prevState.positionDetailDescription.map((desc, idx) =>
